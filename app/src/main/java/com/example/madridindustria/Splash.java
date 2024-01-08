@@ -23,7 +23,7 @@ public class Splash extends AppCompatActivity {
 
         videoView.setOnCompletionListener(mp -> {
             // Call Activity Main when the animation ends
-            startActivity(new Intent(Splash.this, MainActivity.class));
+            startActivity(new Intent(Splash.this, Login.class));
         });
 
         // Start the animation

@@ -16,18 +16,23 @@
         <activity
             android:name="com.example.madridindustria.Login"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <activity
             android:name="com.example.madridindustria.Register"
             android:exported="true"/>
         <activity
             android:name="com.example.madridindustria.Password"
             android:exported="false" />
+        <activity
+            android:name="com.example.madridindustria.Splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.madridindustria.MainActivity"
+            android:exported="false"/>
     </application>
 </manifest>
