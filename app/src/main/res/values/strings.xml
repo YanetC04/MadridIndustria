@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MadridIndustria</string>
+    <string name="contenido">Contenido: </string>
+    <string name="inaguracion">Inaguración: </string>
+    <string name="metro">Metro: </string>
+    <string name="direccion">Dirección: </string>
+    <string name="descripcion">Descripción</string>
 </resources>
