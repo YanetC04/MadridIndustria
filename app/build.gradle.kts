@@ -29,6 +29,9 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
+    implementation ("com.google.android.gms:play-services-maps:17.0.1")
+
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
