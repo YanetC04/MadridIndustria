@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Register">
-
     <TextView
         android:layout_marginTop="80dp"
         android:id="@+id/bienvenida"
         android:layout_width="195dp"
         android:layout_height="76dp"
         android:fontFamily="sans-serif"
-        android:text="Bienvenido a IndustriaMadrid!"
+        android:text="@string/bienvenida"
         android:textColor="@color/red"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/ini"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -41,48 +40,95 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif"
-        android:text="Inicie sesión"
+        android:text="@string/iniciarMinus"
         android:textColor="@color/red"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/bienvenida" />
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="356dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/saludo"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.183" />
+
+    <EditText
+        android:id="@+id/contraseña"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.269" />
+
     <EditText
         android:id="@+id/correo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:hint="Correo Electrónico"
+        android:layout_marginTop="196dp"
+        android:hint="@string/correo"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/ini" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/inicio"
         android:layout_width="280dp"
         android:layout_height="52dp"
-        android:layout_marginTop="32dp"
         android:backgroundTint="@color/red"
-        android:text="INICIAR SESIÓN"
+        android:fontFamily="@font/roboto"
+        android:text="@string/iniciarSesion"
         android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toBottomOf="@id/correo" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.403" />
+
+    <Button
+        android:id="@+id/olvidado"
+        style="@style/buttonoutline"
+        android:layout_width="280dp"
+        android:layout_height="52dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/olvidaste"
+        android:textColor="@color/red"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/inicio"
+        app:layout_constraintVertical_bias="0.031" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="50dp"
         android:layout_height="17dp"
-        android:layout_marginTop="48dp"
-        android:text="O"
+        android:layout_marginTop="32dp"
+        android:text="@string/o"
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/inicio" />
 
@@ -91,12 +137,14 @@
         android:layout_width="280dp"
         android:layout_height="52dp"
         android:layout_marginTop="20dp"
-        android:text="CONTINUAR CON APPLE"
-        android:textColor="@color/black"
+        android:text="@string/apple"
+        android:textColor="@color/white"
         android:shadowDx="3"
         android:shadowDy="2"
         android:shadowRadius="5.8"
-        app:startIconDrawable="@drawable/apple"
+        android:fontFamily="@font/roboto"
+        android:textSize="13sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -106,8 +154,11 @@
         android:layout_width="280dp"
         android:layout_height="52dp"
         android:layout_marginTop="16dp"
-        android:text="CONTINUAR CON FACEBOOK"
-        android:textColor="@color/black"
+        android:text="@string/facebook"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto"
+        android:textSize="13sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/apple" />
@@ -117,8 +168,11 @@
         android:layout_width="280dp"
         android:layout_height="52dp"
         android:layout_marginTop="16dp"
-        android:text="CONTINUAR CON GMAIL"
-        android:textColor="@color/black"
+        android:text="@string/gmail"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto"
+        android:textSize="13sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/facebook" />
@@ -136,6 +190,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="390dp" />
+
 
 
 
