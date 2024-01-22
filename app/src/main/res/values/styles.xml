@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="textTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="textContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="redondo" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+      
     <style name="buttonoutline" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
         <item name="strokeColor">@color/red</item>
     </style>
+      
     <style name="buttonoutlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
