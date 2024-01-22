@@ -12,82 +12,67 @@
         android:layout_width="269dp"
         android:layout_height="287dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.179"
         app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:fontFamily="sans-serif"
         android:text="Cuidado el patrimonio de Madrid"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/inicio"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/inicio"
         android:layout_width="0dp"
         android:layout_height="52dp"
+        android:layout_marginStart="124dp"
         android:layout_marginBottom="24dp"
         android:backgroundTint="@color/white"
         android:fontFamily="sans-serif"
+        android:onClick="openLogin"
         android:text="INICIAR SESION"
         android:textColor="@color/red"
         android:textSize="13dp"
         android:textStyle="bold"
-        android:onClick="openLogin"
         app:layout_constraintBottom_toTopOf="@id/registro"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline1" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/registro"
         style="@style/buttonoutlined"
-        android:layout_width="0dp"
+        android:layout_width="141dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="224dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginBottom="236dp"
         android:fontFamily="sans-serif"
         android:text="REGISTRARSE"
+        android:textColor="@color/white"
         android:textSize="13dp"
         android:textStyle="bold"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline1" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/ministerio"
         android:layout_width="0dp"
         android:layout_height="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.828"
         app:srcCompat="@drawable/ministerio" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="70dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="341dp" />
 
 
 

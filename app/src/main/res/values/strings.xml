@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">MadridIndustria</string>
+    <string name="iniciarSesion">INICIAR SESIÓN</string>
+    <string name="iniciarMinus">Inicie sesión</string>
+    <string name="registro">REGISTRARSE</string>
+    <string name="apple">CONTINUAR CON APPLE</string>
+    <string name="facebook">CONTINUAR CON FACEBOOK</string>
+    <string name="gmail">CONTINUAR CON GMAIL</string>
+    <string name="bienvenida">Bienvenido a IndustriaMadrid!</string>
+    <string name="correo">Correo Electrónico</string>
+    <string name="o">O</string>
+    <string name="madrid">Cuidado el patrimonio de Madrid</string>
+    <string name="saludo">Estamos encantados de volver a verte</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="olvidaste">¿OLVIDASTE LA CONTRASEÑA?</string>
+    <string name="esperar">Un momento...</string>
+    <string name="dato">Para borrar la contraseña, use el enlace en el correo que le acabamos de enviar.</string>
+    <string name="correoir">IR AL CORREO</string>
+    <string name="luego">Lo hare luego</string>
     <string name="contenido">Contenido: </string>
     <string name="inaguracion">Inaguración: </string>
     <string name="metro">Metro: </string>
