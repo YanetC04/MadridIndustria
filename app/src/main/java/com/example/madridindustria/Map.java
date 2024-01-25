@@ -1,6 +1,7 @@
 package com.example.madridindustria;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class Map extends AppCompatActivity {
 
@@ -47,11 +49,37 @@ public class Map extends AppCompatActivity {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
+
                 // Configura el mapa según tus necesidades
                 googleMap.setMyLocationEnabled(true);
+
+                // Agrega un Listener al botón predeterminado de "Mi ubicación"
+                googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                    @Override
+                    public boolean onMyLocationButtonClick() {
+                        // Puedes agregar lógica adicional si es necesario
+                        return false;
+                    }
+                });
+
+                // Verifica si tienes permisos para acceder a la ubicación
+                if (ContextCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    // Obtiene la última ubicación conocida y hace zoom
+                    fusedLocationProviderClient.getLastLocation().addOnSuccessListener(Map.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -73,10 +101,6 @@ public class Map extends AppCompatActivity {
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
                     return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    // Actualiza la cámara del mapa con la nueva ubicación
-                    updateMapCamera(new LatLng(location.getLatitude(), location.getLongitude()));
                 }
             }
         };
@@ -103,6 +127,7 @@ public class Map extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initMap();

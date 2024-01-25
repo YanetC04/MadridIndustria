@@ -45,7 +45,7 @@
             android:resource="@array/preloaded_fonts" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="true"/>
         <activity
             android:name=".Patrimonio"
             android:exported="false" />
