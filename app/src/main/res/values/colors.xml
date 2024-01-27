@@ -7,4 +7,6 @@
     <color name="ash_grey">#ACBFA4</color>
     <color name="eire_black">#262626</color>
     <color name="redlog">#C60B1E</color>
+    <color name="reddark">#500B0B</color>
+    <color name="dark">#1E1E1E</color>
 </resources>

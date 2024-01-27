@@ -1,9 +1,11 @@
 package com.example.madridindustria;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Map extends AppCompatActivity {
 
@@ -41,6 +44,37 @@ public class Map extends AppCompatActivity {
 
         // Inicializa la ubicación en tiempo real
         initLocationUpdates();
+
+        // BARRA INFERIOR
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.map);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        if (item.getItemId() == R.id.home) {
+                            startActivity(new Intent(Map.this, MainActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        } else if (item.getItemId() == R.id.map) {
+                            // No necesitas iniciar la actividad aquí, ya que se establecerá como predeterminada
+                            return true;
+                        } else if (item.getItemId() == R.id.add) {
+                            // startActivity(new Intent(MainActivity.this, Gestor.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        } else if (item.getItemId() == R.id.like) {
+                            // startActivity(new Intent(MainActivity.this, Favoritos.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        } else if (item.getItemId() == R.id.profile) {
+                            // startActivity(new Intent(MainActivity.this, Profile.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 
     private void initMap() {
@@ -51,6 +85,11 @@ public class Map extends AppCompatActivity {
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
                 // Configura el mapa según tus necesidades
+                if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    return;
+                }
                 googleMap.setMyLocationEnabled(true);
             }
         });
@@ -103,6 +142,7 @@ public class Map extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initMap();

@@ -1,5 +1,6 @@
 package com.example.madridindustria;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
@@ -8,13 +9,21 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Patrimonio extends AppCompatActivity {
 
@@ -24,6 +33,7 @@ public class Patrimonio extends AppCompatActivity {
     private ImageView imagen;
     private FloatingActionButton boton;
     private boolean heart = false;
+    private TextView direccion, inaguracion, metro, descripcion, patrimonio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +44,14 @@ public class Patrimonio extends AppCompatActivity {
         toolbarCollapse = findViewById(R.id.toolbarCollapse);
         imagen = findViewById(R.id.imagen);
         boton = findViewById(R.id.boton);
+        inaguracion = findViewById(R.id.inaguracion);
+        patrimonio = findViewById(R.id.patrimonio);
+        metro = findViewById(R.id.metro);
+        direccion = findViewById(R.id.direccion);
+        descripcion = findViewById(R.id.descripcion);
 
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
-
-        // ESTABLECEMOS EL TITULO
-        toolbarCollapse.setTitle("Estación Atocha");
 
         // ESTABLECEMOS EL COLOR
         toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.red));
@@ -61,10 +73,7 @@ public class Patrimonio extends AppCompatActivity {
             }
         });
 
-        // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
-        Glide.with(this)
-                .load("https://yaldahpublishing.com/wp-content/uploads/2021/04/Como-ir-de-Atocha-a-Chamartin3-min.jpg")
-                .into(imagen);
+
 
         // BOTON FLOTANTE
         boton.setOnClickListener(new View.OnClickListener() {
@@ -82,11 +91,26 @@ public class Patrimonio extends AppCompatActivity {
                 heart = !heart;
             }
         });
-    }
 
-    // NO FUNCIONA 
-    private void abrirUbicacion() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=plaza+eliptica"));
-        startActivity(intent);
+        // BASE DE DATOS
+        FirestoreDatabase firestoreDatabase = new FirestoreDatabase(getIntent().getStringExtra("collection"), getIntent().getStringExtra("document"), new FirestoreCallback() {
+            @Override
+            public void onCallback(FirestoreDatabase firestoreDatabase) {
+                // ESTABLECEMOS EL TITULO
+                toolbarCollapse.setTitle(firestoreDatabase.getNombre());
+
+                // ESTABLECEMOS LA INFORMACION
+                inaguracion.setText(firestoreDatabase.getInaguracion());
+                patrimonio.setText(firestoreDatabase.getPatrimonio());
+                metro.setText(firestoreDatabase.getMetro());
+                direccion.setText(firestoreDatabase.getDireccion());
+                descripcion.setText(firestoreDatabase.getDescripcion());
+
+                // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
+                Glide.with(Patrimonio.this)
+                        .load(firestoreDatabase.getImagen())
+                        .into(imagen);
+            }
+        });
     }
 }

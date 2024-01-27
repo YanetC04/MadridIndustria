@@ -33,4 +33,12 @@
         <item name="cornerRadius">80dp</item>
         <item name="strokeColor">@android:color/white</item>
     </style>
+
+    <style name="search_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/textConoceCiudad</item>
+        <item name="android:background">@drawable/rounded_edittext_background</item>
+        <item name="android:inputType">text</item>
+    </style>
 </resources>
