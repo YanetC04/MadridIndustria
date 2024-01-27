@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MadridIndustria" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/red</item>
+        <item name="android:textColorHint">@color/white</item>
     </style>
 
     <style name="Theme.MadridIndustria" parent="Base.Theme.MadridIndustria" />

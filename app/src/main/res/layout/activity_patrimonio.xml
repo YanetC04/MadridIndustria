@@ -70,12 +70,11 @@
 
                     <TextView
                         style="@style/textTitle"
-                        android:text="@string/inaguracion" />
+                        android:text="Inaguración: " />
 
                     <TextView
                         android:id="@+id/inaguracion"
-                        style="@style/textContent"
-                        android:text="1980" />
+                        style="@style/textContent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -85,12 +84,25 @@
 
                     <TextView
                         style="@style/textTitle"
-                        android:text="@string/metro" />
+                        android:text="Patrimonio: " />
+
+                    <TextView
+                        android:id="@+id/patrimonio"
+                        style="@style/textContent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/textTitle"
+                        android:text="Metro: " />
 
                     <TextView
                         android:id="@+id/metro"
-                        style="@style/textContent"
-                        android:text="Atocha" />
+                        style="@style/textContent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -100,14 +112,13 @@
 
                     <TextView
                         style="@style/textTitle"
-                        android:text="@string/direccion" />
+                        android:text="Dirección: " />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/direccion"
                     style="@style/textContent"
-                    android:onClick="abrirUbicacion"
-                    android:text="Calle de Murcia, 32, 28007, Madrid" />
+                    android:onClick="abrirUbicacion"/>
 
                 <Space
                     android:layout_width="wrap_content"
@@ -120,8 +131,7 @@
                 <TextView
                     android:id="@+id/descripcion"
                     style="@style/textContent"
-                    android:justificationMode="inter_word"
-                    android:text="La estación de Atocha en Madrid es un fascinante patrimonio industrial del siglo XIX, con su impresionante estructura de hierro y cristal. Más que una simple terminal ferroviaria, Atocha fusiona la elegancia histórica con la modernidad.\n\nSu nave central acristalada y la antigua sala de espera, con detalles como azulejos tallados, te transportan a otra época. Además, el Jardín Tropical dentro de la estación agrega un toque de serenidad y naturaleza.\n\nAtocha es un testimonio viviente de la Revolución Industrial y un lugar donde el pasado y el presente convergen de manera única.La estación de Atocha en Madrid es un fascinante patrimonio industrial del siglo XIX, con su impresionante estructura de hierro y cristal. Más que una simple terminal ferroviaria, Atocha fusiona la elegancia histórica con la modernidad.\n\nSu nave central acristalada y la antigua sala de espera, con detalles como azulejos tallados, te transportan a otra época. Además, el Jardín Tropical dentro de la estación agrega un toque de serenidad y naturaleza.\n\nAtocha es un testimonio viviente de la Revolución Industrial y un lugar donde el pasado y el presente convergen de manera única." />
+                    android:justificationMode="inter_word"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

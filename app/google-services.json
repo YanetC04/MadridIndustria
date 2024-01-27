@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1080380873436",
+    "project_id": "madridindustria-12690",
+    "storage_bucket": "madridindustria-12690.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080380873436:android:a45d0c8da33994025cf219",
+        "android_client_info": {
+          "package_name": "com.example.madridindustria"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl822ZW4s-pbyp9PGZO6M1b9YVupYHP5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
