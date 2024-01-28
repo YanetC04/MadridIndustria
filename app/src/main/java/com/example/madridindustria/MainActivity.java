@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
-    String distritos[] = {"arganzuela", "centro", "hortaleza", "moncloa"};
+    String distritos[] = {"arganzuela", "centro", "chamberi", "moncloa"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout internalLinear = externalLayoutView.findViewById(R.id.linearExternal);
             TextView distrito = externalLayoutView.findViewById(R.id.distrito);
 
-            for (int i = 1; i<2; i++){
+            for (int i = 1; i<=5; i++){
                 View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
                 ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
                 TextView texto = internalLayoutView.findViewById(R.id.texto);
