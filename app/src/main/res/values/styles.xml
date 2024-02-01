@@ -41,4 +41,10 @@
         <item name="android:background">@drawable/rounded_edittext_background</item>
         <item name="android:inputType">text</item>
     </style>
+
+    <style parent="Widget.MaterialComponents.Button.OutlinedButton" name="buttonInicial">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
 </resources>
