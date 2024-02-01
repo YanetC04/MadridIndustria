@@ -17,4 +17,8 @@
     <string name="dato">Para borrar la contraseña, use el enlace en el correo que le acabamos de enviar.</string>
     <string name="correoir">IR AL CORREO</string>
     <string name="luego">Lo hare luego</string>
+    <string name="contenido">Contenido: </string>
+    <string name="descripcion">Descripción</string>
+    <string name="ciudad">Conoce tu propia\nciudad</string>
+    <string name="bienvenido">BIENVENID@</string>
 </resources>
