@@ -4,79 +4,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/redlog"
     tools:context=".Login">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        app:layout_constraintBottom_toTopOf="@+id/inicio"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:popupTheme="@style/Theme.MadridIndustria.ActionBar" >
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="Cuidando el patrimonio de Madrid"
-        android:textColor="@color/white"
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/iniciarSesion"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:id="@+id/bienvenida"
+            android:layout_width="195dp"
+            android:layout_height="76dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/bienvenida"
+            android:textColor="@color/red"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="119dp"
+            android:layout_height="76dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/industrylogored" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/ini"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/iniciarMinus"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/inicio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <EditText
+        android:id="@+id/correo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/correo"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:inputType="textEmailAddress"
+        android:textCursorDrawable="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ini" />
 
     <Button
         android:id="@+id/inicio"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:fontFamily="sans-serif"
-        android:onClick="openLogin"
+        style="@style/buttonoutlined"
+        android:backgroundTint="@color/red"
+        android:fontFamily="@font/roboto"
         android:text="@string/iniciarSesion"
-        android:textColor="@color/red"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        style="@style/buttonoutline"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/registro"
-        style="@style/buttonoutlined"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="@string/registro"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/space" />
-
-    <ImageView
-        android:id="@+id/ministerio"
-        android:layout_width="350dp"
-        android:layout_height="75dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registro"
-        app:srcCompat="@drawable/ministerio" />
-
-    <Space
-        android:id="@+id/space"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="wrap_content"
+        android:text="@string/o"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/apple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inicio" />
 
+    <Button
+        android:id="@+id/apple"
+        style="@style/buttonoutlined"
+        android:layout_marginBottom="16dp"
+        android:drawableLeft="@drawable/apple"
+        android:background="@drawable/button_design"
+        android:elevation="2dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/apple"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toTopOf="@+id/facebook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/facebook"
+        style="@style/buttonoutlined"
+        android:drawableLeft="@drawable/facebook"
+        android:fontFamily="@font/roboto"
+        android:text="@string/facebook"
+        android:background="@drawable/button_design"
+        android:elevation="2dp"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inicio" />
+
+    <Button
+        android:id="@+id/gmail"
+        style="@style/buttonoutlined"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/gmail"
+        android:fontFamily="@font/roboto"
+        android:text="@string/gmail"
+        android:background="@drawable/button_design"
+        android:elevation="2dp"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/facebook" />
 </androidx.constraintlayout.widget.ConstraintLayout>

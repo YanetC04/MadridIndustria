@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- button_custom_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Borde del botón -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Color del fondo del botón -->
+            <solid android:color="@color/white" />
+            <!-- Radio de la esquina del botón -->
+            <corners android:radius="0dp" />
+            <!-- Borde del botón -->
+            <stroke
+                android:width="1dp"
+                android:color="@color/ash_grey" />
+        </shape>
+    </item>
+    <!-- Sombra solo en la parte inferior -->
+    <item android:top="0dp" android:right="0dp" android:left="0dp" android:bottom="3dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ash_grey" />
+        </shape>
+    </item>
+</layer-list>

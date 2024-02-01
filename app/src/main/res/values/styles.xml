@@ -18,21 +18,27 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-      
-    <style name="buttonoutline" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:layout_width">wrap_content</item>
+
+    <style name="buttonoutlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">290dp</item>
+        <item name="background">@drawable/button_red_border</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
+    <style parent="Widget.MaterialComponents.Button.OutlinedButton" name="buttonoutline">
+        <item name="android:layout_width">290dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
         <item name="strokeColor">@color/red</item>
-    </style>
-      
-    <style name="buttonoutlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="cornerRadius">80dp</item>
-        <item name="strokeColor">@android:color/white</item>
-    </style>
+        <item name="android:textColor">@color/red</item>
+        <item name="fontFamily">@font/roboto</item>
+
+</style>
 
     <style name="search_style">
         <item name="android:layout_width">match_parent</item>

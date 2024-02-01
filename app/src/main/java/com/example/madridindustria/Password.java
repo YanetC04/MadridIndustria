@@ -1,41 +1,40 @@
 package com.example.madridindustria;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class Password extends AppCompatActivity {
-    private TextView txt;
-    private Button inicio;
+
+    private Button inicio, olvidado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
-        txt =  findViewById(R.id.txt4);
-        inicio =  findViewById(R.id.iniciar);
 
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Password.this, Login.class);
-                startActivity(intent);
-            }
-        });
+        inicio = findViewById(R.id.inicio);
+        olvidado = findViewById(R.id.olvidado);
+
+        // NOS FALTA COMPROBAR CONSTRASEÑA Y CONECTARLA DE BASE DE DATOS
+
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enlace("https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&ifkv=ASKXGp0GUVEa7ZtQyUrjM_cTgYYCRQyBuqG_jJ9bIz0rh0tVEJW8tub73nRJgd8GWBCGc1O-WRXrrQ&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1174382267%3A1706773316759199&theme=glif");
+                Intent intent = new Intent(Password.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
-    }
-    private void enlace(String enlace) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(enlace));
-        startActivity(browserIntent);
+        olvidado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Password.this, Password2.class);
+                startActivity(intent);
+            }
+        });
     }
 }
