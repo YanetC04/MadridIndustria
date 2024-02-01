@@ -1,4 +1,4 @@
-package com.example.madridindustria;
+package proyectointegrador.madridindustria;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
-    String distritos[] = {"arganzuela", "centro", "hortaleza", "moncloa"};
+    String distritos[] = {"arganzuela", "centro", "moncloa", "chamberi"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
         // DINAMICAMENTE CREAR SCROLLVIEW PARA CADA DISTRITO
         for (String dist : distritos) {
-            // Infla el diseño external_layout.xml
+            // INFLA EL DISEÑO external_layout.xml
             View externalLayoutView = LayoutInflater.from(this).inflate(R.layout.external_layout, null);
             LinearLayout internalLinear = externalLayoutView.findViewById(R.id.linearExternal);
             TextView distrito = externalLayoutView.findViewById(R.id.distrito);
 
-            for (int i = 1; i<2; i++){
+            for (int i = 1; i<=5; i++){
                 View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
                 ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
                 TextView texto = internalLayoutView.findViewById(R.id.texto);
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 internalLinear.addView(internalLayoutView);
             }
 
-            // Agrega el diseño inflado al LinearLayout dentro del ScrollView
+            // AGREGA EL DISEÑO INFLADO AL LINEARLAYOUT DEL SCROLLVIEW
             linearLayout.addView(externalLayoutView);
         }
 

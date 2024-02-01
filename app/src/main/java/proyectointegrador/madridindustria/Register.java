@@ -1,4 +1,4 @@
-package com.example.madridindustria;
+package proyectointegrador.madridindustria;
 
 import androidx.appcompat.app.AppCompatActivity;
 

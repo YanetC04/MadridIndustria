@@ -1,4 +1,4 @@
-package com.example.madridindustria;
+package proyectointegrador.madridindustria;
 
 import android.Manifest;
 import android.content.Intent;

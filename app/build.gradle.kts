@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.madridindustria"
+    namespace = "proyectointegrador.madridindustria"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.madridindustria"
+        applicationId = "proyectointegrador.madridindustria"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -37,9 +37,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-firestore:24.0.0")
 
-
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.firebase:firebase-database:20.3.0")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
