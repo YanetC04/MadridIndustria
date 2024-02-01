@@ -10,7 +10,13 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="cornerRadius">80dp</item>
+        <item name="android:orientation">vertical</item>
         <item name="strokeColor">@android:color/white</item>
+    </style>
+
+    <style name="buttonInicial" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
     </style>
 </resources>

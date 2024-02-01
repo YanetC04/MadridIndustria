@@ -9,4 +9,7 @@
     <color name="ash_grey">#ACBFA4</color>
     <color name="eire_black">#262626</color>
     <color name="redlog">#C60B1E</color>
+
+    //This is the color of Login Button
+    <color name="blue">#0047AB</color>
 </resources>
