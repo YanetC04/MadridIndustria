@@ -22,7 +22,7 @@ public class Password extends AppCompatActivity {
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Password.this, Hall.class);
+                Intent intent = new Intent(Password.this, Login.class);
                 startActivity(intent);
             }
         });
@@ -34,5 +34,12 @@ public class Password extends AppCompatActivity {
             }
         });
 
+    }
+
+    // NO VOLVER ATRAS
+    @Override
+    public void onBackPressed() {
+        // Evitar que MainActivity vuelva atrás a Splash.java
+        // No llames al super.onBackPressed();
     }
 }

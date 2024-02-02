@@ -37,12 +37,12 @@ public class Favorite extends AppCompatActivity {
                             if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
                                 intent = new Intent(Favorite.this, Add.class);
                             else
-                                showDialog("¿Tienes credenciales de Gestor para poder ingresar?");
+                                showDialog("¿Quieres activar el modo Gestor?");
                         } else if (item.getItemId() == R.id.profile) {
                             if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
                                 intent = new Intent(Favorite.this, Profile.class);
                             else
-                                showDialog("¿Tienes credenciales de Gestor para poder ingresar?");
+                                showDialog("¿Quieres activar el modo Gestor?");
                         }
 
                         if (intent != null) {
@@ -59,7 +59,7 @@ public class Favorite extends AppCompatActivity {
     // Diálogo de error
     private void showDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Atención")
+        builder.setTitle("Modo Gestor")
                 .setMessage(message)
                 .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
                     @Override

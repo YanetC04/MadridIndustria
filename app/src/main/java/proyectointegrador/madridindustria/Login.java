@@ -11,18 +11,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.SignInMethodQueryResult;
 
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity  {
 
-    private EditText email;
+    private EditText email, contrasena;
     private Button inicio, olvidado;
-    private EditText contrasena;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private TextInputLayout lay_pass, lay_mail;
+    private FirebaseAuthHelper authHelper = new FirebaseAuthHelper(this);
+    private String mail, pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +35,61 @@ public class Login extends AppCompatActivity {
         inicio = findViewById(R.id.inicio);
         olvidado = findViewById(R.id.olvidado);
         contrasena = findViewById(R.id.contrasena);
+        lay_mail = findViewById(R.id.input_email);
+        lay_pass = findViewById(R.id.input_password);
 
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mail = email.getText().toString().trim();
-                if (!mail.isEmpty()){
-                    if (valida(mail)){
-                        String pass = contrasena.getText().toString().trim();
-                        if (pass.isEmpty()){
-                            showErrorDialog("Contraseña está vacía.");
-                        } else{
-                            login(mail, pass);
-                        }
+                mail = email.getText().toString().trim();
+                pass = contrasena.getText().toString().trim();
+
+                if (!mail.isEmpty() && !pass.isEmpty()){
+                    if (valida(mail)) {
+                        authHelper.signInWithEmailAndPassword(mail, pass, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    finish();
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    intent.putExtra("source", "password");
+                                    startActivity(intent);
+                                } else {
+                                    showErrorDialog("Usuario o Correo no registrados.");
+                                }
+                            }
+                        });
                     } else {
                         showErrorDialog("Correo no válido.");
                     }
                 } else {
-                    showErrorDialog("Correo Electrónico está vacío.");
+                    if (pass.isEmpty()){
+                        lay_pass.setHint("");
+                        contrasena.setBackground(getResources().getDrawable(R.drawable.red_border));
+                        contrasena.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if(!hasFocus){
+                                    contrasena.setBackground(getResources().getDrawable(R.drawable.default_border));
+                                    lay_pass.setHint(R.string.password);
+                                }
+                            }
+                        });
+                    }
+
+                    if (mail.isEmpty()){
+                        lay_mail.setHint("");
+                        email.setBackground(getResources().getDrawable(R.drawable.red_border));
+                        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if(!hasFocus){
+                                    email.setBackground(getResources().getDrawable(R.drawable.default_border));
+                                    lay_mail.setHint(R.string.email);
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -58,34 +97,45 @@ public class Login extends AppCompatActivity {
         olvidado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Login.this, Password.class);
-                startActivity(intent);
-            }
-        });
-    }
+                mail = email.getText().toString().trim();
 
-    // COMPROBAMOS QUE EL CORREO Y LA CONTRASEÑA ESTEN REGISTRADOS EN LA BASE DE DATOS
-    private void login(String mail, String pass) {
-        mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    finish();
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    intent.putExtra("source", "password");
-                    startActivity(intent);
+                if (!mail.isEmpty()) {
+                    if (valida(mail)) {
+                        authHelper.confirmEmail(mail, new OnCompleteListener<SignInMethodQueryResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent(Login.this, Password.class);
+                                    startActivity(intent);
+                                } else {
+                                    showErrorDialog("Correo no existente en la base de datos. Registrarse.");
+                                }
+                            }
+                        });
+                    } else {
+                        showErrorDialog("Correo no válido.");
+                    }
+                } else {
+                    if (mail.isEmpty()){
+                        lay_mail.setHint("");
+                        email.setBackground(getResources().getDrawable(R.drawable.red_border));
+                        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if(!hasFocus){
+                                    email.setBackground(getResources().getDrawable(R.drawable.default_border));
+                                    lay_mail.setHint(R.string.email);
+                                }
+                            }
+                        });
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showErrorDialog("Usuario o Correo no registrados.");
             }
         });
     }
 
     private boolean valida(String mail) {
-        if(mail.contains("@gmail.com") || mail.contains("@hotmail.com") || mail.contains("@outlook.com") || mail.contains("@icloud.com")){
+        if(mail.endsWith("@gmail.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@outlook.com") || mail.endsWith("@icloud.com")){
             return true;
         }
         return false;
@@ -93,18 +143,11 @@ public class Login extends AppCompatActivity {
 
     // DIALOGO DE ERROR
     private void showErrorDialog(String message) {
-        // LLAMAMOS AL BUILER DE ALERT DIALOG
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        // ESTABLECEMOS QUE NUESTRO BUILDER ES DE ERROR, IMPRIMIRA EL MENSAJE DE ERROR, Y HAY QUE DARLE AL OK
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
         builder.setTitle("Error")
                 .setMessage(message)
                 .setPositiveButton("OK", null);
-
-        // CREAMOS EL DIALOGO
         AlertDialog dialog = builder.create();
-
-        // MOSTRAMOS EL DIALOGO
         dialog.show();
     }
 }
