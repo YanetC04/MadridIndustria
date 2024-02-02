@@ -37,9 +37,11 @@ public class Login extends AppCompatActivity {
                         Intent intent = new Intent(Login.this, Password.class);
                         intent.putExtra("mail", email.getText().toString().trim());
                         startActivity(intent);
+                    } else {
+                        showErrorDialog("Correo no válido.");
                     }
                 } else {
-                    showErrorDialog("Correo no válido.");
+                    showErrorDialog("El campo está vacío.");
                     email.setBackground(getResources().getDrawable(R.drawable.red_border));
                     email.setHintTextColor(getResources().getColor(R.color.red));
                 }
