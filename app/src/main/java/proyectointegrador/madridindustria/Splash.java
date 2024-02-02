@@ -1,4 +1,4 @@
-package com.example.madridindustria;
+package proyectointegrador.madridindustria;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +23,7 @@ public class Splash extends AppCompatActivity {
 
         videoView.setOnCompletionListener(mp -> {
             // Call Activity Main when the animation ends
-            startActivity(new Intent(Splash.this, Login.class));
+            startActivity(new Intent(Splash.this, Hall.class));
         });
 
         // Start the animation

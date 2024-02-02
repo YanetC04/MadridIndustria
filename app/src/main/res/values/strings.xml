@@ -21,4 +21,5 @@
     <string name="descripcion">Descripción</string>
     <string name="ciudad">Conoce tu propia\nciudad</string>
     <string name="bienvenido">BIENVENID@</string>
+    <string name="tu_contra">TU CONTRASEÑA</string>
 </resources>
