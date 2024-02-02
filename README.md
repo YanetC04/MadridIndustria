@@ -16,7 +16,6 @@ MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad 
 
 ### Capturas
 ![Imagen de Main Activity](img/main.png)
-<br/><br/>
 
 ### Video Demostrativo
 [Video de Main Activity](video/main.webm)
