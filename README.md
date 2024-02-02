@@ -7,7 +7,7 @@
 MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad de Madrid. Con su interfaz intuitiva, explora y accede a información detallada sobre cada patrimonio, encuentra sitios históricos en el mapa, marca tus descubrimientos favoritos y organízalos en tu lista personal. Los gestores de patrimonios industriales pueden actualizar y gestionar la información, compartiendo datos relevantes para enriquecer la experiencia del usuario. ¡Descubre, aprende y preserva la historia industrial de Madrid con MadridIndustria!
 
 ### Ramas
-- **Index**: Rama responsable de MainActivity y sus respectivos.
+- **Splash**: Rama responsable de MainActivity y sus respectivos.
 
 ### Actividades
 - **MainActivity**: Punto de entrada para explorar patrimonios industriales.

@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/nav_menu" />
+        app:menu="@menu/nav_menu"
+        style="@style/MyBottomNavigationView"/>
 
     <fragment
         android:id="@+id/mapFragment"
