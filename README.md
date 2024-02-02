@@ -6,19 +6,7 @@
 ## ESPAÑOL
 MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad de Madrid. Con su interfaz intuitiva, explora y accede a información detallada sobre cada patrimonio, encuentra sitios históricos en el mapa, marca tus descubrimientos favoritos y organízalos en tu lista personal. Los gestores de patrimonios industriales pueden actualizar y gestionar la información, compartiendo datos relevantes para enriquecer la experiencia del usuario. ¡Descubre, aprende y preserva la historia industrial de Madrid con MadridIndustria!
 
-### Ramas
-- **Index**: Rama responsable de MainActivity y sus respectivos.
 
-### Actividades
-- **MainActivity**: Punto de entrada para explorar patrimonios industriales.
-- **FirestoreDatabase**: Funciona como la base de datos central para almacenar información sobre patrimonios.
-- **FirestoreCallback**: Interfaz esencial que permite la comunicación entre MainActivity y FirestoreDatabase, facilitando la obtención y actualización de datos sobre patrimonios.
-
-### Capturas
-![Imagen de Main Activity](img/main.png)
-
-### Video Demostrativo
-[Video de Main Activity](video/main.webm)
 
 ### Estilo
 Hemos personalizado la apariencia de la aplicación usando estilos y temas definidos en `res/values/styles.xml`. Para más detalles, por favor revisa el código y comentarios en las actividades correspondientes.
@@ -30,18 +18,16 @@ No dudes en contribuir a este proyecto creando solicitudes de extracción o info
 MadridIndustria promotes interest in the industrial heritage of the Community of Madrid. With its intuitive interface, explore and access detailed information about each heritage site, locate historic sites on the map, mark your favorite discoveries, and organize them in your personal list. Industrial heritage managers can update and manage information, sharing relevant data to enhance the user experience. Discover, learn, and preserve the industrial history of Madrid with MadridIndustria!
 
 ### Branches
-- **Index**: Branch responsible for MainActivity and its related components.
+- **Patrimonio**: Branch responsible for PatrimonioActivity, displaying information about heritage sites.
 
 ### Activities
-- **MainActivity**: Entry point for exploring industrial heritage.
-- **FirestoreDatabase**: Functions as the central database for storing information about heritage sites.
-- **FirestoreCallback**: Essential interface facilitating communication between MainActivity and FirestoreDatabase, enabling data retrieval and updates for heritage sites.
+- **PatrimonioActivity**: Displays details and information about a specific heritage site. This activity allows users to access details such as images and historical data.
 
 ### Screenshots
-![Main Activity Image](img/main.png)
+![Patrimonio Activity Image](img/patrimonio.png)
 
 ### Demo Video
-[Main Activity Video](video/main.webm)
+[Patrimonio Activity Video](video/patrimonio.webm)
 
 ### Style
 We've customized the appearance of the application using styles and themes defined in `res/values/styles.xml`. For more details, please review the code and comments in the corresponding activities.
