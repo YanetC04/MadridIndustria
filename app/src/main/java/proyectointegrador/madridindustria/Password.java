@@ -1,77 +1,38 @@
 package proyectointegrador.madridindustria;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Password extends AppCompatActivity {
-
-    private Button inicio, olvidado;
-    private EditText contrasena;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    private TextView txt;
+    private Button inicio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
+        txt =  findViewById(R.id.txt4);
+        inicio =  findViewById(R.id.iniciar);
 
-        inicio = findViewById(R.id.inicio);
-        olvidado = findViewById(R.id.olvidado);
-        contrasena = findViewById(R.id.contrasena);
-
-        inicio.setOnClickListener(new View.OnClickListener() {
+        txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mail = getIntent().getStringExtra("mail");
-                String pass = contrasena.getText().toString().trim();
-
-                if (mail.isEmpty() & pass.isEmpty()){
-                    Toast.makeText(Password.this, "Correo o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
-                } else{
-                    login(mail, pass);
-                }
-            }
-        });
-
-        olvidado.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Password.this, Password2.class);
+                Intent intent = new Intent(Password.this, Hall.class);
                 startActivity(intent);
             }
         });
-    }
-
-    // COMPROBAMOS QUE EL CORREO Y LA CONTRASEÑA ESTEN REGISTRADOS EN LA BASE DE DATOS
-    private void login(String mail, String pass) {
-        mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        inicio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    finish();
-                    Intent intent = new Intent(Password.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(Password.this, "Error: Usuario o Correo no registrados.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Password.this, "Error al iniciar sesión.", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&ifkv=ASKXGp0GUVEa7ZtQyUrjM_cTgYYCRQyBuqG_jJ9bIz0rh0tVEJW8tub73nRJgd8GWBCGc1O-WRXrrQ&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1174382267%3A1706773316759199&theme=glif"));
+                startActivity(browserIntent);
             }
         });
+
     }
 }

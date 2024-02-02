@@ -1,7 +1,10 @@
 package proyectointegrador.madridindustria;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,13 +20,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
-    String distritos[] = {"arganzuela", "centro", "moncloa", "chamberi"};
+    private BottomNavigationView bottomNavigationView;
+    private String distritos[] = {"arganzuela", "centro", "moncloa", "chamberi"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         linearLayout = findViewById(R.id.linear);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // DINAMICAMENTE CREAR SCROLLVIEW PARA CADA DISTRITO
         for (String dist : distritos) {
@@ -32,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout internalLinear = externalLayoutView.findViewById(R.id.linearExternal);
             TextView distrito = externalLayoutView.findViewById(R.id.distrito);
 
-            for (int i = 1; i<=5; i++){
+            for (int i = 1; i <= 5; i++) {
                 View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
                 ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
                 TextView texto = internalLayoutView.findViewById(R.id.texto);
@@ -68,43 +73,76 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.addView(externalLayoutView);
         }
 
+
         // BARRA INFERIOR
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        if (item.getItemId() == R.id.home) {
-                            // REDIRIGE A MainActivity
-                            return true;
-                        } else if (item.getItemId() == R.id.map) {
-                            // REDIRIGE A Map
-                            startActivity(new Intent(MainActivity.this, Map.class));
-                            // SIN TRANSICION
-                            overridePendingTransition(0, 0);
-                            return true;
+                        Intent intent = null;
+                        String source = getIntent().getStringExtra("source");
+
+                        if (item.getItemId() == R.id.map) {
+                            // Redirige a Map
+                            intent = new Intent(MainActivity.this, Map.class).putExtra("source", source);
                         } else if (item.getItemId() == R.id.add) {
-                            // REDIRIGE A Gestor
-                            // startActivity(new Intent(MainActivity.this, Gestor.class));
-                            // SIN TRANSICION
-                            overridePendingTransition(0, 0);
-                            return true;
+                            // Redirige a Add
+                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
+                                intent = new Intent(MainActivity.this, Add.class);
+                            else
+                                showDialog("¿Tienes credenciales de Gestor para poder ingresar?");
                         } else if (item.getItemId() == R.id.like) {
-                            // REDIRIGE A Favoritos
-                            // startActivity(new Intent(MainActivity.this, Favoritos.class));
-                            // SIN TRANSICION
-                            overridePendingTransition(0, 0);
-                            return true;
+                            // Redirige a Favorite
+                            intent = new Intent(MainActivity.this, Favorite.class).putExtra("source", source);
                         } else if (item.getItemId() == R.id.profile) {
-                            // REDIRIGE A Profile
-                            // startActivity(new Intent(MainActivity.this, Profile.class));
-                            // SIN TRANSICION
+                            // Redirige a Profile
+                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
+                                intent = new Intent(MainActivity.this, Profile.class);
+                            else
+                                showDialog("¿Tienes credenciales de Gestor para poder ingresar?");
+                        }
+
+                        if (intent != null) {
+                            startActivity(intent);
+                            // Sin transición
                             overridePendingTransition(0, 0);
                             return true;
                         }
-                        return false;
+
+                        return true;
                     }
                 });
+    }
+
+    // Diálogo de error
+    private void showDialog(String message) {
+        // Builder de AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Configuración del diálogo de error
+        builder.setTitle("Atención")
+                .setMessage(message)
+                .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Redirige a Login
+                        startActivity(new Intent(MainActivity.this, Hall.class));
+                        // Sin transición
+                        overridePendingTransition(0, 0);
+                    }
+                })
+                .setNegativeButton("NO", null);
+
+        // Creación y visualización del diálogo
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    // NO VOLVER ATRAS
+    @Override
+    public void onBackPressed() {
+        // Evitar que MainActivity vuelva atrás a Splash.java
+        // No llames al super.onBackPressed();
     }
 }
