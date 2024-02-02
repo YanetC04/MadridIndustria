@@ -16,7 +16,10 @@ MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad 
 
 ### Capturas
 ![Imagen de Main Activity](img/main.png)
-![Video de Main Activity](video/main.webm)
+<br/><br/>
+
+### Video Demostrativo
+[Video de Main Activity](video/main.webm)
 
 ### Estilo
 Hemos personalizado la apariencia de la aplicación usando estilos y temas definidos en `res/values/styles.xml`. Para más detalles, por favor revisa el código y comentarios en las actividades correspondientes.
@@ -37,7 +40,10 @@ MadridIndustria promotes interest in the industrial heritage of the Community of
 
 ### Screenshots
 ![Main Activity Image](img/main.png)
-![Main Activity Video](video/main.webm)
+<br/><br/>
+
+### Demo Video
+[Main Activity Video](video/main.webm)
 
 ### Style
 We've customized the appearance of the application using styles and themes defined in `res/values/styles.xml`. For more details, please review the code and comments in the corresponding activities.
