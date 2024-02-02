@@ -1,27 +1,22 @@
 # MadridIndustria - Patrimonio Industrial de la Comunidad de Madrid
 
-## SPANISH
-NiceStart es una aplicación Android para la autenticación de usuarios.
+## FIGMA
+[![Figma - Prototipo](img/figma.png)](https://www.figma.com/proto/0K4c3jnRqUEtKPQ18aWkgz/App-IndustriaMadrid?type=design&node-id=1214-1245&t=uYsVs1NcrupUYxVb-0&scaling=scale-down&page-id=1022%3A142)
+
+## ESPAÑOL
+MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad de Madrid. Con su interfaz intuitiva, explora y accede a información detallada sobre cada patrimonio, encuentra sitios históricos en el mapa, marca tus descubrimientos favoritos y organízalos en tu lista personal. Los gestores de patrimonios industriales pueden actualizar y gestionar la información, compartiendo datos relevantes para enriquecer la experiencia del usuario. ¡Descubre, aprende y preserva la historia industrial de Madrid con MadridIndustria!
 
 ### Ramas
-- **Master**: Rama principal.
-- **Login**: Contiene la funcionalidad de inicio de sesión.
-- **Register**: Contiene la funcionalidad de registro.
-- **Splash**: Contiene una pantalla inicial que aparece cuando se lanza la aplicación.
-- **Swipe**: Introduce la funcionalidad swiperefresh.
+- **Index**: Rama responsable de MainActivity y sus respectivos.
 
 ### Actividades
-- **SplashActivity**: Aparece brevemente el logo junto con una animación.
-- **LoginActivity**: Permite a los usuarios iniciar sesión.
-- **RegisterActivity**: Permite a los usuarios registrarse.
-- **MainActivity**: Pregunta por las preferencias del usuario.
-- **TinderActivity**: Basado en las preferencias del usuario, aparecen diferentes personas.
-- **NoPeopleActivity**: Permite buscar un contacto.
-- **MensajeActivity**: Diseño de un chat.
+- **MainActivity**: Punto de entrada para explorar patrimonios industriales.
+- **FirestoreDatabase**: Funciona como la base de datos central para almacenar información sobre patrimonios.
+- **FirestoreCallback**: Interfaz esencial que permite la comunicación entre MainActivity y FirestoreDatabase, facilitando la obtención y actualización de datos sobre patrimonios.
 
 ### Capturas
-![Splash Screen](img/splash.png)
-![anim.webm](video/anim.webm)
+![Imagen de Main Activity](img/main.png)
+![Video de Main Activity](video/main.webm)
 
 ### Estilo
 Hemos personalizado la apariencia de la aplicación usando estilos y temas definidos en `res/values/styles.xml`. Para más detalles, por favor revisa el código y comentarios en las actividades correspondientes.
@@ -30,43 +25,22 @@ Hemos personalizado la apariencia de la aplicación usando estilos y temas defin
 No dudes en contribuir a este proyecto creando solicitudes de extracción o informando problemas.
 
 ## ENGLISH
-This is the Nicestart project, an Android application for user authentication.
+MadridIndustria promotes interest in the industrial heritage of the Community of Madrid. With its intuitive interface, explore and access detailed information about each heritage site, locate historic sites on the map, mark your favorite discoveries, and organize them in your personal list. Industrial heritage managers can update and manage information, sharing relevant data to enhance the user experience. Discover, learn, and preserve the industrial history of Madrid with MadridIndustria!
 
 ### Branches
-- **Master**: Main branch.
-- **Login**: Contains the login functionality.
-- **Register**: Contains the registration functionality.
-- **Splash**: Contains an initial screen that appears when an app is launched.
-- **Swipe**: Introduces swipe-refresh functionality.
+- **Index**: Branch responsible for MainActivity and its related components.
 
 ### Activities
-- **SplashActivity**: The logo appears briefly along with an animation.
-- **LoginActivity**: Allows users to log in.
-- **RegisterActivity**: Allows users to register.
-- **MainActivity**: Ask the user's preferences.
-- **TinderActivity**: Based on the user's preferences, it shows different people.
-- **NoPeopleActivity**: Allows searching for a contact.
-- **MessageActivity**: Designs a chat interface.
+- **MainActivity**: Entry point for exploring industrial heritage.
+- **FirestoreDatabase**: Functions as the central database for storing information about heritage sites.
+- **FirestoreCallback**: Essential interface facilitating communication between MainActivity and FirestoreDatabase, enabling data retrieval and updates for heritage sites.
 
 ### Screenshots
-![Splash Screen](img/splash.png)
-![Splash Land Screen](img/splash_land.png)
-![Login Screen](img/login.png)
-![Login Land Screen](img/login_land.png)
-![Register Screen](img/register.png)
-![Register Land Screen](img/register_land.png)
-![Main Screen](img/main.png)
-![Main Land Screen](img/main_land.png)
-![Tinder Screen](img/tinder.png)
-![Tinder Land Screen](img/tinder_land.png)
-![NoPeople Screen](img/nopeople.png)
-![NoPeople Land  Screen](img/nopeople_land.png)
-![Message Screen](img/mensajes.png)
-![Message Land Screen](img/mensajes_land.png)
-[anim.webm](video/anim.webm)
+![Main Activity Image](img/main.png)
+![Main Activity Video](video/main.webm)
 
-### Styling
-We have customized the app's appearance using styles and themes defined in `res/values/styles.xml`. For more details, please check the code and comments in the corresponding activities.
+### Style
+We've customized the appearance of the application using styles and themes defined in `res/values/styles.xml`. For more details, please review the code and comments in the corresponding activities.
 
 ### Contributing
 Feel free to contribute to this project by creating pull requests or reporting issues.
