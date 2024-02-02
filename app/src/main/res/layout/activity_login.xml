@@ -44,7 +44,6 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
             android:text="@string/bienvenida"
-            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <ImageView
@@ -64,7 +63,6 @@
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/iniciarMinus"
-        android:textColor="@color/red"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/correo"
         app:layout_constraintStart_toStartOf="parent" />
