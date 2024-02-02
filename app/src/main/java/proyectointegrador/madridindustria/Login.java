@@ -5,28 +5,34 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class Login extends AppCompatActivity {
 
-    private EditText email, password;
-    private Button inicio, apple, facebook, gmail;
-    private LinearLayout l1, l2;
+    private EditText email;
+    private Button inicio, olvidado;
+    private EditText contrasena;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        email = findViewById(R.id.correo);
 
+        email = findViewById(R.id.correo);
         inicio = findViewById(R.id.inicio);
-        apple = findViewById(R.id.apple);
-        facebook = findViewById(R.id.facebook);
-        gmail = findViewById(R.id.gmail);
+        olvidado = findViewById(R.id.olvidado);
+        contrasena = findViewById(R.id.contrasena);
 
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,42 +40,50 @@ public class Login extends AppCompatActivity {
                 String mail = email.getText().toString().trim();
                 if (!mail.isEmpty()){
                     if (valida(mail)){
-                        Intent intent = new Intent(Login.this, Password.class);
-                        intent.putExtra("mail", email.getText().toString().trim());
-                        startActivity(intent);
+                        String pass = contrasena.getText().toString().trim();
+                        if (pass.isEmpty()){
+                            showErrorDialog("Contraseña está vacía.");
+                        } else{
+                            login(mail, pass);
+                        }
                     } else {
                         showErrorDialog("Correo no válido.");
                     }
                 } else {
-                    showErrorDialog("El campo está vacío.");
-                    email.setBackground(getResources().getDrawable(R.drawable.red_border));
-                    email.setHintTextColor(getResources().getColor(R.color.red));
+                    showErrorDialog("Correo Electrónico está vacío.");
                 }
             }
         });
 
-        // FALTAN APIS
-        apple.setOnClickListener(new View.OnClickListener() {
+        olvidado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Login.this, Password.class);
+                startActivity(intent);
             }
         });
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        gmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
+
+    // COMPROBAMOS QUE EL CORREO Y LA CONTRASEÑA ESTEN REGISTRADOS EN LA BASE DE DATOS
+    private void login(String mail, String pass) {
+        mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    finish();
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    intent.putExtra("source", "password");
+                    startActivity(intent);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showErrorDialog("Usuario o Correo no registrados.");
+            }
+        });
+    }
+
     private boolean valida(String mail) {
         if(mail.contains("@gmail.com") || mail.contains("@hotmail.com") || mail.contains("@outlook.com") || mail.contains("@icloud.com")){
             return true;

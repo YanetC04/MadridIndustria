@@ -47,7 +47,7 @@
                     android:src="@drawable/heart"
                     app:backgroundTint="@color/white"
                     app:layout_anchor="@id/appBarLayout"
-                    app:shapeAppearanceOverlay="@style/redondo" />
+                    app:shapeAppearanceOverlay="@style/redondo"/>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

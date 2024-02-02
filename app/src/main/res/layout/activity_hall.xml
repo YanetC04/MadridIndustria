@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
+        android:layout_width="225dp"
+        android:layout_height="70dp"
         app:layout_constraintBottom_toTopOf="@+id/inicio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,9 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="18dp"
         android:fontFamily="sans-serif"
+        android:textSize="16dp"
         android:text="Cuidando el patrimonio de Madrid"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +33,7 @@
 
     <Button
         android:id="@+id/inicio"
-        style="@style/buttonoutlined"
+        style="@style/no_outline"
         android:backgroundTint="@color/white"
         android:text="@string/iniciarSesion"
         android:textColor="@color/red"
@@ -42,7 +44,7 @@
 
     <Button
         android:id="@+id/registro"
-        style="@style/buttonoutlined"
+        style="@style/outline_white"
         android:text="@string/registro"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

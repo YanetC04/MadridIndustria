@@ -45,6 +45,5 @@ public class Hall extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }
