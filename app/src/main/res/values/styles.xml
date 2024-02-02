@@ -53,10 +53,4 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
     </style>
-
-    <style name="MyBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemBackground">@color/red</item>
-        <item name="itemIconTint">@android:color/white</item>
-        <item name="itemTextColor">@android:color/white</item>
-    </style>
 </resources>
