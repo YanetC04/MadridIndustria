@@ -62,7 +62,7 @@
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/datos"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/inicio"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -117,7 +117,7 @@
 
     <Button
         android:id="@+id/olvidado"
-        style="@style/button_white_black"
+        style="@style/button_white_red"
         android:text="@string/olvidaste"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
