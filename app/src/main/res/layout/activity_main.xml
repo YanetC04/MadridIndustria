@@ -10,10 +10,10 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Theme.MadridIndustria.NoActionBar.HeaderRed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +29,6 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/bienvenido"
-                style="@style/Theme.MadridIndustria.NoActionBar.RedBG"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@+id/textConoceCiudad"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -39,7 +38,6 @@
                 android:id="@+id/textConoceCiudad"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/Theme.MadridIndustria.NoActionBar.RedBG"
                 android:layout_below="@id/textBienvenido"
                 android:layout_gravity="center"
                 android:fontFamily="@font/open_sans"
@@ -52,7 +50,6 @@
     </FrameLayout>
 
     <ScrollView
-        style="@style/Theme.MadridIndustria.NoActionBar.BodyDayNight"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"

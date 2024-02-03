@@ -1,60 +1,36 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- CELESTE -->
-    <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/reddark</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="Theme.MadridIndustria.NoActionBar.BodyDayNight" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/eire_black</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-
-
-    <!-- ALEX -->
-    <style name="Theme.MadridIndustria.NoActionBar.RedBG" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/reddark</item>
-        <item name="android:windowBackground">@color/reddark</item>
-        <item name="android:textColor">@color/white</item>
-
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/reddark</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-
+    <!-- THEMES -->
     <style name="Theme.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
         <item name="android:windowBackground">@color/eire_black</item>
         <item name="android:textColor">@color/white</item>
-
-        <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/reddark</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="toolbarStyle">@style/ToolbarStyle</item>
     </style>
 
-    <style name="Theme.MadridIndustria.NoActionBar.Patrimonio" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/reddark</item>
-        <item name="android:windowBackground">@color/eire_black</item>
+    <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:textColor">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/reddark</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="android:background">@color/reddark</item>
     </style>
 
-    <!--  FRAME
-    <style name="FrameLayoutStyle" parent="Widget.AppCompat.FrameLayout">
-        <item name="android:background">@color/red</item>
+    <style name="Header.MadridIndustria.NoActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
+        <item name="android:background">@color/reddark</item>
     </style>
-    -->
+
+    <style name="Text.MadridIndustria.NoActionBar" parent="Theme.MadridIndustria.NoActionBar">
+        <item name="android:background">@color/reddark</item>
+        <item name="android:textColor">@color/red_text</item>
+    </style>
+
+    <!-- FLOATING BUTTON -->
+    <style name="Theme.MadridIndustria.NoActionBar.FloatingButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/red_title</item>
+        <item name="tint">@color/reddark</item>
+        <item name="rippleColor">@color/red_title</item>
+    </style>
+
+    <!-- IMAGES -->
+    <style name="Image.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:tint">@color/white</item>
+    </style>
 
     <!--  BUTTONS -->
     <style name="button_white_black" parent="Widget.MaterialComponents.Button">
@@ -63,7 +39,6 @@
         <item name="fontFamily">sans-serif</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
-        <!-- Asegúrate de que el botón sea rectangular -->
         <item name="android:layout_width">300dp</item>
         <item name="android:layout_height">60dp</item>
         <item name="android:padding">12dp</item>
@@ -78,7 +53,6 @@
         <item name="fontFamily">sans-serif</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
-        <!-- Asegúrate de que el botón sea rectangular -->
         <item name="android:layout_width">300dp</item>
         <item name="android:layout_height">60dp</item>
         <item name="android:padding">12dp</item>
@@ -88,33 +62,14 @@
 
     <!--  TRANSPARENCIA CARTA -->
     <style name="ViewCard">
-        <!-- Color de fondo de la Toolbar -->
         <item name="android:background">@color/reddark_trans</item>
     </style>
 
     <!--  BOTTOM NAVBAR -->
     <style name="MyBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemBackground">@color/reddark</item>
+        <item name="android:layout_height">60dp</item>
         <item name="itemIconTint">@android:color/white</item>
         <item name="itemTextColor">@android:color/white</item>
-    </style>
-
-    <!--  TOOLBAR -->
-    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
-        <!-- Color de fondo de la Toolbar -->
-        <item name="android:background">@color/reddark</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-
-    <style name="Theme.MadridIndustria.ActionBar" parent="Theme.Material3.DayNight">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/reddark</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:windowBackground">@color/reddark</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/reddark</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

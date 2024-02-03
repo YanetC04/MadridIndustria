@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Splash"
-    android:background="@color/red">
+    tools:context=".Splash">
 
     <VideoView
         android:id="@+id/splash"
@@ -16,5 +15,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="40dp"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

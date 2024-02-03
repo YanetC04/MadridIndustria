@@ -10,11 +10,10 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        app:theme="@style/ToolbarStyle"
+        android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.MadridIndustria.ActionBar" >
+        app:layout_constraintTop_toTopOf="parent" >
 
         <TextView
             android:id="@+id/toolbar_title"

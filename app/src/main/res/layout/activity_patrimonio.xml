@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Text.MadridIndustria.NoActionBar"
     tools:context=".Patrimonio">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,8 +24,8 @@
                 android:id="@+id/toolbarCollapse"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                style="@style/Theme.MadridIndustria.NoActionBar.HeaderRed">
+                style="@style/Header.MadridIndustria.NoActionBar"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
                     android:id="@+id/imagen"
@@ -47,9 +48,9 @@
                     android:layout_gravity="bottom|end"
                     android:layout_margin="16dp"
                     android:src="@drawable/heart"
-                    app:backgroundTint="@color/white"
                     app:layout_anchor="@id/appBarLayout"
-                    app:shapeAppearanceOverlay="@style/redondo"/>
+                    app:shapeAppearanceOverlay="@style/redondo"
+                    style="@style/Theme.MadridIndustria.NoActionBar.FloatingButton"/>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

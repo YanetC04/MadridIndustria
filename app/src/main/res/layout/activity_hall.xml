@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed"
     tools:context=".Hall">
 
     <ImageView
@@ -63,5 +64,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inicio" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
