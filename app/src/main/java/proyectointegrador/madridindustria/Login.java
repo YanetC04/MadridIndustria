@@ -119,6 +119,7 @@ public class Login extends AppCompatActivity  {
                                                 Log.d(TAG, userMail);
                                                 Log.d(TAG, mail);
                                                 if (userMail != null && userMail.equalsIgnoreCase(mail)) {
+                                                    authHelper.getmAuth().sendPasswordResetEmail(mail);
                                                     finish();
                                                     Intent intent = new Intent(Login.this, Password.class);
                                                     startActivity(intent);
