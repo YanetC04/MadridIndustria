@@ -91,6 +91,7 @@
     <!--  BOTTOM NAVBAR -->
     <style name="MyBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemBackground">@color/red</item>
+        <item name="android:layout_height">60dp</item>
         <item name="itemIconTint">@android:color/white</item>
         <item name="itemTextColor">@android:color/white</item>
     </style>
