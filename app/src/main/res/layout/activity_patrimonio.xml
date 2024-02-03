@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="255dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                style="@style/ToolbarStyle"
+                app:theme="@style/ToolbarStyle"
                 app:popupTheme="@style/Theme.MadridIndustria.ActionBar">
 
                 <ImageView
@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-                    style="@style/ToolbarStyle"
+                    app:theme="@style/ToolbarStyle"
                     app:popupTheme="@style/Theme.MadridIndustria.ActionBar"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
