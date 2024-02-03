@@ -13,10 +13,22 @@
 
     <style name="Theme.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/reddark</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="android:windowBackground">@color/eire_black</item>
         <item name="android:textColor">@color/white</item>
 
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/reddark</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+    </style>
+
+    <style name="Theme.MadridIndustria.NoActionBar.Patrimonio" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/reddark</item>
+        <item name="android:windowBackground">@color/eire_black</item>
+        <item name="android:textColor">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/reddark</item>
         <!-- Customize your theme here. -->
@@ -30,6 +42,42 @@
     </style>
     -->
 
+    <!--  BUTTONS -->
+    <style name="button_white_black" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/reddark</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- Asegúrate de que el botón sea rectangular -->
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="button_red" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="strokeColor">@color/white</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- Asegúrate de que el botón sea rectangular -->
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--  TRANSPARENCIA CARTA -->
+    <style name="ViewCard">
+        <!-- Color de fondo de la Toolbar -->
+        <item name="android:background">@color/reddark_trans</item>
+    </style>
+
     <!--  BOTTOM NAVBAR -->
     <style name="MyBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemBackground">@color/reddark</item>
@@ -41,7 +89,7 @@
     <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <!-- Color de fondo de la Toolbar -->
         <item name="android:background">@color/reddark</item>
-        <item name="itemTextColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 
