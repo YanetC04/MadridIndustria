@@ -15,6 +15,7 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/inter_bold"
         android:textSize="20dp"
+        style="@style/Theme.MadridIndustria.NoActionBar.BodyDayNight"
         />
 
     <HorizontalScrollView

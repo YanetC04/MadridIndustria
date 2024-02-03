@@ -43,10 +43,6 @@ public class Patrimonio extends AppCompatActivity {
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
 
-        // ESTABLECEMOS EL FONTFAMILY Y GROSOR
-        boldTypeface = Typeface.create(ResourcesCompat.getFont(this, R.font.inter_bold), Typeface.BOLD);
-        toolbarCollapse.setExpandedTitleTypeface(boldTypeface);
-
         // ESTABLECEMOS CUANDO APARECE O DESAPARECE EL BOTON
         AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

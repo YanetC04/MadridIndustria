@@ -59,7 +59,7 @@
         <activity
             android:name=".Patrimonio"
             android:exported="false"
-            android:theme="@style/Theme.MadridIndustria.NoActionBar.Patrimonio" />
+            android:theme="@style/Theme.MadridIndustria.NoActionBar.BodyDayNight"/>
         <activity
             android:name=".MainActivity"
             android:exported="false" />
