@@ -3,6 +3,7 @@ package proyectointegrador.madridindustria;
 import android.content.Context;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
@@ -10,15 +11,17 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 public class FirebaseAuthHelper {
 
     private FirebaseAuth mAuth;
-    private Context context;
 
-    public FirebaseAuthHelper(Context context) {
+    public FirebaseAuthHelper() {
         mAuth = FirebaseAuth.getInstance();
-        this.context = context;
+    }
+    
+    public void setmAuth(FirebaseAuth mAuth) {
+        this.mAuth = mAuth;
     }
 
-    public void sendPasswordResetEmail(String email) {
-        mAuth.sendPasswordResetEmail(email);
+    public FirebaseAuth getmAuth() {
+        return mAuth;
     }
 
     public void confirmEmail(String email, final OnCompleteListener<SignInMethodQueryResult> onCompleteListener) {

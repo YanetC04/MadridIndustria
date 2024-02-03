@@ -1,7 +1,10 @@
 package proyectointegrador.madridindustria;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,12 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class Login extends AppCompatActivity  {
@@ -23,7 +31,8 @@ public class Login extends AppCompatActivity  {
     private EditText email, contrasena;
     private Button inicio, olvidado;
     private TextInputLayout lay_pass, lay_mail;
-    private FirebaseAuthHelper authHelper = new FirebaseAuthHelper(this);
+    private FirestoreDatabase data = null;
+    private FirebaseAuthHelper authHelper = new FirebaseAuthHelper();
     private String mail, pass;
 
     @Override
@@ -101,14 +110,34 @@ public class Login extends AppCompatActivity  {
 
                 if (!mail.isEmpty()) {
                     if (valida(mail)) {
-                        authHelper.confirmEmail(mail, new OnCompleteListener<SignInMethodQueryResult>() {
+                        getCount(new CountCallback() {
                             @Override
-                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(Login.this, Password.class);
-                                    startActivity(intent);
+                            public void onCallback(int count) {
+                                if (count >= 0) {
+                                    for (int i = 1; i <= count; i++) {
+                                        final int currentIndex = i;
+
+                                        FirestoreDatabase firestoreDatabase = new FirestoreDatabase("users", String.valueOf(i), new FirestoreCallback() {
+                                            @Override
+                                            public void onCallback(FirestoreDatabase firestoreDatabase) {
+                                                String userMail = firestoreDatabase.getMail();
+                                                Log.d(TAG, userMail);
+                                                Log.d(TAG, mail);
+                                                if (userMail != null && userMail.equalsIgnoreCase(mail)) {
+                                                    Log.d(TAG, "El usuario existe");
+                                                    finish();
+                                                    Intent intent = new Intent(Login.this, Password.class);
+                                                    startActivity(intent);
+                                                } else {
+                                                    Log.d(TAG, "El usuario no existe");
+                                                    showErrorDialog("Correo no registrado en la base de datos.");
+                                                }
+                                            }
+                                        });
+                                    }
+
                                 } else {
-                                    showErrorDialog("Correo no existente en la base de datos. Registrarse.");
+                                    Log.e("FirestoreData", "Error getting document count");
                                 }
                             }
                         });
@@ -129,6 +158,21 @@ public class Login extends AppCompatActivity  {
                             }
                         });
                     }
+                }
+            }
+        });
+    }
+
+    public void getCount(final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = task.getResult().size();
+                    countCallback.onCallback(count);
+                } else {
+                    Log.e("FirestoreData", "Error getting document count: " + task.getException().getMessage());
+                    countCallback.onCallback(-1); // Indicates an error
                 }
             }
         });
