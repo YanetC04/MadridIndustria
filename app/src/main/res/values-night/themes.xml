@@ -1,4 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- CELESTE -->
+    <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:background">@color/reddark</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.MadridIndustria.NoActionBar.BodyDayNight" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:background">@color/eire_black</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+
+    <!-- ALEX -->
     <style name="Theme.MadridIndustria.NoActionBar.RedBG" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/reddark</item>

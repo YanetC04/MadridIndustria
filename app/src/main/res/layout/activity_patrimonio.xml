@@ -22,10 +22,9 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbarCollapse"
                 android:layout_width="match_parent"
-                android:layout_height="255dp"
+                android:layout_height="250dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:theme="@style/ToolbarStyle"
-                app:popupTheme="@style/Theme.MadridIndustria.ActionBar">
+                style="@style/Theme.MadridIndustria.NoActionBar.HeaderRed">
 
                 <ImageView
                     android:id="@+id/imagen"
@@ -37,10 +36,9 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:theme="@style/ToolbarStyle"
-                    app:popupTheme="@style/Theme.MadridIndustria.ActionBar"/>
+                    android:visibility="invisible"
+                    android:layout_height="50dp"
+                    app:layout_collapseMode="pin"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/boton"

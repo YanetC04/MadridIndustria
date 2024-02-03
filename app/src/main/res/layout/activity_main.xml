@@ -10,7 +10,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red"
+        style="@style/Theme.MadridIndustria.NoActionBar.HeaderRed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +29,7 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/bienvenido"
-                android:textColor="@color/white"
+                style="@style/Theme.MadridIndustria.NoActionBar.RedBG"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@+id/textConoceCiudad"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -39,11 +39,11 @@
                 android:id="@+id/textConoceCiudad"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                style="@style/Theme.MadridIndustria.NoActionBar.RedBG"
                 android:layout_below="@id/textBienvenido"
                 android:layout_gravity="center"
                 android:fontFamily="@font/open_sans"
                 android:text="@string/ciudad"
-                android:textColor="@color/white"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -52,10 +52,10 @@
     </FrameLayout>
 
     <ScrollView
+        style="@style/Theme.MadridIndustria.NoActionBar.BodyDayNight"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
@@ -64,15 +64,15 @@
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"/>
+            android:orientation="vertical" />
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
