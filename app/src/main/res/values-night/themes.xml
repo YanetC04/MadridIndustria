@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- CELESTE -->
     <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/reddark</item>
         <item name="android:background">@color/reddark</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -95,6 +96,7 @@
     <!--  BOTTOM NAVBAR -->
     <style name="MyBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemBackground">@color/reddark</item>
+        <item name="android:layout_height">60dp</item>
         <item name="itemIconTint">@android:color/white</item>
         <item name="itemTextColor">@android:color/white</item>
     </style>

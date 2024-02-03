@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/red</item>
         <item name="android:background">@color/red</item>
         <item name="android:textColor">@color/white</item>
     </style>
