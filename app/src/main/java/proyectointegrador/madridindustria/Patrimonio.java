@@ -43,9 +43,6 @@ public class Patrimonio extends AppCompatActivity {
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
 
-        // ESTABLECEMOS EL COLOR
-        toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.red));
-
         // ESTABLECEMOS EL FONTFAMILY Y GROSOR
         boldTypeface = Typeface.create(ResourcesCompat.getFont(this, R.font.inter_bold), Typeface.BOLD);
         toolbarCollapse.setExpandedTitleTypeface(boldTypeface);
