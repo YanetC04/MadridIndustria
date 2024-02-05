@@ -3,11 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#BE0E1B</color>
+    <color name="red_trans">#99C60B1E</color>
     <color name="beige">#E2E8CE</color>
     <color name="ash_grey">#ACBFA4</color>
     <color name="eire_black">#262626</color>
     <color name="redlog">#C60B1E</color>
     <color name="reddark">#500B0B</color>
+    <color name="reddark_trans">#99500B0B</color>
     <color name="dark">#1E1E1E</color>
     <color name="blue">#0047AB</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="red_title">#f7bfbe</color>
+    <color name="red_text">#ffe4ea</color>
 </resources>

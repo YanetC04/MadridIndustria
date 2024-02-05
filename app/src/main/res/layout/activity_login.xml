@@ -10,18 +10,16 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.MadridIndustria.ActionBar" >
+        android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed" >
 
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/iniciarSesion"
-            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:gravity="center" />
     </androidx.appcompat.widget.Toolbar>
@@ -40,11 +38,11 @@
         <TextView
             android:id="@+id/bienvenida"
             android:layout_width="195dp"
-            android:layout_height="76dp"
+            android:layout_height="72dp"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
+            android:gravity="center_vertical"
             android:text="@string/bienvenida"
-            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <ImageView
@@ -63,89 +61,65 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif"
-        android:text="@string/iniciarMinus"
-        android:textColor="@color/red"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/correo"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/correo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/correo"
-        android:inputType="textEmailAddress"
-        android:textCursorDrawable="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:text="@string/datos"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/inicio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ini">
+
+        <EditText
+            android:id="@+id/correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_email"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="password"
+            android:hint="@string/contraseña"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/inicio"
-        style="@style/buttonoutlined"
-        android:backgroundTint="@color/red"
+        style="@style/button_white_black"
         android:fontFamily="@font/roboto"
         android:text="@string/iniciarSesion"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/ini" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/o"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/apple"
+    <Button
+        android:id="@+id/olvidado"
+        style="@style/button_white_red"
+        android:text="@string/olvidaste"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inicio" />
-
-    <Button
-        android:id="@+id/apple"
-        style="@style/buttonoutlined"
-        android:layout_marginBottom="16dp"
-        android:drawableLeft="@drawable/apple"
-        android:background="@drawable/button_design"
-        android:elevation="2dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/apple"
-        android:textColor="@color/blue"
-        app:layout_constraintBottom_toTopOf="@+id/facebook"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/facebook"
-        style="@style/buttonoutlined"
-        android:drawableLeft="@drawable/facebook"
-        android:fontFamily="@font/roboto"
-        android:text="@string/facebook"
-        android:background="@drawable/button_design"
-        android:elevation="2dp"
-        android:textColor="@color/blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inicio" />
-
-    <Button
-        android:id="@+id/gmail"
-        style="@style/buttonoutlined"
-        android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/gmail"
-        android:fontFamily="@font/roboto"
-        android:text="@string/gmail"
-        android:background="@drawable/button_design"
-        android:elevation="2dp"
-        android:textColor="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/facebook" />
 </androidx.constraintlayout.widget.ConstraintLayout>

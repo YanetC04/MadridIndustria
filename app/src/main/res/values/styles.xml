@@ -19,26 +19,6 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="buttonoutlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:layout_width">290dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="fontFamily">sans-serif</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="cornerRadius">0dp</item>
-        <item name="strokeColor">@color/white</item>
-    </style>
-
-    <style parent="Widget.MaterialComponents.Button.OutlinedButton" name="buttonoutline">
-        <item name="android:layout_width">290dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">vertical</item>
-        <item name="strokeColor">@color/red</item>
-        <item name="android:textColor">@color/red</item>
-        <item name="fontFamily">@font/roboto</item>
-
-</style>
 
     <style name="search_style">
         <item name="android:layout_width">match_parent</item>
@@ -46,11 +26,5 @@
         <item name="android:layout_below">@id/textConoceCiudad</item>
         <item name="android:background">@drawable/rounded_edittext_background</item>
         <item name="android:inputType">text</item>
-    </style>
-
-    <style parent="Widget.MaterialComponents.Button.OutlinedButton" name="buttonInicial">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">vertical</item>
     </style>
 </resources>

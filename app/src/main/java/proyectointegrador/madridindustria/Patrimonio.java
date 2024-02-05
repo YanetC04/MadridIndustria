@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -43,8 +44,15 @@ public class Patrimonio extends AppCompatActivity {
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
 
-        // ESTABLECEMOS EL COLOR
-        toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.red));
+        // Verifica si el tema actual es oscuro
+        int nightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
+            toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.red_title));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.red_title));
+        } else {
+            toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.red));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.red));
+        }
 
         // ESTABLECEMOS EL FONTFAMILY Y GROSOR
         boldTypeface = Typeface.create(ResourcesCompat.getFont(this, R.font.inter_bold), Typeface.BOLD);
@@ -71,10 +79,10 @@ public class Patrimonio extends AppCompatActivity {
             public void onClick(View v) {
                 if (heart) {
                     // CORAZON VACIO
-                    boton.setImageResource(R.drawable.heart);
+                    boton.setImageDrawable(getDrawable(R.drawable.heart));
                 } else {
                     // CORAZON LLENO
-                    boton.setImageResource(R.drawable.heart_fill);
+                    boton.setImageDrawable(getDrawable(R.drawable.heart_fill));
                 }
 
                 // INVERTIR ESTADO
