@@ -26,4 +26,9 @@
     <string name="email">Correo Electrónico</string>
     <string name="password">Contraseña</string>
     <string name="password2">Confirmar Contraseña</string>
+    <string name="cuenta">Cuenta</string>
+    <string name="cambiarcon">Cambiar Contraseña</string>
+    <string name="idioma">Idioma de la aplicación</string>
+    <string name="cerrarSesion">Cerrar Sesion</string>
+    <string name="info">Info. de la aplicacción</string>
 </resources>
