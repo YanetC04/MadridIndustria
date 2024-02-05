@@ -7,6 +7,13 @@
         <item name="android:statusBarColor">@color/reddark</item>
     </style>
 
+    <style name="Theme.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/reddark</item>
+        <!-- QUITAR PRIMER SPLASH AUTOMATIZADO -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@color/reddark</item>
+    </style>
+
     <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@color/reddark</item>

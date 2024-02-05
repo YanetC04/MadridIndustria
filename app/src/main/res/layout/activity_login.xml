@@ -49,8 +49,7 @@
             android:layout_width="140dp"
             android:layout_height="90dp"
             android:layout_weight="1"
-            style="@style/Image.MadridIndustria.NoActionBar"
-            app:srcCompat="@drawable/industry" />
+            style="@style/Image.MadridIndustria.NoActionBar"/>
     </LinearLayout>
 
 
