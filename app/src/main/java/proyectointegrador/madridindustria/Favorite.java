@@ -38,51 +38,38 @@ public class Favorite extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         textView = findViewById(R.id.textView);
 
-        getCount(new CountCallback() {
-            @Override
-            public void onCallback(int count) {
-                if (count >= 0) {
-                    for (int i = count; i >= 1; i--) {
-                        View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
+        // BASE DE DATOS
+        FirebaseFirestore.getInstance().collection("favorites").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
 
-                        ImageView imagen = favoriteCard.findViewById(R.id.imagen);
-                        TextView nombre = favoriteCard.findViewById(R.id.nombre);
-                        TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
-                        TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
-                        TextView metro = favoriteCard.findViewById(R.id.metro);
-                        TextView direccion = favoriteCard.findViewById(R.id.direccion);
+                    ImageView imagen = favoriteCard.findViewById(R.id.imagen);
+                    TextView nombre = favoriteCard.findViewById(R.id.nombre);
+                    TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
+                    TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
+                    TextView metro = favoriteCard.findViewById(R.id.metro);
+                    TextView direccion = favoriteCard.findViewById(R.id.direccion);
+                    String numeroDeReferencia = document.getReference().getId();
 
-                        // BASE DE DATOS
-                       FirebaseFirestore.getInstance().collection("favorites").get().addOnCompleteListener(task -> {
-                           if (task.isSuccessful()) {
-                               for (DocumentSnapshot document : task.getResult()) {
-                                   // Obtener el número de referencia del documento
-                                   String numeroDeReferencia = document.getReference().getId();
+                    new FirestoreDatabase("favorites", numeroDeReferencia, new FirestoreCallback() {
+                        @Override
+                        public void onCallback(FirestoreDatabase firestoreDatabase) {
+                            // ESTABLECER INFORMACION
+                            textView.setVisibility(View.INVISIBLE);
+                            nombre.setText(firestoreDatabase.getNombre());
+                            inaguracion.setText(firestoreDatabase.getInaguracion());
+                            patrimonio.setText(firestoreDatabase.getPatrimonio());
+                            metro.setText(firestoreDatabase.getMetro());
+                            direccion.setText(firestoreDatabase.getDireccion());
+                            Glide.with(Favorite.this)
+                                    .load(firestoreDatabase.getImagen())
+                                    .centerCrop()
+                                    .into(imagen);
+                        }
+                    });
 
-                                   new FirestoreDatabase("favorites", numeroDeReferencia, new FirestoreCallback() {
-                                       @Override
-                                       public void onCallback(FirestoreDatabase firestoreDatabase) {
-                                           // ESTABLECER INFORMACION
-                                           textView.setVisibility(View.INVISIBLE);
-                                           nombre.setText(firestoreDatabase.getNombre());
-                                           inaguracion.setText(firestoreDatabase.getInaguracion());
-                                           patrimonio.setText(firestoreDatabase.getPatrimonio());
-                                           metro.setText(firestoreDatabase.getMetro());
-                                           direccion.setText(firestoreDatabase.getDireccion());
-                                           Glide.with(Favorite.this)
-                                                   .load(firestoreDatabase.getImagen())
-                                                   .centerCrop()
-                                                   .into(imagen);
-                                       }
-                                   });
-                               }
-                           }
-                       });
-
-                        linearLayout.addView(favoriteCard);
-                    }
-                } else {
-                    Log.e("FirestoreData", "Error");
+                    linearLayout.addView(favoriteCard);
                 }
             }
         });
