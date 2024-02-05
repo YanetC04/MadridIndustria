@@ -120,8 +120,7 @@
 
                 <TextView
                     android:id="@+id/direccion"
-                    style="@style/textContent"
-                    android:onClick="abrirUbicacion"/>
+                    style="@style/textContent"/>
 
                 <Space
                     android:layout_width="wrap_content"
