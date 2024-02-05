@@ -1,6 +1,7 @@
 package proyectointegrador.madridindustria;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -52,29 +54,59 @@ public class Map extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Intent intent = null;
+                        String source = getIntent().getStringExtra("source");
+
                         if (item.getItemId() == R.id.home) {
-                            startActivity(new Intent(Map.this, MainActivity.class));
-                            overridePendingTransition(0, 0);
-                            return true;
-                        } else if (item.getItemId() == R.id.map) {
-                            // No necesitas iniciar la actividad aquí, ya que se establecerá como predeterminada
-                            return true;
+                            intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
                         } else if (item.getItemId() == R.id.add) {
-                            // startActivity(new Intent(MainActivity.this, Gestor.class));
-                            overridePendingTransition(0, 0);
-                            return true;
+                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
+                                intent = new Intent(Map.this, Add.class);
+                            else
+                                showDialog("¿Quieres activar el modo Gestor?");
                         } else if (item.getItemId() == R.id.like) {
-                            // startActivity(new Intent(MainActivity.this, Favoritos.class));
-                            overridePendingTransition(0, 0);
-                            return true;
+                            intent = new Intent(Map.this, Favorite.class).putExtra("source", source);
                         } else if (item.getItemId() == R.id.profile) {
-                            // startActivity(new Intent(MainActivity.this, Profile.class));
+                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
+                                intent = new Intent(Map.this, Profile.class);
+                            else
+                                showDialog("¿Quieres activar el modo Gestor?");
+                        }
+
+                        if (intent != null) {
+                            startActivity(intent);
                             overridePendingTransition(0, 0);
                             return true;
                         }
-                        return false;
+
+                        return true;
                     }
                 });
+    }
+
+    // Diálogo de error
+    private void showDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Modo Gestor")
+                .setMessage(message)
+                .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Map.this, Hall.class));
+                        overridePendingTransition(0, 0);
+                    }
+                })
+                .setNegativeButton("NO", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    // NO VOLVER ATRAS
+    @Override
+    public void onBackPressed() {
+        // Evitar que MainActivity vuelva atrás a Splash.java
+        // No llames al super.onBackPressed();
     }
 
     private void initMap() {
