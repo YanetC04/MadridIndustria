@@ -33,6 +33,7 @@
     <!-- IMAGES -->
     <style name="Image.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:tint">@color/red</item>
+        <item name="backgroundColor">@color/white</item>
     </style>
 
     <!-- BUTTONS -->
@@ -50,6 +51,19 @@
     </style>
 
     <style name="button_white_red" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="button_mix" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/red</item>
         <item name="fontFamily">sans-serif</item>
