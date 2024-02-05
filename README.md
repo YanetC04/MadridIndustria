@@ -15,22 +15,26 @@ industrial de Madrid con MadridIndustria!.
 
 ### Ramas
 - **Register**: Contiene la funcionalidad de la configuración del usuario.
+- **Favorite**: Rama responsable de todo lo relacionado con Favorite.
 
 ### Actividades
 - **Perfilactivity**: Aparece iniciar sesión y registrarse.
 - **LoginActivity**: Permite Aceder por correo, apple, facebook o el correo electronico que te registraste.
 - **RegisterActivity**: Permite a los usuarios registrarse con la opción de iniciar sesion o registrarte
 - **PasswordActivity**: Permite darte la opcion de enviarte la contraseña.
-
+- **Favorite**: Permite mostrar la lista de favoritos del usuario.
 
 ### Capturas
 ![Hall](img/hall.png)
 ![Login](img/login.png)
 ![Register](img/register.png)
 ![Password](img/password.png)
+![Imagen de Favorite Activity Vacía](img/favorite_empty.png) <br>
+![Imagen de Favorite Activity ](img/favorite.png)
 
 ### Video Demostrativo
 [Video General de la rama Register](video/login.webm)
+[Video de Favorite Activity](video/favorite.webm)
 
 ### Estilo
 Se personalizo la apariencia de la aplicación usando estilos y temas definidos en `res/values/styles.xml`.
@@ -51,21 +55,26 @@ the industrial history of Madrid with MadridIndustria!
 - **Register**: Contains the Hall functionality of starting or registering,
 Login allows you to log in in different ways, starting with your email
 and by chance you forgot the password, it goes to your email or else to the Hall.
+- **Favorite**: Branch responsible for everything related to Favorite.
 
 ### Activities
 - **HallActivity**: Displays login and register options.
 - **LoginActivity**: Allows logging in through email, Apple, Facebook, or the email used for registration.
 - **RegisterActivity**: Allows users to register with the option to log in or register.
 - **PasswordActivity**: Provides the option to send you the password
+- - **Favorite**: Allows you to display the user's favorites list.
 
 ### Captures
 ![Hall](img/hall.png)
 ![Login](img/login.png)
 ![Register](img/register.png)
 ![Password](img/password.png)
+![Empty Favorite Activity Image](img/favorite_empty.png) <br>
+![Image of Favorite Activity ](img/favorite.png)
 
-### Demonstration video
+### Demo Video
 [General Video of the Registration branch](video/login.webm)
+[Favorite Activity Video](video/favorite.webm)
 
 ### Style
 We've customized the appearance of the application using styles and themes defined in `res/values/styles.xml`.  

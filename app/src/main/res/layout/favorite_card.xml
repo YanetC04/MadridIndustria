@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/linearExterno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/caja_con_borde"
+        android:theme="@style/Box.MadridIndustria.NoActionBar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearInterno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:theme="@style/Theme.MadridIndustria.NoActionBar"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imagen"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_marginBottom="10dp"
+                android:scaleType="fitXY" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:textSize="16dp"
+                    android:text="Inaguración: " />
+
+                <TextView
+                    android:id="@+id/inaguracion"
+                    android:textSize="16dp"
+                    style="@style/textContent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:textSize="16dp"
+                    android:text="Patrimonio: " />
+
+                <TextView
+                    android:id="@+id/patrimonio"
+                    android:textSize="16dp"
+                    style="@style/textContent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:textSize="16dp"
+                    android:text="Metro: " />
+
+                <TextView
+                    android:id="@+id/metro"
+                    android:textSize="16dp"
+                    style="@style/textContent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textTitle"
+                    android:textSize="16dp"
+                    android:text="Dirección: " />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/direccion"
+                android:textSize="16dp"
+                style="@style/textContent"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/borde_inferior">
+
+            <TextView
+                android:id="@+id/nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:theme="@style/Box.MadridIndustria.NoActionBar"
+                android:textAlignment="center"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -7,19 +7,88 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Favorite extends AppCompatActivity {
+    private LinearLayout linearLayout;
+    private TextView textView;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
+        linearLayout = findViewById(R.id.linear);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        textView = findViewById(R.id.textView);
+
+        getCount(new CountCallback() {
+            @Override
+            public void onCallback(int count) {
+                if (count >= 0) {
+                    for (int i = count; i >= 1; i--) {
+                        View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
+
+                        ImageView imagen = favoriteCard.findViewById(R.id.imagen);
+                        TextView nombre = favoriteCard.findViewById(R.id.nombre);
+                        TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
+                        TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
+                        TextView metro = favoriteCard.findViewById(R.id.metro);
+                        TextView direccion = favoriteCard.findViewById(R.id.direccion);
+
+                        // BASE DE DATOS
+                       FirebaseFirestore.getInstance().collection("favorites").get().addOnCompleteListener(task -> {
+                           if (task.isSuccessful()) {
+                               for (DocumentSnapshot document : task.getResult()) {
+                                   // Obtener el número de referencia del documento
+                                   String numeroDeReferencia = document.getReference().getId();
+
+                                   new FirestoreDatabase("favorites", numeroDeReferencia, new FirestoreCallback() {
+                                       @Override
+                                       public void onCallback(FirestoreDatabase firestoreDatabase) {
+                                           // ESTABLECER INFORMACION
+                                           textView.setVisibility(View.INVISIBLE);
+                                           nombre.setText(firestoreDatabase.getNombre());
+                                           inaguracion.setText(firestoreDatabase.getInaguracion());
+                                           patrimonio.setText(firestoreDatabase.getPatrimonio());
+                                           metro.setText(firestoreDatabase.getMetro());
+                                           direccion.setText(firestoreDatabase.getDireccion());
+                                           Glide.with(Favorite.this)
+                                                   .load(firestoreDatabase.getImagen())
+                                                   .centerCrop()
+                                                   .into(imagen);
+                                       }
+                                   });
+                               }
+                           }
+                       });
+
+                        linearLayout.addView(favoriteCard);
+                    }
+                } else {
+                    Log.e("FirestoreData", "Error");
+                }
+            }
+        });
+
         // BARRA INFERIOR
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.like);
         bottomNavigationView.setOnNavigationItemSelectedListener(
 
@@ -72,6 +141,21 @@ public class Favorite extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void getCount(final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection("favorites").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = task.getResult().size();
+                    countCallback.onCallback(count);
+                } else {
+                    Log.e("FirestoreData", "Error getting document count: " + task.getException().getMessage());
+                    countCallback.onCallback(-1); // Indicates an error
+                }
+            }
+        });
     }
 
     // NO VOLVER ATRAS
