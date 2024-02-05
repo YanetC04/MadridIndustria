@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
@@ -60,15 +61,14 @@ public class Patrimonio extends AppCompatActivity {
 
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
+        toolbarCollapse.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white));
 
         // Verifica si el tema actual es oscuro
         int nightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
             toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.white));
-            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         } else {
-            toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.red));
-            toolbar.setTitleTextColor(getResources().getColor(R.color.red));
+            toolbarCollapse.setExpandedTitleColor(getResources().getColor(R.color.white));
         }
 
         // ESTABLECEMOS EL FONTFAMILY Y GROSOR
