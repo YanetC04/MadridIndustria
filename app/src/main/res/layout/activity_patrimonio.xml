@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Text.MadridIndustria.NoActionBar"
     tools:context=".Patrimonio">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -24,7 +23,7 @@
                 android:id="@+id/toolbarCollapse"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                style="@style/Header.MadridIndustria.NoActionBar"
+                style="@style/CollapsingToolbarLayout.MadridIndustria.NoActionBar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
