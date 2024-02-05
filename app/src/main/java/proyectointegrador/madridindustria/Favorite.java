@@ -112,7 +112,6 @@ public class Favorite extends AppCompatActivity {
                 });
     }
 
-    // Diálogo de error
     private void showDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Modo Gestor")
