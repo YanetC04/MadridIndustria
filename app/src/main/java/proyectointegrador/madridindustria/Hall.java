@@ -46,4 +46,11 @@ public class Hall extends AppCompatActivity {
             }
         });
     }
+
+    // NO VOLVER ATRAS
+    @Override
+    public void onBackPressed() {
+        // Evitar que MainActivity vuelva atrás a Splash.java
+        // No llames al super.onBackPressed();
+    }
 }

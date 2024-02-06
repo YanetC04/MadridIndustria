@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                             if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
                                 intent = new Intent(MainActivity.this, Add.class);
                             else
-                                showDialog("¿Tienes credenciales de Gestor para poder ingresar?");
+                                showDialog("¿Quieres activar el modo Gestor?");
                         } else if (item.getItemId() == R.id.like) {
                             // Redirige a Favorite
                             intent = new Intent(MainActivity.this, Favorite.class).putExtra("source", source);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                             if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
                                 intent = new Intent(MainActivity.this, Profile.class);
                             else
-                                showDialog("¿Tienes credenciales de Gestor para poder ingresar?");
+                                showDialog("¿Quieres activar el modo Gestor?");
                         }
 
                         if (intent != null) {
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Configuración del diálogo de error
-        builder.setTitle("Atención")
+        builder.setTitle("Modo Gestor")
                 .setMessage(message)
                 .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
                     @Override

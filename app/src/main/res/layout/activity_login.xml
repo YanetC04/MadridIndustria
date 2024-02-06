@@ -10,18 +10,16 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.MadridIndustria.ActionBar" >
+        android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed" >
 
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/iniciarSesion"
-            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:gravity="center" />
     </androidx.appcompat.widget.Toolbar>
@@ -32,6 +30,7 @@
         android:layout_height="100dp"
         android:layout_margin="16dp"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/ini"
@@ -39,22 +38,17 @@
 
         <TextView
             android:id="@+id/bienvenida"
-            android:layout_width="195dp"
+            android:layout_width="235dp"
             android:layout_height="72dp"
-            android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
-            android:gravity="center_vertical"
             android:text="@string/bienvenida"
-            android:textColor="@color/red"
             android:textSize="25sp" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="119dp"
-            android:layout_height="76dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/industrylogored" />
+            android:layout_width="110dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 
@@ -65,8 +59,7 @@
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif"
         android:text="@string/datos"
-        android:textColor="@color/red"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/inicio"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -86,9 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="emailAddress"
-            android:hint="@string/correo"
-            android:inputType="textEmailAddress"
-            android:textCursorDrawable="@color/black" />
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -112,11 +104,9 @@
 
     <Button
         android:id="@+id/inicio"
-        style="@style/no_outline"
-        android:backgroundTint="@color/red"
+        style="@style/button_white_black"
         android:fontFamily="@font/roboto"
         android:text="@string/iniciarSesion"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +114,7 @@
 
     <Button
         android:id="@+id/olvidado"
-        style="@style/outline_red"
+        style="@style/button_white_red"
         android:text="@string/olvidaste"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

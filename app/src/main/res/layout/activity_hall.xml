@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed"
     tools:context=".Hall">
 
     <ImageView
@@ -25,17 +26,14 @@
         android:fontFamily="sans-serif"
         android:textSize="16dp"
         android:text="Cuidando el patrimonio de Madrid"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/inicio"
-        style="@style/no_outline"
-        android:backgroundTint="@color/white"
+        style="@style/button_mix"
         android:text="@string/iniciarSesion"
-        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +41,8 @@
 
     <Button
         android:id="@+id/registro"
-        style="@style/outline_white"
+        style="@style/button_transparent"
         android:text="@string/registro"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/space" />
@@ -67,5 +64,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inicio" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

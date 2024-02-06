@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class FirestoreDatabase {
-    private String collectionPath, documentPath, nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio;
+    private String collectionPath, documentPath, nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, mail, pass, like, id;
     private FirebaseFirestore db;
     private DocumentReference patrimonioRef;
 
@@ -30,14 +30,18 @@ public class FirestoreDatabase {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        mail = document.getString("mail");
+                        pass = document.getString("password");
                         nombre = document.getString("nombre");
                         inaguracion = document.getString("inaguracion");
                         patrimonio = document.getString("patrimonio");
                         metro = document.getString("metro");
                         direccion = document.getString("direccion");
-                        descripcion = document.getString("descripcion").replace("\\n", "\n\n");
+                        descripcion = (document.getString("descripcion") != null) ? document.getString("descripcion").replace("\\n", "\n\n"): "";
                         imagen = document.getString("imagen");
                         distrito = document.getString("distrito");
+                        like = document.getString("like");
+                        id = document.getString("id_patrimonio");
                     } else {
                         // El documento no existe
                         Log.d("FirestoreData", "Documento no encontrado");
@@ -133,4 +137,35 @@ public class FirestoreDatabase {
         this.distrito = distrito;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
