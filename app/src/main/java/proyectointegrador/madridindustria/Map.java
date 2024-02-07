@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -14,17 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.*;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.*;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Map extends AppCompatActivity {
 
@@ -32,6 +31,8 @@ public class Map extends AppCompatActivity {
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
+    private FirestoreDatabase fData;
+    private String distritos[] = {"arganzuela", "centro", "moncloa", "chamberi"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,7 @@ public class Map extends AppCompatActivity {
             @Override
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
+
                 // Configura el mapa según tus necesidades
                 if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
@@ -123,6 +125,48 @@ public class Map extends AppCompatActivity {
                     return;
                 }
                 googleMap.setMyLocationEnabled(true);
+
+                for(String dist : distritos){
+                    getCount(dist, new CountCallback() {
+                        @Override
+                        public void onCallback(int count) {
+                            //La variable i es el documento del distrito
+                            for(int i = 1 ; i <= count ; i++){
+                                fData = new FirestoreDatabase(dist, String.valueOf(i), new FirestoreCallback() {
+                                    @Override
+                                    public void onCallback(FirestoreDatabase firestoreDatabase) {
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+
+                //Hay que poner un onclick a los marcadores para que habra el activity patrimonio, teniendo en cuenta el distrito y el documento
+                //startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value));
+
+                // Recuperar datos de Firebase y mostrar puntos en el mapa
+                DatabaseReference placesRef = FirebaseDatabase.getInstance().getReference("lugares");
+                placesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String nombre = snapshot.child("nombre").getValue(String.class);
+                            double latitud = snapshot.child("latitud").getValue(Double.class);
+                            double longitud = snapshot.child("longitud").getValue(Double.class);
+
+                            // Crear marcador en el mapa
+                            LatLng ubicacion = new LatLng(latitud, longitud);
+                            googleMap.addMarker(new MarkerOptions().position(ubicacion).title(nombre));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Manejar errores de Firebase
+                    }
+                });
             }
         });
     }
@@ -190,5 +234,21 @@ public class Map extends AppCompatActivity {
         if (fusedLocationProviderClient != null && locationCallback != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
+    }
+
+    //Cuenta cuantos lugares hay dentro de un distrito
+    public void getCount(String dist, final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = task.getResult().size();
+                    countCallback.onCallback(count);
+                } else {
+                    Log.e("FirestoreData", "Error getting document count: " + task.getException().getMessage());
+                    countCallback.onCallback(-1); // Indicates an error
+                }
+            }
+        });
     }
 }

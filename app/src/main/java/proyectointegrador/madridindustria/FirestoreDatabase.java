@@ -9,10 +9,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 
 public class FirestoreDatabase {
     private String collectionPath, documentPath, nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, mail, pass, like, id;
+    private GeoPoint geo;
     private FirebaseFirestore db;
     private DocumentReference patrimonioRef;
 
@@ -42,6 +44,7 @@ public class FirestoreDatabase {
                         distrito = document.getString("distrito");
                         like = document.getString("like");
                         id = document.getString("id_patrimonio");
+                        geo = document.getGeoPoint("geo");
                     } else {
                         // El documento no existe
                         Log.d("FirestoreData", "Documento no encontrado");
@@ -167,5 +170,13 @@ public class FirestoreDatabase {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public GeoPoint getGeo() {
+        return geo;
+    }
+
+    public void setGeo(GeoPoint geo) {
+        this.geo = geo;
     }
 }
