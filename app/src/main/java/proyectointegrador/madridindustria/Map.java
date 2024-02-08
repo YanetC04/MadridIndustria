@@ -1,8 +1,7 @@
 package proyectointegrador.madridindustria;
 
 import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,20 +9,16 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.*;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.*;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.*;
 
 public class Map extends AppCompatActivity {
 
@@ -32,7 +27,10 @@ public class Map extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private FirestoreDatabase fData;
-    private String distritos[] = {"arganzuela", "centro", "moncloa", "chamberi"};
+    private double lat, lon;
+    private String dis, nom;
+    private int numerodoc;
+    private String distritos[] = {"chamartin", "centro", "moncloa", "chamberi", "hortaleza", "arganzuela"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,47 +124,61 @@ public class Map extends AppCompatActivity {
                 }
                 googleMap.setMyLocationEnabled(true);
 
+                // Mueve la cámara a la ubicación actual del dispositivo
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Map.this);
+                if (ContextCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    fusedLocationProviderClient.getLastLocation().addOnSuccessListener(Map.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                            }
+                        }
+                    });
+                }
+
+                //PONEMOS LOS MARCADORES
                 for(String dist : distritos){
                     getCount(dist, new CountCallback() {
                         @Override
                         public void onCallback(int count) {
                             //La variable i es el documento del distrito
                             for(int i = 1 ; i <= count ; i++){
+                                numerodoc = i;
                                 fData = new FirestoreDatabase(dist, String.valueOf(i), new FirestoreCallback() {
                                     @Override
                                     public void onCallback(FirestoreDatabase firestoreDatabase) {
+                                        if(fData.getGeo() == null){
 
+                                        }else{
+                                            lat = fData.getGeo().getLatitude();
+                                            lon = fData.getGeo().getLongitude();
+                                            dis = fData.getDistrito();
+                                            nom = fData.getNombre();
+                                        }
+
+                                        // Crear marcador en el mapa
+                                        LatLng ubicacion = new LatLng(lat, lon);
+                                        googleMap.addMarker(new MarkerOptions().position(ubicacion).title(nom));
+
+                                        // Definir OnClickListener para el marcador
+                                        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                            @Override
+                                            public boolean onMarkerClick(Marker marker) {
+                                                // Abrir la actividad Patrimonio con los datos del distrito y el documento
+                                                startActivity(new Intent(Map.this, Patrimonio.class)
+                                                        .putExtra("collection", dist)
+                                                        .putExtra("document", String.valueOf(numerodoc)));
+                                                return true;
+                                            }
+                                        });
                                     }
                                 });
                             }
                         }
                     });
                 }
-
-                //Hay que poner un onclick a los marcadores para que habra el activity patrimonio, teniendo en cuenta el distrito y el documento
-                //startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value));
-
-                // Recuperar datos de Firebase y mostrar puntos en el mapa
-                DatabaseReference placesRef = FirebaseDatabase.getInstance().getReference("lugares");
-                placesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String nombre = snapshot.child("nombre").getValue(String.class);
-                            double latitud = snapshot.child("latitud").getValue(Double.class);
-                            double longitud = snapshot.child("longitud").getValue(Double.class);
-
-                            // Crear marcador en el mapa
-                            LatLng ubicacion = new LatLng(latitud, longitud);
-                            googleMap.addMarker(new MarkerOptions().position(ubicacion).title(nombre));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Manejar errores de Firebase
-                    }
-                });
             }
         });
     }
@@ -189,10 +201,6 @@ public class Map extends AppCompatActivity {
                 if (locationResult == null) {
                     return;
                 }
-                for (Location location : locationResult.getLocations()) {
-                    // Actualiza la cámara del mapa con la nueva ubicación
-                    updateMapCamera(new LatLng(location.getLatitude(), location.getLongitude()));
-                }
             }
         };
 
@@ -207,12 +215,6 @@ public class Map extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        }
-    }
-
-    private void updateMapCamera(LatLng latLng) {
-        if (googleMap != null) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
     }
 
