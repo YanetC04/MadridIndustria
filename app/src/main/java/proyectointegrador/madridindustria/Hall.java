@@ -51,9 +51,13 @@ public class Hall extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Glide.with(this).clear(imagen);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Cancel Glide requests here
-        Glide.with(this).clear(imagen);
     }
 }

@@ -19,8 +19,8 @@ import java.util.Objects;
 public class Register extends AppCompatActivity {
     private EditText code, mail, first_pass, confirm_pass;
     private TextInputLayout lay_code, lay_mail, lay_first_pass, lay_confirm_pass;
-    private final Drawable redBorderDrawable = ContextCompat.getDrawable(this, R.drawable.red_border);
-    private final Drawable defaultBorderDrawable = ContextCompat.getDrawable(this, R.drawable.default_border);
+    private Drawable redBorderDrawable;
+    private Drawable defaultBorderDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,8 @@ public class Register extends AppCompatActivity {
         lay_mail = findViewById(R.id.input_email);
         lay_first_pass = findViewById(R.id.input_password);
         lay_confirm_pass = findViewById(R.id.input_password2);
+        redBorderDrawable = ContextCompat.getDrawable(this, R.drawable.red_border);
+        defaultBorderDrawable = ContextCompat.getDrawable(this, R.drawable.default_border);
     }
 
     public void openMain(View view){

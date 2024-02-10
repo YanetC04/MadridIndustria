@@ -12,8 +12,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ImageView imagen;
     private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi"};
 
     @Override
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 1; i <= 5; i++) {
                 View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
-                imagen = internalLayoutView.findViewById(R.id.imagen);
+                ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
                 TextView texto = internalLayoutView.findViewById(R.id.texto);
                 String value = String.valueOf(i);
 
@@ -125,12 +123,5 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Evitar que MainActivity vuelva atrás a Splash.java
         // No llames al super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Cancel Glide requests here
-        Glide.with(this).clear(imagen);
     }
 }

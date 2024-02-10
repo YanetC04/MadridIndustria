@@ -28,8 +28,8 @@ public class Patrimonio extends AppCompatActivity {
     private FloatingActionButton boton;
     private boolean heart = true;
     private TextView direccion, inaguracion, metro, descripcion, patrimonio;
-    private final Drawable heartDrawable = ContextCompat.getDrawable(this, R.drawable.heart);
-    private final Drawable heartFillDrawable = ContextCompat.getDrawable(this, R.drawable.heart_fill);
+    private Drawable heartDrawable;
+    private Drawable heartFillDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class Patrimonio extends AppCompatActivity {
         metro = findViewById(R.id.metro);
         direccion = findViewById(R.id.direccion);
         descripcion = findViewById(R.id.descripcion);
+        heartDrawable = ContextCompat.getDrawable(this, R.drawable.heart);
+        heartFillDrawable = ContextCompat.getDrawable(this, R.drawable.heart_fill);
 
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
@@ -229,9 +231,13 @@ public class Patrimonio extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Glide.with(this).clear(imagen);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Cancel Glide requests here
-        Glide.with(this).clear(imagen);
     }
 }
