@@ -55,9 +55,10 @@
                 android:id="@+id/code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:autofillHints="username"
                 android:inputType="none"
+                android:onClick="borrarCuenta"
                 android:text="@string/cuenta" />
         </LinearLayout>
     </com.google.android.material.textfield.TextInputLayout>
@@ -70,8 +71,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/primera"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/primera">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,8 +90,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autofillHints="username"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:inputType="none"
+                android:onClick="cambiarContraseña"
                 android:text="@string/cambiarcon" />
         </LinearLayout>
     </com.google.android.material.textfield.TextInputLayout>
@@ -123,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autofillHints="username"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:inputType="none"
                 android:text="@string/idioma" />
         </LinearLayout>
@@ -157,53 +158,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autofillHints="username"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:inputType="none"
                 android:onClick="cerrarSesion"
                 android:text="@string/cerrarSesion"/>
         </LinearLayout>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/quinta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cuarta"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/info"
-                android:layout_gravity="center"
-                android:paddingEnd="8dp" />
-
-            <TextView
-                android:id="@+id/informacion"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints="username"
-                android:inputType="none"
-                android:textSize="18dp"
-                android:text="@string/info"/>
-        </LinearLayout>
-    </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
+        style="@style/MyBottomNavigationView"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/nav_menu"
-        style="@style/MyBottomNavigationView"/>
+        app:menu="@menu/nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

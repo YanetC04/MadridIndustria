@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,6 +42,14 @@ public class Hall extends AppCompatActivity {
             Intent intent = new Intent(Hall.this, Register.class).putExtra("intent", source);
             startActivity(intent);
         });
+
+        // VOLVER ATRAS
+        TextView volverButton = findViewById(R.id.volver);
+        volverButton.setOnClickListener(view -> volverAtras());
+    }
+
+    private void volverAtras(){
+        startActivity(new Intent(Hall.this,MainActivity.class).putExtra("source", "cerrado"));
     }
 
     // NO VOLVER ATRAS
