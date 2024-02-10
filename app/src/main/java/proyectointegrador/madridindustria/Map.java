@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.*;
 
+import java.util.ArrayList;
+
 public class Map extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -31,6 +33,7 @@ public class Map extends AppCompatActivity {
     private String dis, nom;
     private int numerodoc;
     private String distritos[] = {"chamartin", "centro", "moncloa", "chamberi", "hortaleza", "arganzuela"};
+    private ArrayList<LatLng> locationArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,7 @@ public class Map extends AppCompatActivity {
             @Override
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
+                locationArrayList = new ArrayList<>();
 
                 // Configura el mapa según tus necesidades
                 if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -138,49 +142,53 @@ public class Map extends AppCompatActivity {
                     });
                 }
 
-                //PONEMOS LOS MARCADORES
-                for(String dist : distritos){
+                // PONEMOS LOS MARCADORES
+                for (String dist : distritos) {
                     getCount(dist, new CountCallback() {
                         @Override
                         public void onCallback(int count) {
-                            //La variable i es el documento del distrito
-                            for(int i = 1 ; i <= count ; i++){
-                                numerodoc = i;
+                            // La variable i es el documento del distrito
+                            for (int i = 1; i <= count; i++) {
+                                final int numerodoc = i;
+                                final String distrito = dist;
                                 fData = new FirestoreDatabase(dist, String.valueOf(i), new FirestoreCallback() {
                                     @Override
                                     public void onCallback(FirestoreDatabase firestoreDatabase) {
-                                        if(fData.getGeo() == null){
+                                        if (fData.getGeo() != null) {
+                                            double lat = fData.getGeo().getLatitude();
+                                            double lon = fData.getGeo().getLongitude();
+                                            String dis = fData.getDistrito();
+                                            String nom = fData.getNombre();
 
-                                        }else{
-                                            lat = fData.getGeo().getLatitude();
-                                            lon = fData.getGeo().getLongitude();
-                                            dis = fData.getDistrito();
-                                            nom = fData.getNombre();
+                                            Log.e("MARCADOR",lat + " " + lon);
+                                            locationArrayList.add(new LatLng(lat, lon));
                                         }
-
-                                        // Crear marcador en el mapa
-                                        LatLng ubicacion = new LatLng(lat, lon);
-                                        googleMap.addMarker(new MarkerOptions().position(ubicacion).title(nom));
-
-                                        // Definir OnClickListener para el marcador
-                                        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                            @Override
-                                            public boolean onMarkerClick(Marker marker) {
-                                                // Abrir la actividad Patrimonio con los datos del distrito y el documento
-                                                startActivity(new Intent(Map.this, Patrimonio.class)
-                                                        .putExtra("collection", dist)
-                                                        .putExtra("document", String.valueOf(numerodoc)));
-                                                return true;
-                                            }
-                                        });
                                     }
                                 });
                             }
                         }
                     });
                 }
+                loadMarkers();
             }
         });
+    }
+
+    private void loadMarkers(){
+        for (int i = 0; i < locationArrayList.size(); i++) {
+            // below line is use to add marker to each location of our array list.
+            googleMap.addMarker(new MarkerOptions().position(locationArrayList.get(i)).title(""));
+            /*googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    // Abrir la actividad Patrimonio con los datos del distrito y el documento
+                    startActivity(new Intent(Map.this, Patrimonio.class)
+                            .putExtra("collection", distrito)
+                            .putExtra("document", String.valueOf(numerodoc)));
+                    return true;
+                }
+            });*/
+        }
     }
 
     private void checkLocationPermission() {
