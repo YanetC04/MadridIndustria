@@ -15,7 +15,7 @@ import com.google.firebase.firestore.*;
 public class Favorite extends AppCompatActivity {
     private LinearLayout linearLayout;
     private TextView textView;
-    private ImageView imagen;
+    private ImageView imagenId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,8 @@ public class Favorite extends AppCompatActivity {
                 for (DocumentSnapshot document : task.getResult()) {
                     View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
 
-                    imagen = favoriteCard.findViewById(R.id.imagen);
+                    ImageView imagen = favoriteCard.findViewById(R.id.imagen);
+                    imagenId = favoriteCard.findViewById(R.id.imagen);
                     TextView nombre = favoriteCard.findViewById(R.id.nombre);
                     TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
                     TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
@@ -47,12 +48,11 @@ public class Favorite extends AppCompatActivity {
                         patrimonio.setText(firestoreDatabase.getPatrimonio());
                         metro.setText(firestoreDatabase.getMetro());
                         direccion.setText(firestoreDatabase.getDireccion());
-                        if (!isDestroyed()) {
-                            Glide.with(Favorite.this)
-                                    .load(firestoreDatabase.getImagen())
-                                    .centerCrop()
-                                    .into(imagen);
-                        }
+                        Glide.with(Favorite.this)
+                                .load(firestoreDatabase.getImagen())
+                                .centerCrop()
+                                .into(imagen);
+
                     });
 
                     linearLayout.addView(favoriteCard);
@@ -120,9 +120,13 @@ public class Favorite extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Glide.with(this).clear(imagenId);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Cancel Glide requests here
-        Glide.with(this).clear(imagen);
     }
 }
