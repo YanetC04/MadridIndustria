@@ -1,39 +1,26 @@
 package proyectointegrador.madridindustria;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.auth.*;
+import com.google.firebase.firestore.*;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Register extends AppCompatActivity {
     private EditText code, mail, first_pass, confirm_pass;
     private TextInputLayout lay_code, lay_mail, lay_first_pass, lay_confirm_pass;
+    private final Drawable redBorderDrawable = ContextCompat.getDrawable(this, R.drawable.red_border);
+    private final Drawable defaultBorderDrawable = ContextCompat.getDrawable(this, R.drawable.default_border);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,105 +51,84 @@ public class Register extends AppCompatActivity {
                     if (firstPassText.equals(confirmPassText)){
                         // AGREGAMOS EL USUARIO AL FIREBASE
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                        mAuth.createUserWithEmailAndPassword(mailText, firstPassText).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    getCount(new CountCallback() {
-                                        @Override
-                                        public void onCallback(int count) {
-                                            if (count >= 0) {
-                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        mAuth.createUserWithEmailAndPassword(mailText, firstPassText).addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                getCount(count -> {
+                                    if (count >= 0) {
+                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                                                HashMap<String, Object> datos = new HashMap<>();
-                                                datos.put("mail", mailText);
-                                                datos.put("password", firstPassText);
+                                        HashMap<String, Object> datos = new HashMap<>();
+                                        datos.put("mail", mailText);
+                                        datos.put("password", firstPassText);
 
-                                                DocumentReference documentReference = db.collection("users").document(String.valueOf(count+1));
-                                                documentReference.set(datos)
-                                                        .addOnSuccessListener(aVoid -> {
-                                                            // REDIRIGE AL LOGIN
-                                                            Intent intent = new Intent(Register.this, Login.class);
-                                                            startActivity(intent);
-                                                        })
-                                                        .addOnFailureListener(e -> {
-                                                            Log.w(TAG, "Error al agregar el documento", e);
-                                                        });
-                                            } else {
-                                                Log.e("FirestoreData", "Error");
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    Log.e("User", "No Creado");
-                                }
+                                        DocumentReference documentReference = db.collection("users").document(String.valueOf(count+1));
+                                        documentReference.set(datos)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    // REDIRIGE AL LOGIN
+                                                    Intent intent = new Intent(Register.this, Login.class);
+                                                    startActivity(intent);
+                                                });
+                                    } else {
+                                        Log.e("FirestoreData", "Error");
+                                    }
+                                });
+                            } else {
+                                Log.e("User", "No Creado");
                             }
                         });
                     } else {
                         showErrorDialog("Las contraseñas no coinciden. Por favor, verifique.");
-                        first_pass.setBackground(getResources().getDrawable(R.drawable.red_border));
-                        confirm_pass.setBackground(getResources().getDrawable(R.drawable.red_border));
+                        first_pass.setBackground(redBorderDrawable);
+                        confirm_pass.setBackground(redBorderDrawable);
                     }
                 } else {
                     showErrorDialog("Correo electrónico no válido. Por favor, verifique.");
-                    mail.setBackground(getResources().getDrawable(R.drawable.red_border));
+                    mail.setBackground(redBorderDrawable);
                 }
             }
         } else {
             if (codeText.isEmpty()) {
                 lay_code.setHint("");
-                code.setBackground(getResources().getDrawable(R.drawable.red_border));
+                code.setBackground(redBorderDrawable);
 
                 // COMPROBAMOS QUE SI AGREGA TEXTO LUEGO, VOLVEMOS A PONER EL BORDE EN PREDETERMINADO
-                code.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if(!hasFocus){
-                            code.setBackground(getResources().getDrawable(R.drawable.default_border));
-                            lay_code.setHint(R.string.code);
-                        }
+                code.setOnFocusChangeListener((v, hasFocus) -> {
+                    if(!hasFocus){
+                        code.setBackground(defaultBorderDrawable);
+                        lay_code.setHint(R.string.code);
                     }
                 });
             }
 
             if (mailText.isEmpty()) {
                 lay_mail.setHint("");
-                mail.setBackground(getResources().getDrawable(R.drawable.red_border));
-                mail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if(!hasFocus){
-                            mail.setBackground(getResources().getDrawable(R.drawable.default_border));
-                            lay_mail.setHint(R.string.email);
-                        }
+                mail.setBackground(redBorderDrawable);
+                mail.setOnFocusChangeListener((v, hasFocus) -> {
+                    if(!hasFocus){
+                        mail.setBackground(defaultBorderDrawable);
+                        lay_mail.setHint(R.string.email);
                     }
                 });
             }
 
             if (firstPassText.isEmpty()) {
                 lay_first_pass.setHint("");
-                first_pass.setBackground(getResources().getDrawable(R.drawable.red_border));
-                first_pass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if(!hasFocus){
-                            first_pass.setBackground(getResources().getDrawable(R.drawable.default_border));
-                            lay_first_pass.setHint(R.string.password);
-                        }
+                first_pass.setBackground(redBorderDrawable);
+                first_pass.setOnFocusChangeListener((v, hasFocus) -> {
+                    if(!hasFocus){
+                        first_pass.setBackground(defaultBorderDrawable);
+                        lay_first_pass.setHint(R.string.password);
                     }
                 });
             }
 
             if (confirmPassText.isEmpty()) {
                 lay_confirm_pass.setHint("");
-                confirm_pass.setBackground(getResources().getDrawable(R.drawable.red_border));
-                confirm_pass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if(!hasFocus){
-                            confirm_pass.setBackground(getResources().getDrawable(R.drawable.default_border));
-                            lay_confirm_pass.setHint(R.string.password2);
-                        }
+                confirm_pass.setBackground(redBorderDrawable);
+                confirm_pass.setOnFocusChangeListener((v, hasFocus) -> {
+                    if(!hasFocus){
+                        confirm_pass.setBackground(defaultBorderDrawable);
+                        lay_confirm_pass.setHint(R.string.password2);
                     }
                 });
             }
@@ -170,41 +136,28 @@ public class Register extends AppCompatActivity {
     }
 
     private boolean valida(String mail) {
-        if(mail.endsWith("@gmail.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@outlook.com") || mail.endsWith("@icloud.com")){
-            return true;
-        }
-        return false;
+        return mail.endsWith("@gmail.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@outlook.com") || mail.endsWith("@icloud.com");
     }
 
     public void getCount(final CountCallback countCallback) {
-        FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    int count = task.getResult().size();
-                    countCallback.onCallback(count);
-                } else {
-                    Log.e("FirestoreData", "Error getting document count: " + task.getException().getMessage());
-                    countCallback.onCallback(-1); // Indicates an error
-                }
+        FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int count = task.getResult().size();
+                countCallback.onCallback(count);
+            } else {
+                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
+                countCallback.onCallback(-1); // Indicates an error
             }
         });
     }
 
-    // DIALOGO DE ERROR
     private void showErrorDialog(String message) {
-        // LLAMAMOS AL BUILER DE ALERT DIALOG
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        // ESTABLECEMOS QUE NUESTRO BUILDER ES DE ERROR, IMPRIMIRA EL MENSAJE DE ERROR, Y HAY QUE DARLE AL OK
         builder.setTitle("Error")
                 .setMessage(message)
                 .setPositiveButton("OK", null);
 
-        // CREAMOS EL DIALOGO
         AlertDialog dialog = builder.create();
-
-        // MOSTRAMOS EL DIALOGO
         dialog.show();
     }
 }
