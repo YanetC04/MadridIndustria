@@ -1,30 +1,26 @@
 package proyectointegrador.madridindustria;
 
 import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.*;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.*;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
+import com.google.android.gms.tasks.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.*;
+
+import java.util.ArrayList;
 
 public class Map extends AppCompatActivity {
 
@@ -32,6 +28,12 @@ public class Map extends AppCompatActivity {
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
+    private FirestoreDatabase fData;
+    private double lat, lon;
+    private String dis, nom;
+    private int numerodoc;
+    private String distritos[] = {"chamartin", "centro", "moncloa", "chamberi", "hortaleza", "arganzuela"};
+    private ArrayList<LatLng> locationArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,8 @@ public class Map extends AppCompatActivity {
             @Override
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
+                locationArrayList = new ArrayList<>();
+
                 // Configura el mapa según tus necesidades
                 if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
@@ -123,8 +127,68 @@ public class Map extends AppCompatActivity {
                     return;
                 }
                 googleMap.setMyLocationEnabled(true);
+
+                // Mueve la cámara a la ubicación actual del dispositivo
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Map.this);
+                if (ContextCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    fusedLocationProviderClient.getLastLocation().addOnSuccessListener(Map.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                            }
+                        }
+                    });
+                }
+
+                // PONEMOS LOS MARCADORES
+                for (String dist : distritos) {
+                    getCount(dist, new CountCallback() {
+                        @Override
+                        public void onCallback(int count) {
+                            // La variable i es el documento del distrito
+                            for (int i = 1; i <= count; i++) {
+                                final int numerodoc = i;
+                                final String distrito = dist;
+                                fData = new FirestoreDatabase(dist, String.valueOf(i), new FirestoreCallback() {
+                                    @Override
+                                    public void onCallback(FirestoreDatabase firestoreDatabase) {
+                                        if (fData.getGeo() != null) {
+                                            double lat = fData.getGeo().getLatitude();
+                                            double lon = fData.getGeo().getLongitude();
+                                            String dis = fData.getDistrito();
+                                            String nom = fData.getNombre();
+
+                                            Log.e("MARCADOR",lat + " " + lon);
+                                            locationArrayList.add(new LatLng(lat, lon));
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                loadMarkers();
             }
         });
+    }
+
+    private void loadMarkers(){
+        for (int i = 0; i < locationArrayList.size(); i++) {
+            // below line is use to add marker to each location of our array list.
+            googleMap.addMarker(new MarkerOptions().position(locationArrayList.get(i)).title(""));
+            /*googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    // Abrir la actividad Patrimonio con los datos del distrito y el documento
+                    startActivity(new Intent(Map.this, Patrimonio.class)
+                            .putExtra("collection", distrito)
+                            .putExtra("document", String.valueOf(numerodoc)));
+                    return true;
+                }
+            });*/
+        }
     }
 
     private void checkLocationPermission() {
@@ -145,10 +209,6 @@ public class Map extends AppCompatActivity {
                 if (locationResult == null) {
                     return;
                 }
-                for (Location location : locationResult.getLocations()) {
-                    // Actualiza la cámara del mapa con la nueva ubicación
-                    updateMapCamera(new LatLng(location.getLatitude(), location.getLongitude()));
-                }
             }
         };
 
@@ -163,12 +223,6 @@ public class Map extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        }
-    }
-
-    private void updateMapCamera(LatLng latLng) {
-        if (googleMap != null) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
     }
 
@@ -190,5 +244,21 @@ public class Map extends AppCompatActivity {
         if (fusedLocationProviderClient != null && locationCallback != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
+    }
+
+    //Cuenta cuantos lugares hay dentro de un distrito
+    public void getCount(String dist, final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = task.getResult().size();
+                    countCallback.onCallback(count);
+                } else {
+                    Log.e("FirestoreData", "Error getting document count: " + task.getException().getMessage());
+                    countCallback.onCallback(-1); // Indicates an error
+                }
+            }
+        });
     }
 }
