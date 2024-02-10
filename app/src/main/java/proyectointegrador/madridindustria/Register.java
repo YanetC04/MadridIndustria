@@ -45,6 +45,7 @@ public class Register extends AppCompatActivity {
         String mailText = mail.getText().toString();
         String firstPassText = first_pass.getText().toString();
         String confirmPassText = confirm_pass.getText().toString();
+        String source = getIntent().getStringExtra("intent");
 
         // COMPRUEBO SI NO ESTAN VACIOS
         if (!codeText.isEmpty() && !mailText.isEmpty() && !firstPassText.isEmpty() && !confirmPassText.isEmpty()) {
@@ -67,7 +68,7 @@ public class Register extends AppCompatActivity {
                                         documentReference.set(datos)
                                                 .addOnSuccessListener(aVoid -> {
                                                     // REDIRIGE AL LOGIN
-                                                    Intent intent = new Intent(Register.this, Login.class);
+                                                    Intent intent = new Intent(Register.this, Login.class).putExtra("intent", source);;
                                                     startActivity(intent);
                                                 });
                                     } else {

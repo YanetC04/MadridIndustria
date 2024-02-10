@@ -6,33 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".Profile">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/usuario"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/prueba"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        android:src="@drawable/usericon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.048" />
 
-    <ImageView
-        android:id="@+id/cambio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/camara"
-        app:layout_constraintBottom_toBottomOf="@+id/usuario"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/usuario"
-        app:layout_constraintTop_toTopOf="@+id/usuario"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
         android:id="@+id/nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Modo Gestor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +32,7 @@
         android:id="@+id/primera"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombre"
@@ -76,6 +66,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/segunda"
         android:layout_width="0dp"
+        android:layout_margin="16dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +100,7 @@
         android:id="@+id/tercera"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/segunda"
@@ -142,6 +134,7 @@
         android:id="@+id/cuarta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tercera"
@@ -166,6 +159,7 @@
                 android:autofillHints="username"
                 android:textSize="18dp"
                 android:inputType="none"
+                android:onClick="cerrarSesion"
                 android:text="@string/cerrarSesion"/>
         </LinearLayout>
     </com.google.android.material.textfield.TextInputLayout>
@@ -174,6 +168,7 @@
         android:id="@+id/quinta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cuarta"
@@ -204,12 +199,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/nav_menu" />
-
+        app:menu="@menu/nav_menu"
+        style="@style/MyBottomNavigationView"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

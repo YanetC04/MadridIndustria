@@ -23,6 +23,7 @@ public class Hall extends AppCompatActivity {
         imagen = findViewById(R.id.ministerio);
         Button inicio = findViewById(R.id.inicio);
         Button registro = findViewById(R.id.registro);
+        String source = getIntent().getStringExtra("intent");
 
         // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
         if (!isDestroyed()) {
@@ -32,12 +33,12 @@ public class Hall extends AppCompatActivity {
         }
 
         inicio.setOnClickListener(v -> {
-            Intent intent = new Intent(Hall.this, Login.class);
+            Intent intent = new Intent(Hall.this, Login.class).putExtra("intent", source);
             startActivity(intent);
         });
 
         registro.setOnClickListener(v -> {
-            Intent intent = new Intent(Hall.this, Register.class);
+            Intent intent = new Intent(Hall.this, Register.class).putExtra("intent", source);
             startActivity(intent);
         });
     }

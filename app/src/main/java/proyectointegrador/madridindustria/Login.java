@@ -64,9 +64,11 @@ public class Login extends AppCompatActivity  {
                     authHelper.signInWithEmailAndPassword(mail, pass, task -> {
                         if (task.isSuccessful()) {
                             finish();
-                            Intent intent = new Intent(Login.this, MainActivity.class);
-                            intent.putExtra("source", "password");
-                            startActivity(intent);
+                            try {
+                                startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto"));
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
                         } else {
                             showErrorDialog("Usuario o Correo no registrados.");
                         }

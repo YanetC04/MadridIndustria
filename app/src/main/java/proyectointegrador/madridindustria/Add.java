@@ -27,11 +27,11 @@ public class Add extends AppCompatActivity {
             Intent intent = null;
 
             if (item.getItemId() == R.id.home) {
-                intent = new Intent(Add.this, MainActivity.class).putExtra("source", "add");
+                intent = new Intent(Add.this, MainActivity.class).putExtra("source", "abierto");
             } else if (item.getItemId() == R.id.map) {
-                intent = new Intent(Add.this, Map.class).putExtra("source", "add");
+                intent = new Intent(Add.this, Map.class).putExtra("source", "abierto");
             }else if (item.getItemId() == R.id.like) {
-                intent = new Intent(Add.this, Favorite.class).putExtra("source", "add");
+                intent = new Intent(Add.this, Favorite.class).putExtra("source", "abierto");
             } else if (item.getItemId() == R.id.profile) {
                 intent = new Intent(Add.this, Profile.class);
             }
