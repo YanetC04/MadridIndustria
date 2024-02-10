@@ -14,7 +14,6 @@ import com.google.firebase.auth.*;
 import com.google.firebase.firestore.*;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Register extends AppCompatActivity {
     private EditText code, mail, first_pass, confirm_pass;

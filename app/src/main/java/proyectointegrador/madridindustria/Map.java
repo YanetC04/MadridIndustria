@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,7 +15,6 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.android.gms.tasks.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.*;
 

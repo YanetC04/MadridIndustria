@@ -1,6 +1,5 @@
 package proyectointegrador.madridindustria;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.*;
 
 import android.annotation.SuppressLint;
@@ -8,19 +7,13 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.auth.*;
+import com.google.firebase.firestore.*;
+
+import java.util.Objects;
 
 public class Profile extends AppCompatActivity {
     private Boolean llave = true;
@@ -90,54 +83,39 @@ public class Profile extends AppCompatActivity {
 
         builder.setView(view);
 
-        builder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mAuth.getCurrentUser();
+        builder.setPositiveButton("Cambiar", (dialog, which) -> {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
 
-                if (user != null) {
-                    String actual = contrasenaActual.getText().toString();
-                    String nueva = nuevaContrasena .getText().toString();
-                    String confirmar = confirmarNuevaContrasena.getText().toString();
+            if (user != null) {
+                String actual = contrasenaActual.getText().toString();
+                String nueva = nuevaContrasena .getText().toString();
+                String confirmar = confirmarNuevaContrasena.getText().toString();
 
-                    if (!nueva.equals(confirmar)) {
-                        // Las contraseñas no coinciden
-                        showError("Las contraseñas no coinciden.");
-                        return;
-                    }
-
-                    mAuth.signInWithEmailAndPassword(user.getEmail(), actual).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (task.isSuccessful()) {
-                                user.updatePassword(nueva)
-                                        .addOnCompleteListener(new OnCompleteListener() {
-                                            @Override
-                                            public void onComplete(@NonNull Task task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(Profile.this,"Contraseña cambiada correctamente", Toast.LENGTH_SHORT);
-                                                } else {
-                                                    showError("Error al actualizar la contraseña. Asegúrate de que la nueva contraseña cumple con los requisitos de Firebase.");
-                                                }
-                                            }
-                                        });
-                            } else {
-                                showError("La contraseña actual es incorrecta.");
-                            }
-                        }
-                    });
+                if (!nueva.equals(confirmar)) {
+                    // Las contraseñas no coinciden
+                    showError("Las contraseñas no coinciden.");
+                    return;
                 }
+
+                mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), actual).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.updatePassword(nueva).addOnCompleteListener(passwordUpdateTask -> {
+                            if (passwordUpdateTask.isSuccessful()) {
+                                Toast.makeText(Profile.this, "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show();
+                            } else {
+                                showError("Error al actualizar la contraseña. Asegúrate de que la nueva contraseña cumple con los requisitos de Firebase.");
+                            }
+                        });
+                    } else {
+                        showError("La contraseña actual es incorrecta.");
+                    }
+                });
+
             }
         });
 
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Acción a realizar al hacer clic en Cancelar
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
 
         builder.show();
     }

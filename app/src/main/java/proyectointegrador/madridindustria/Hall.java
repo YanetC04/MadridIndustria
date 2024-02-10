@@ -3,14 +3,11 @@ package proyectointegrador.madridindustria;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-
 
 public class Hall extends AppCompatActivity {
     private ImageView imagen;
