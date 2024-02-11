@@ -1,12 +1,12 @@
 package proyectointegrador.madridindustria;
 
 import androidx.appcompat.app.*;
-
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.*;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.*;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -14,6 +14,8 @@ import com.google.firebase.auth.*;
 import com.google.firebase.firestore.*;
 
 import java.util.Objects;
+
+import java.util.Locale;
 
 public class Profile extends AppCompatActivity {
     private Boolean llave = true;
@@ -34,6 +36,36 @@ public class Profile extends AppCompatActivity {
         // BOTÓN PARA BORRAR CUENTA
         TextView borrarButton = findViewById(R.id.code);
         borrarButton.setOnClickListener(view -> borrarCuenta());
+      
+        // IDIOMA
+        TextView idioma = findViewById(R.id.traduccion);
+        idioma.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(Profile.this, v);
+                popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
+
+                // Manejar la selección del usuario en el menú desplegable
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+
+                        // Cambiar el idioma de la aplicación según la opción seleccionada
+                        if (id == R.id.english) {
+                            setLocale("en"); // Método para cambiar el idioma a inglés
+                            return true;
+                        } else if (id == R.id.spanish) {
+                            setLocale("es"); // Método para cambiar el idioma a español
+                            return true;
+                        }
+
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
 
         // BARRA DE NAVEGACIÓN INFERIOR
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -111,7 +143,6 @@ public class Profile extends AppCompatActivity {
                         showError("La contraseña actual es incorrecta.");
                     }
                 });
-
             }
         });
 
@@ -207,5 +238,17 @@ public class Profile extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    // Método para cambiar el idioma de la aplicación
+    private void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
+        // Reiniciar la actividad para aplicar los cambios de idioma
+        recreate();
     }
 }
