@@ -30,7 +30,7 @@ public class FirebaseAuthHelper {
     }
 
     public void signInWithEmailAndPassword(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener);
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(onCompleteListener);
     }
 }
 

@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.*;
 
+import java.util.Objects;
+
 public class Favorite extends AppCompatActivity {
     private LinearLayout linearLayout;
     private TextView textView;
@@ -69,26 +71,28 @@ public class Favorite extends AppCompatActivity {
 
             if (item.getItemId() == R.id.home) {
                 intent = new Intent(Favorite.this, MainActivity.class).putExtra("source", source);
-            } else if (item.getItemId() == R.id.map) {
+            }
+            if (item.getItemId() == R.id.map) {
                 intent = new Intent(Favorite.this, Map.class).putExtra("source", source);
-            }else {
-                assert source != null;
-                boolean activities = source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile");
-                if (item.getItemId() == R.id.add) {
-                    if (activities)
-                        intent = new Intent(Favorite.this, Add.class);
-                    else
-                        showDialog();
-                } else if (item.getItemId() == R.id.profile) {
-                    if (activities)
-                        intent = new Intent(Favorite.this, Profile.class);
-                    else
-                        showDialog();
+            }
+            if (item.getItemId() == R.id.add) {
+                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
+                    showDialog(Add.class);
+                } else {
+                    intent = new Intent(Favorite.this, Add.class);
+                }
+            }
+            if (item.getItemId() == R.id.profile) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Profile.class);
+                } else {
+                    intent = new Intent(Favorite.this, Profile.class);
                 }
             }
 
             if (intent != null) {
                 startActivity(intent);
+                // Sin transición
                 overridePendingTransition(0, 0);
                 return true;
             }
@@ -97,16 +101,19 @@ public class Favorite extends AppCompatActivity {
         });
     }
 
-    private void showDialog() {
+    // Diálogo de error
+    private void showDialog(Class intent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setTitle("Modo Gestor")
                 .setMessage("¿Quieres activar el modo Gestor?")
                 .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(Favorite.this, Hall.class));
+                    startActivity(new Intent(Favorite.this, Hall.class).putExtra("intent", intent.getName()));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
+        // Creación y visualización del diálogo
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -122,8 +129,12 @@ public class Favorite extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Glide.with(this).clear(imagenId);
+
+        if (imagenId != null) {
+            Glide.with(this).clear(imagenId);
+        }
     }
+
 
     @Override
     protected void onDestroy() {

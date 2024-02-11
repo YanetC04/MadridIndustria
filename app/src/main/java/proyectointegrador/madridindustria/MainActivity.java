@@ -11,6 +11,8 @@ import android.widget.*;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi"};
 
@@ -66,26 +68,23 @@ public class MainActivity extends AppCompatActivity {
             String source = getIntent().getStringExtra("source");
 
             if (item.getItemId() == R.id.map) {
-                // Redirige a Map
                 intent = new Intent(MainActivity.this, Map.class).putExtra("source", source);
-            } else {
-                assert source != null;
-                boolean activities = source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile");
-                if (item.getItemId() == R.id.add) {
-                    // Redirige a Add
-                    if (activities)
-                        intent = new Intent(MainActivity.this, Add.class);
-                    else
-                        showDialog();
-                } else if (item.getItemId() == R.id.like) {
-                    // Redirige a Favorite
-                    intent = new Intent(MainActivity.this, Favorite.class).putExtra("source", source);
-                } else if (item.getItemId() == R.id.profile) {
-                    // Redirige a Profile
-                    if (activities)
-                        intent = new Intent(MainActivity.this, Profile.class);
-                    else
-                        showDialog();
+            }
+            if (item.getItemId() == R.id.add) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Add.class);
+                } else {
+                    intent = new Intent(MainActivity.this, Add.class);
+                }
+            }
+            if (item.getItemId() == R.id.like) {
+                intent = new Intent(MainActivity.this, Favorite.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.profile) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Profile.class);
+                } else {
+                    intent = new Intent(MainActivity.this, Profile.class);
                 }
             }
 
@@ -101,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Diálogo de error
-    private void showDialog() {
+    private void showDialog(Class intent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Modo Gestor")
                 .setMessage("¿Quieres activar el modo Gestor?")
                 .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(MainActivity.this, Hall.class));
+                    startActivity(new Intent(MainActivity.this, Hall.class).putExtra("intent", intent.getName()));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);

@@ -14,7 +14,6 @@ import com.google.firebase.auth.*;
 import com.google.firebase.firestore.*;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Register extends AppCompatActivity {
     private EditText code, mail, first_pass, confirm_pass;
@@ -45,6 +44,7 @@ public class Register extends AppCompatActivity {
         String mailText = mail.getText().toString();
         String firstPassText = first_pass.getText().toString();
         String confirmPassText = confirm_pass.getText().toString();
+        String source = getIntent().getStringExtra("intent");
 
         // COMPRUEBO SI NO ESTAN VACIOS
         if (!codeText.isEmpty() && !mailText.isEmpty() && !firstPassText.isEmpty() && !confirmPassText.isEmpty()) {
@@ -55,25 +55,18 @@ public class Register extends AppCompatActivity {
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
                         mAuth.createUserWithEmailAndPassword(mailText, firstPassText).addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
-                                getCount(count -> {
-                                    if (count >= 0) {
-                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                                        HashMap<String, Object> datos = new HashMap<>();
-                                        datos.put("mail", mailText);
-                                        datos.put("password", firstPassText);
+                                HashMap<String, Object> datos = new HashMap<>();
+                                datos.put("mail", mailText);
+                                datos.put("password", firstPassText);
 
-                                        DocumentReference documentReference = db.collection("users").document(String.valueOf(count+1));
-                                        documentReference.set(datos)
-                                                .addOnSuccessListener(aVoid -> {
-                                                    // REDIRIGE AL LOGIN
-                                                    Intent intent = new Intent(Register.this, Login.class);
-                                                    startActivity(intent);
-                                                });
-                                    } else {
-                                        Log.e("FirestoreData", "Error");
-                                    }
-                                });
+                                db.collection("users").document().set(datos)
+                                        .addOnSuccessListener(aVoid -> {
+                                            // REDIRIGE AL LOGIN
+                                            Intent intent = new Intent(Register.this, Login.class).putExtra("intent", source);
+                                            startActivity(intent);
+                                        });
                             } else {
                                 Log.e("User", "No Creado");
                             }
@@ -139,18 +132,6 @@ public class Register extends AppCompatActivity {
 
     private boolean valida(String mail) {
         return mail.endsWith("@gmail.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@outlook.com") || mail.endsWith("@icloud.com");
-    }
-
-    public void getCount(final CountCallback countCallback) {
-        FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                int count = task.getResult().size();
-                countCallback.onCallback(count);
-            } else {
-                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
-                countCallback.onCallback(-1); // Indicates an error
-            }
-        });
     }
 
     private void showErrorDialog(String message) {
