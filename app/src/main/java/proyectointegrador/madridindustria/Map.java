@@ -3,6 +3,8 @@ package proyectointegrador.madridindustria;
 import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -119,6 +121,22 @@ public class Map extends AppCompatActivity {
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
                 locationArrayList = new ArrayList<>();
+
+                // Obtener el modo actual del tema del dispositivo
+                int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                boolean isNightMode = nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+
+                // Aplicar el estilo de mapa oscuro solo si el dispositivo está en modo oscuro
+                if (isNightMode) {
+                    try {
+                        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.map_style_dark));
+                        if (!success) {
+                            Log.e("DARKMODE_MAP", "Error al cargar el estilo de mapa oscuro.");
+                        }
+                    } catch (Resources.NotFoundException e) {
+                        Log.e("DARKMODE_MAP", "No se pudo encontrar el recurso de estilo de mapa oscuro. Error: ", e);
+                    }
+                }
 
                 // Configura el mapa según tus necesidades
                 if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
