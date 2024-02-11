@@ -6,10 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.*;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Locale;
 
 public class Profile extends AppCompatActivity {
 
@@ -48,6 +53,36 @@ public class Profile extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        TextView idioma = findViewById(R.id.traduccion);
+
+        idioma.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(Profile.this, v);
+                popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
+
+                // Manejar la selección del usuario en el menú desplegable
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+
+                        // Cambiar el idioma de la aplicación según la opción seleccionada
+                        if (id == R.id.english) {
+                            setLocale("en"); // Método para cambiar el idioma a inglés
+                            return true;
+                        } else if (id == R.id.spanish) {
+                            setLocale("es"); // Método para cambiar el idioma a español
+                            return true;
+                        }
+
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
     }
 
     // Diálogo de error
@@ -74,4 +109,17 @@ public class Profile extends AppCompatActivity {
         // Evitar que MainActivity vuelva atrás a Splash.java
         // No llames al super.onBackPressed();
     }
+
+    // Método para cambiar el idioma de la aplicación
+    private void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
+        // Reiniciar la actividad para aplicar los cambios de idioma
+        recreate();
+    }
+
 }

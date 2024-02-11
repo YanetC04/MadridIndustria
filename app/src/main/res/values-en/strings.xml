@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MadridIndustria</string>
+    <string name="iniciarSesion">LOG IN</string>
+    <string name="datos">Enter your credentials</string>
+    <string name="registro">CHECK IN</string>
+    <string name="apple">CONTINUE WITH APPLE</string>
+    <string name="facebook">CONTINUE WITH FACEBOOK</string>
+    <string name="gmail">CONTINUE WITH GMAIL</string>
+    <string name="bienvenida">Welcome to IndustriaMadrid!</string>
+    <string name="madrid">Take care of the patrimony of the Community of Madrid</string>
+    <string name="saludo">We are delighted to see you again</string>
+    <string name="contraseña">Password</string>
+    <string name="olvidaste">FORGOT YOUR PASSWORD?</string>
+    <string name="esperar">One moment...</string>
+    <string name="dato">To change your password, use the link in the email we just sent you.</string>
+    <string name="correoir">GO TO EMAIL</string>
+    <string name="luego">I will later</string>
+    <string name="contenido">Content:</string>
+    <string name="descripcion">Description:</string>
+    <string name="ciudad">Discover your city</string>
+    <string name="bienvenido">WELCOME</string>
+    <string name="tu_contra">YOUR PASSWORD</string>
+    <string name="code">Manager Code</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="password2">Confirm Password</string>
+    <string name="cuenta">Account</string>
+    <string name="cambiarcon">Change Password</string>
+    <string name="idioma">Application language</string>
+    <string name="cerrarSesion">Sign off</string>
+    <string name="info">App info</string>
+</resources>
