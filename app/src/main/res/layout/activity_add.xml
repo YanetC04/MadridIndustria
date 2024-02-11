@@ -39,6 +39,7 @@
                     android:layout_height="50dp"
                     app:layout_collapseMode="pin"/>
 
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:visibility="invisible"
                     android:id="@+id/boton"
@@ -72,6 +73,20 @@
 
                     <TextView
                         style="@style/textTitle"
+                        android:text="Nombre: " />
+
+                    <EditText
+                        android:id="@+id/nombre"
+                        android:hint="introduce el nombre"
+                        style="@style/textContent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/textTitle"
                         android:text="Inaguración: " />
 
                     <EditText
@@ -94,7 +109,29 @@
                         android:hint="categoria"
                         style="@style/textContent"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/textTitle"
+                        android:text="Coordenadas: " />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/coordenadas_lat"
+                        android:hint="introduce la latitud"
+                        style="@style/textContent"/>
+                    <EditText
+                        android:id="@+id/coordenadas_lon"
+                        android:hint="introduce la longitud"
+                        style="@style/textContent"/>
+                    </LinearLayout>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,6 +144,20 @@
                     <EditText
                         android:id="@+id/metro"
                         android:hint="lineas de metro cerca"
+                        style="@style/textContent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/textTitle"
+                        android:text="Distrito: " />
+
+                    <EditText
+                        android:id="@+id/distrito"
+                        android:hint="distrito"
                         style="@style/textContent"/>
                 </LinearLayout>
 
