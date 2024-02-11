@@ -9,49 +9,51 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.Objects;
 
 
 public class FirestoreDatabase {
-    private String collectionPath, documentPath, nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, mail, pass;
-    private FirebaseFirestore db;
-    private DocumentReference patrimonioRef;
+    private String collectionPath, documentPath, nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, mail, pass, like, id;
+    private GeoPoint geo;
 
     public FirestoreDatabase(String collectionPath, String documentPath, final FirestoreCallback callback){
         this.collectionPath = collectionPath;
         this.documentPath = documentPath;
 
         // INICIALIZAR FIREBASE
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        patrimonioRef = db.collection(collectionPath).document(documentPath);
-        patrimonioRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        mail = document.getString("mail");
-                        pass = document.getString("password");
-                        nombre = document.getString("nombre");
-                        inaguracion = document.getString("inaguracion");
-                        patrimonio = document.getString("patrimonio");
-                        metro = document.getString("metro");
-                        direccion = document.getString("direccion");
-                        descripcion = (document.getString("descripcion") != null) ? document.getString("descripcion").replace("\\n", "\n\n"): "";
-                        imagen = document.getString("imagen");
-                        distrito = document.getString("distrito");
-                    } else {
-                        // El documento no existe
-                        Log.d("FirestoreData", "Documento no encontrado");
-                    }
+        DocumentReference patrimonioRef = db.collection(collectionPath).document(documentPath);
+        patrimonioRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    mail = document.getString("mail");
+                    pass = document.getString("password");
+                    nombre = document.getString("nombre");
+                    inaguracion = document.getString("inaguracion");
+                    patrimonio = document.getString("patrimonio");
+                    metro = document.getString("metro");
+                    direccion = document.getString("direccion");
+                    descripcion = (document.getString("descripcion") != null) ? Objects.requireNonNull(document.getString("descripcion")).replace("\\n", "\n\n"): "";
+                    imagen = document.getString("imagen");
+                    distrito = document.getString("distrito");
+                    like = document.getString("like");
+                    id = document.getString("id_patrimonio");
+                    geo = document.getGeoPoint("geo");
                 } else {
-                    // Error al leer el documento
-                    Log.e("FirestoreData", "Error al leer datos: " + task.getException().getMessage());
+                    // El documento no existe
+                    Log.d("FirestoreData", "Documento no encontrado");
                 }
+            } else {
+                // Error al leer el documento
+                Log.e("FirestoreData", "Error al leer datos: " + Objects.requireNonNull(task.getException()).getMessage());
+            }
 
-                if (callback != null) {
-                    callback.onCallback(FirestoreDatabase.this);
-                }
+            if (callback != null) {
+                callback.onCallback(FirestoreDatabase.this);
             }
         });
     }
@@ -149,5 +151,29 @@ public class FirestoreDatabase {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public GeoPoint getGeo() {
+        return geo;
+    }
+
+    public void setGeo(GeoPoint geo) {
+        this.geo = geo;
     }
 }

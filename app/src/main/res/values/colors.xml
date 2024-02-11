@@ -13,6 +13,7 @@
     <color name="dark">#1E1E1E</color>
     <color name="blue">#0047AB</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="red_title">#f7bfbe</color>
+    <color name="red_title">#552828</color>
     <color name="red_text">#ffe4ea</color>
+    <color name="grey">#7F8083</color>
 </resources>

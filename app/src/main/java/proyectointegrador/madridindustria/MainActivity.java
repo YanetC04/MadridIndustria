@@ -1,34 +1,27 @@
 package proyectointegrador.madridindustria;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.*;
 
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.*;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Objects;
 
-    private LinearLayout linearLayout;
-    private BottomNavigationView bottomNavigationView;
-    private String distritos[] = {"arganzuela", "centro", "moncloa", "chamberi"};
+public class MainActivity extends AppCompatActivity {
+    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        linearLayout = findViewById(R.id.linear);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        LinearLayout linearLayout = findViewById(R.id.linear);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // DINAMICAMENTE CREAR SCROLLVIEW PARA CADA DISTRITO
         for (String dist : distritos) {
@@ -44,13 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 String value = String.valueOf(i);
 
                 // BASE DE DATOS
-                FirestoreDatabase firestoreDatabase = new FirestoreDatabase(dist, value, new FirestoreCallback() {
-                    @Override
-                    public void onCallback(FirestoreDatabase firestoreDatabase) {
-                        // ESTABLECER INFORMACION
-                        distrito.setText(firestoreDatabase.getDistrito());
-                        texto.setText(firestoreDatabase.getNombre());
+                new FirestoreDatabase(dist, value, firestoreDatabase -> {
+                    // ESTABLECER INFORMACION
+                    distrito.setText(firestoreDatabase.getDistrito());
+                    texto.setText(firestoreDatabase.getNombre());
 
+                    if (!isDestroyed()) {
                         Glide.with(MainActivity.this)
                                 .load(firestoreDatabase.getImagen())
                                 .centerCrop()
@@ -59,12 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 // CONFIGURAMOS LA IMAGEN
-                imagen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value));
-                    }
-                });
+                imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value)));
 
                 internalLinear.addView(internalLayoutView);
             }
@@ -76,61 +63,51 @@ public class MainActivity extends AppCompatActivity {
 
         // BARRA INFERIOR
         bottomNavigationView.setSelectedItemId(R.id.home);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Intent intent = null;
-                        String source = getIntent().getStringExtra("source");
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Intent intent = null;
+            String source = getIntent().getStringExtra("source");
 
-                        if (item.getItemId() == R.id.map) {
-                            // Redirige a Map
-                            intent = new Intent(MainActivity.this, Map.class).putExtra("source", source);
-                        } else if (item.getItemId() == R.id.add) {
-                            // Redirige a Add
-                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
-                                intent = new Intent(MainActivity.this, Add.class);
-                            else
-                                showDialog("¿Quieres activar el modo Gestor?");
-                        } else if (item.getItemId() == R.id.like) {
-                            // Redirige a Favorite
-                            intent = new Intent(MainActivity.this, Favorite.class).putExtra("source", source);
-                        } else if (item.getItemId() == R.id.profile) {
-                            // Redirige a Profile
-                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
-                                intent = new Intent(MainActivity.this, Profile.class);
-                            else
-                                showDialog("¿Quieres activar el modo Gestor?");
-                        }
+            if (item.getItemId() == R.id.map) {
+                intent = new Intent(MainActivity.this, Map.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.add) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Add.class);
+                } else {
+                    intent = new Intent(MainActivity.this, Add.class);
+                }
+            }
+            if (item.getItemId() == R.id.like) {
+                intent = new Intent(MainActivity.this, Favorite.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.profile) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Profile.class);
+                } else {
+                    intent = new Intent(MainActivity.this, Profile.class);
+                }
+            }
 
-                        if (intent != null) {
-                            startActivity(intent);
-                            // Sin transición
-                            overridePendingTransition(0, 0);
-                            return true;
-                        }
+            if (intent != null) {
+                startActivity(intent);
+                // Sin transición
+                overridePendingTransition(0, 0);
+                return true;
+            }
 
-                        return true;
-                    }
-                });
+            return true;
+        });
     }
 
     // Diálogo de error
-    private void showDialog(String message) {
-        // Builder de AlertDialog
+    private void showDialog(Class intent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // Configuración del diálogo de error
         builder.setTitle("Modo Gestor")
-                .setMessage(message)
-                .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Redirige a Login
-                        startActivity(new Intent(MainActivity.this, Hall.class));
-                        // Sin transición
-                        overridePendingTransition(0, 0);
-                    }
+                .setMessage("¿Quieres activar el modo Gestor?")
+                .setPositiveButton("SÍ", (dialog, which) -> {
+                    startActivity(new Intent(MainActivity.this, Hall.class).putExtra("intent", intent.getName()));
+                    overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
@@ -140,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // NO VOLVER ATRAS
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         // Evitar que MainActivity vuelva atrás a Splash.java

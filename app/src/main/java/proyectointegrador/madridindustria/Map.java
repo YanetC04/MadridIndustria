@@ -1,30 +1,24 @@
 package proyectointegrador.madridindustria;
 
 import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.*;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.*;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.*;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.*;
+
+import java.util.Objects;
 
 public class Map extends AppCompatActivity {
 
@@ -32,6 +26,7 @@ public class Map extends AppCompatActivity {
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
+    private final String[] distritos = {"chamartin", "centro", "moncloa", "chamberi", "hortaleza", "arganzuela"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,59 +45,61 @@ public class Map extends AppCompatActivity {
         // BARRA INFERIOR
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.map);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Intent intent = null;
-                        String source = getIntent().getStringExtra("source");
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Intent intent = null;
+            String source = getIntent().getStringExtra("source");
 
-                        if (item.getItemId() == R.id.home) {
-                            intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
-                        } else if (item.getItemId() == R.id.add) {
-                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
-                                intent = new Intent(Map.this, Add.class);
-                            else
-                                showDialog("¿Quieres activar el modo Gestor?");
-                        } else if (item.getItemId() == R.id.like) {
-                            intent = new Intent(Map.this, Favorite.class).putExtra("source", source);
-                        } else if (item.getItemId() == R.id.profile) {
-                            if (source.equalsIgnoreCase("password") || source.equalsIgnoreCase("add") || source.equalsIgnoreCase("profile"))
-                                intent = new Intent(Map.this, Profile.class);
-                            else
-                                showDialog("¿Quieres activar el modo Gestor?");
-                        }
+            if (item.getItemId() == R.id.home) {
+                intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.add) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Add.class);
+                } else {
+                    intent = new Intent(Map.this, Add.class);
+                }
+            }
+            if (item.getItemId() == R.id.like) {
+                intent = new Intent(Map.this, Favorite.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.profile) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Profile.class);
+                } else {
+                    intent = new Intent(Map.this, Profile.class);
+                }
+            }
 
-                        if (intent != null) {
-                            startActivity(intent);
-                            overridePendingTransition(0, 0);
-                            return true;
-                        }
+            if (intent != null) {
+                startActivity(intent);
+                // Sin transición
+                overridePendingTransition(0, 0);
+                return true;
+            }
 
-                        return true;
-                    }
-                });
+            return true;
+        });
     }
 
     // Diálogo de error
-    private void showDialog(String message) {
+    private void showDialog(Class intent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setTitle("Modo Gestor")
-                .setMessage(message)
-                .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(Map.this, Hall.class));
-                        overridePendingTransition(0, 0);
-                    }
+                .setMessage("¿Quieres activar el modo Gestor?")
+                .setPositiveButton("SÍ", (dialog, which) -> {
+                    startActivity(new Intent(Map.this, Hall.class).putExtra("intent", intent.getName()));
+                    overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
+        // Creación y visualización del diálogo
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
     // NO VOLVER ATRAS
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         // Evitar que MainActivity vuelva atrás a Splash.java
@@ -112,17 +109,52 @@ public class Map extends AppCompatActivity {
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap map) {
-                googleMap = map;
-                // Configura el mapa según tus necesidades
-                if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    return;
-                }
-                googleMap.setMyLocationEnabled(true);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(map -> {
+            googleMap = map;
+
+            // Configura el mapa según tus necesidades
+            if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                return;
+            }
+            googleMap.setMyLocationEnabled(true);
+
+            // Mueve la cámara a la ubicación actual del dispositivo
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Map.this);
+            if (ContextCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationProviderClient.getLastLocation().addOnSuccessListener(Map.this, location -> {
+                    if (location != null) {
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    }
+                });
+            }
+
+            // PONEMOS LOS MARCADORES
+            for (String dist : distritos) {
+                getCount(dist, count -> {
+                    for (int i = 1; i <= count; i++) {
+                        String numero = String.valueOf(i);
+                        new FirestoreDatabase(dist, numero, firestoreDatabase -> {
+                            if (firestoreDatabase.getGeo() != null) {
+                                GeoPoint geo = firestoreDatabase.getGeo();
+                                LatLng latLng = new LatLng(geo.getLatitude(), geo.getLongitude());
+                                googleMap.addMarker(new MarkerOptions().position(latLng).snippet(numero).title(dist));
+                                googleMap.setOnMarkerClickListener(marker -> {
+                                    Log.e("coleccion", Objects.requireNonNull(marker.getTitle()));
+                                    Log.e("documento", Objects.requireNonNull(marker.getSnippet()));
+                                    Intent intent = new Intent(Map.this, Patrimonio.class);
+                                    intent.putExtra("collection", marker.getTitle());
+                                    intent.putExtra("document", marker.getSnippet());
+                                    startActivity(intent);
+                                    return true;
+                                });
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -141,14 +173,7 @@ public class Map extends AppCompatActivity {
 
         locationCallback = new LocationCallback() {
             @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    // Actualiza la cámara del mapa con la nueva ubicación
-                    updateMapCamera(new LatLng(location.getLatitude(), location.getLongitude()));
-                }
+            public void onLocationResult(@NonNull LocationResult locationResult) {
             }
         };
 
@@ -163,12 +188,6 @@ public class Map extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        }
-    }
-
-    private void updateMapCamera(LatLng latLng) {
-        if (googleMap != null) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
     }
 
@@ -190,5 +209,18 @@ public class Map extends AppCompatActivity {
         if (fusedLocationProviderClient != null && locationCallback != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
+    }
+
+    //Cuenta cuantos lugares hay dentro de un distrito
+    public void getCount(String dist, final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int count = task.getResult().size();
+                countCallback.onCallback(count);
+            } else {
+                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
+                countCallback.onCallback(-1); // Indicates an error
+            }
+        });
     }
 }
