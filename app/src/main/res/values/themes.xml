@@ -7,13 +7,28 @@
         <item name="android:statusBarColor">@color/red</item>
     </style>
 
+    <style name="Theme.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/red</item>
+        <!-- QUITAR PRIMER SPLASH AUTOMATIZADO -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@color/red</item>
+    </style>
+
     <style name="Theme.MadridIndustria.NoActionBar.HeaderRed">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@color/red</item>
     </style>
 
-    <style name="Header.MadridIndustria.NoActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
-        <item name="android:background">@color/white</item>
+    <style name="CollapsingToolbarLayout.MadridIndustria.NoActionBar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/red</item>
+    </style>
+
+    <attr name="primaryColor" format="reference|color" />
+    <attr name="backColor" format="reference|color" />
+    <style name="Box.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="primaryColor">@color/red</item>
+        <item name="backColor">@color/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- FLOATING BUTTON -->
@@ -42,6 +57,19 @@
     </style>
 
     <style name="button_white_red" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="button_mix" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/red</item>
         <item name="fontFamily">sans-serif</item>

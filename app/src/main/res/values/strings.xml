@@ -21,11 +21,12 @@
     <string name="ciudad">Conoce tu propia\nciudad</string>
     <string name="bienvenido">BIENVENID@</string>
     <string name="tu_contra">TU CONTRASEÑA</string>
+    <string name="favorite">TUS FAVORITOS</string>
     <string name="code">Código de Gestor</string>
     <string name="email">Correo Electrónico</string>
     <string name="password">Contraseña</string>
     <string name="password2">Confirmar Contraseña</string>
-    <string name="cuenta">Cuenta</string>
+    <string name="cuenta">Borrar Cuenta</string>
     <string name="cambiarcon">Cambiar Contraseña</string>
     <string name="idioma">Idioma de la aplicación</string>
     <string name="cerrarSesion">Cerrar Sesion</string>

@@ -7,25 +7,35 @@
         <item name="android:statusBarColor">@color/reddark</item>
     </style>
 
+    <style name="Theme.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/reddark</item>
+        <!-- QUITAR PRIMER SPLASH AUTOMATIZADO -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@color/reddark</item>
+    </style>
+
     <style name="Theme.MadridIndustria.NoActionBar.HeaderRed" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@color/reddark</item>
     </style>
 
-    <style name="Header.MadridIndustria.NoActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
+    <style name="CollapsingToolbarLayout.MadridIndustria.NoActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
         <item name="android:background">@color/reddark</item>
     </style>
 
-    <style name="Text.MadridIndustria.NoActionBar" parent="Theme.MadridIndustria.NoActionBar">
-        <item name="android:background">@color/reddark</item>
-        <item name="android:textColor">@color/red_text</item>
+    <attr name="primaryColor" format="reference|color" />
+    <attr name="backColor" format="reference|color" />
+    <style name="Box.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="primaryColor">@color/white</item>
+        <item name="backColor">@color/eire_black</item>
+        <item name="android:textColor">@color/reddark</item>
     </style>
 
     <!-- FLOATING BUTTON -->
     <style name="Theme.MadridIndustria.NoActionBar.FloatingButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/red_title</item>
+        <item name="android:backgroundTint">@color/white</item>
         <item name="tint">@color/reddark</item>
-        <item name="rippleColor">@color/red_title</item>
+        <item name="rippleColor">@color/white</item>
     </style>
 
     <!-- IMAGES -->
@@ -50,6 +60,19 @@
     <style name="button_white_red" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/reddark</item>
         <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="button_mix" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/reddark</item>
         <item name="fontFamily">sans-serif</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
