@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -113,6 +115,21 @@ public class Map extends AppCompatActivity {
         mapFragment.getMapAsync(map -> {
             googleMap = map;
 
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            boolean isNightMode = nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+
+            // Aplicar el estilo de mapa oscuro solo si el dispositivo está en modo oscuro
+            if (isNightMode) {
+                try {
+                    boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.map_style_dark));
+                    if (!success) {
+                        Log.e("DARKMODE_MAP", "Error al cargar el estilo de mapa oscuro.");
+                    }
+                } catch (Resources.NotFoundException e) {
+                    Log.e("DARKMODE_MAP", "No se pudo encontrar el recurso de estilo de mapa oscuro. Error: ", e);
+                }
+            }
+
             // Configura el mapa según tus necesidades
             if (ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -141,7 +158,7 @@ public class Map extends AppCompatActivity {
                             if (firestoreDatabase.getGeo() != null) {
                                 GeoPoint geo = firestoreDatabase.getGeo();
                                 LatLng latLng = new LatLng(geo.getLatitude(), geo.getLongitude());
-                                googleMap.addMarker(new MarkerOptions().position(latLng).snippet(numero).title(dist));
+                                googleMap.addMarker(new MarkerOptions().position(latLng).snippet(numero).title(dist).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
                                 googleMap.setOnMarkerClickListener(marker -> {
                                     Log.e("coleccion", Objects.requireNonNull(marker.getTitle()));
                                     Log.e("documento", Objects.requireNonNull(marker.getSnippet()));
