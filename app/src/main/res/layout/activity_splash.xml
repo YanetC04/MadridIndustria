@@ -6,13 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".Splash">
 
-    <VideoView
-        android:id="@+id/splash"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/adrid"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="40dp"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/industry_logo"
+        android:layout_marginEnd="7dp"/>
+
+    <TextView
+        android:id="@+id/adrid"
+        android:layout_width="185dp"
+        android:layout_height="100dp"
+        android:fontFamily="@font/pathwaygothicone_regular"
+        android:text="ADRID"
+        android:textColor="@color/white"
+        android:textSize="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/logo"
+        app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/industria"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/pathwaygothicone_regular"
+        android:text="INDUSTRIA"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/linear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
