@@ -27,10 +27,6 @@ public class Splash extends AppCompatActivity {
 
         logo = findViewById(R.id.logo);
 
-        logo.setPivotX(logo.getWidth() / 2);
-        logo.setPivotY(logo.getHeight() / 2);
-
-
         adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
 
