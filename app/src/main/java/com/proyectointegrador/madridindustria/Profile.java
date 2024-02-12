@@ -1,4 +1,4 @@
-package proyectointegrador.madridindustria;
+package com.proyectointegrador.madridindustria;
 
 import androidx.appcompat.app.*;
 import android.content.res.Configuration;
