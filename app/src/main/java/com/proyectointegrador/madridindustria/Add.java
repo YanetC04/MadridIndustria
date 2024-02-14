@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -29,9 +31,34 @@ public class Add extends AppCompatActivity {
         coordenadas_latEditText = findViewById(R.id.coordenadas_lat);
         coordenadas_lonEditText = findViewById(R.id.coordenadas_lon);
         metroEditText = findViewById(R.id.metro);
-        distritoEditText = findViewById(R.id.distrito);
+       // distritoEditText = findViewById(R.id.distrito);
         direccionEditText = findViewById(R.id.direccion);
         descripcionEditText = findViewById(R.id.descripcion);
+
+
+        // CREAMOS UN ARRAY DE LOS DATOS QUE QUEREMOS QUE MUESTRE AL SPINNER
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.distritos, android.R.layout.simple_spinner_item
+        );
+
+        // ESPECIFICAMOS EL DISEÑO DE LA LISTA QUE VAMOS A MOSTRAR
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // ASIGNAMOS EL ADAPTADOR A NUESTRO SPINNER
+        //d.setAdapter(adapter);
+
+        /**dias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                if (position!=0)
+                    mensa.setText("Seleccionaste " +parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                mensa.setText("");
+            }
+        });**/
 
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override

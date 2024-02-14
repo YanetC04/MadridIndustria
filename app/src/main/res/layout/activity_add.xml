@@ -32,25 +32,20 @@
                     android:contentDescription="@string/contenido"
                     android:scaleType="centerCrop" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:visibility="invisible"
-                    android:layout_height="50dp"
-                    app:layout_collapseMode="pin"/>
+                    android:layout_height="match_parent">
 
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:visibility="invisible"
-                    android:id="@+id/boton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/heart"
-                    app:layout_anchor="@id/appBarLayout"
-                    app:shapeAppearanceOverlay="@style/redondo"
-                    style="@style/Theme.MadridIndustria.NoActionBar.FloatingButton"/>
+                    <EditText
+                        android:id="@+id/nombre"
+                        style="@style/textContent"
+                        android:layout_height="50dp"
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce el nombre del patrimonio"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,23 +60,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/textTitle"
-                        android:text="Nombre: " />
-
-                    <EditText
-                        android:id="@+id/nombre"
-                        android:hint="introduce el nombre"
-                        style="@style/textContent"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -91,12 +71,13 @@
 
                     <EditText
                         android:id="@+id/inaguracion"
-                        android:hint="introduce el año"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce el año de inaguracion"
                         style="@style/textContent"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -106,34 +87,38 @@
 
                     <EditText
                         android:id="@+id/patrimonio"
-                        android:hint="categoria"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce la categoría"
                         style="@style/textContent"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:layout_gravity="center"
                         style="@style/textTitle"
                         android:text="Coordenadas: " />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                     <EditText
                         android:id="@+id/coordenadas_lat"
-                        android:hint="introduce la latitud"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce la latitud"
                         style="@style/textContent"/>
                     <EditText
                         android:id="@+id/coordenadas_lon"
-                        android:hint="introduce la longitud"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce la longitud"
                         style="@style/textContent"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -143,11 +128,12 @@
 
                     <EditText
                         android:id="@+id/metro"
-                        android:hint="lineas de metro cerca"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce las líneas de metro cercana"
                         style="@style/textContent"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -155,43 +141,45 @@
                         style="@style/textTitle"
                         android:text="Distrito: " />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/distrito"
-                        android:hint="distrito"
-                        style="@style/textContent"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         style="@style/textTitle"
                         android:text="Dirección: " />
+
+                    <EditText
+                        android:id="@+id/direccion"
+                        android:layout_width="match_parent"
+                        android:hint="Introduce la dirección"
+                        style="@style/textContent"/>
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/direccion"
-                    android:hint="direccion"
-                    style="@style/textContent"/>
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp" />
 
                 <TextView
+                    android:layout_marginTop="5dp"
                     style="@style/textTitle"
                     android:text="@string/descripcion" />
 
                 <EditText
                     android:id="@+id/descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
                     style="@style/textContent"
-                    android:hint="descripcion"
+                    android:hint="Introduce la descripción del patrimonio. Minimo 200 caracteres."
                     android:justificationMode="inter_word"/>
                 <Button
                     android:id="@+id/enviar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/button_red"
                     android:text="ENVIAR" />

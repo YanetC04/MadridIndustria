@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import proyectointegrador.madridindustria.MainActivity;
-
 public class Splash extends AppCompatActivity {
 
     private ImageView logo;
@@ -77,7 +75,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 // Iniciar la actividad principal
-                Intent intent = new Intent(Splash.this, MainActivity.class);
+                Intent intent = new Intent(Splash.this, MainActivity.class).putExtra("source", "cerrado");
                 startActivity(intent);
                 finish(); // Finalizar la actividad actual
             }
