@@ -1,4 +1,4 @@
-package proyectointegrador.madridindustria;
+package com.proyectointegrador.madridindustria;
 
 import android.content.Intent;
 import android.os.Bundle;
