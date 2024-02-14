@@ -6,8 +6,14 @@ import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+
+import android.graphics.Canvas;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.*;
@@ -150,6 +156,7 @@ public class Map extends AppCompatActivity {
             }
 
             // PONEMOS LOS MARCADORES
+            // PONEMOS LOS MARCADORES
             for (String dist : distritos) {
                 getCount(dist, count -> {
                     for (int i = 1; i <= count; i++) {
@@ -158,23 +165,49 @@ public class Map extends AppCompatActivity {
                             if (firestoreDatabase.getGeo() != null) {
                                 GeoPoint geo = firestoreDatabase.getGeo();
                                 LatLng latLng = new LatLng(geo.getLatitude(), geo.getLongitude());
-                                googleMap.addMarker(new MarkerOptions().position(latLng).snippet(numero).title(dist).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
-                                googleMap.setOnMarkerClickListener(marker -> {
-                                    Log.e("coleccion", Objects.requireNonNull(marker.getTitle()));
-                                    Log.e("documento", Objects.requireNonNull(marker.getSnippet()));
-                                    Intent intent = new Intent(Map.this, Patrimonio.class);
-                                    intent.putExtra("collection", marker.getTitle());
-                                    intent.putExtra("document", marker.getSnippet());
-                                    startActivity(intent);
-                                    return true;
-                                });
+
+                                // Crear un VectorDrawable para la imagen del marcador
+                                Drawable drawable = ContextCompat.getDrawable(Map.this, R.drawable.marker);
+                                if (drawable != null) {
+                                    // Convertir el VectorDrawable a un BitmapDescriptor
+                                    BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable));
+
+                                    // Agregar el marcador al mapa
+                                    googleMap.addMarker(new MarkerOptions()
+                                            .position(latLng)
+                                            .snippet(numero)
+                                            .title(dist)
+                                            .icon(icon));
+
+                                    googleMap.setOnMarkerClickListener(marker -> {
+                                        Log.e("coleccion", Objects.requireNonNull(marker.getTitle()));
+                                        Log.e("documento", Objects.requireNonNull(marker.getSnippet()));
+                                        Intent intent = new Intent(Map.this, Patrimonio.class);
+                                        intent.putExtra("collection", marker.getTitle());
+                                        intent.putExtra("document", marker.getSnippet());
+                                        startActivity(intent);
+                                        return true;
+                                    });
+                                } else {
+                                    Log.e("Map", "Error al obtener el VectorDrawable del marcador.");
+                                }
                             }
                         });
                     }
                 });
             }
+
         });
     }
+
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
 
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

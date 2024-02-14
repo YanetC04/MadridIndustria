@@ -29,6 +29,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation ("com.google.android.gms:play-services-location:21.1.0")
@@ -36,7 +37,7 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation ("com.google.firebase:firebase-firestore:24.10.1")
+    implementation ("com.google.firebase:firebase-firestore:24.10.2")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.firebase:firebase-database:20.3.0")
