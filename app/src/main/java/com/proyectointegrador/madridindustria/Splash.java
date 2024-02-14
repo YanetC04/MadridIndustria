@@ -16,7 +16,7 @@ public class Splash extends AppCompatActivity {
 
     private ImageView logo;
     private TextView adrid, industria;
-    private static final int SPLASH_DURATION = 2000;
+    private static final int SPLASH_DURATION = 2500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,53 +24,53 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         logo = findViewById(R.id.logo);
-
         adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
 
+        // Manejar el tiempo de espera antes de iniciar las animaciones
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Iniciar las animaciones después del retraso
+                startAnimations();
+            }
+        }, 500); // 500 milisegundos (medio segundo) de retraso
+    }
+
+    private void startAnimations() {
         Animation moveAnimation = AnimationUtils.loadAnimation(this, R.anim.centrar);
-        // Aplicar la animación de desvanecimiento a adrid
         Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.desvanecer);
-        // Aplicar la animación de desvanecimiento a industria
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.aparecer);
 
         fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-                // No necesitamos hacer nada en el inicio de la animación
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                adrid.setVisibility(View.INVISIBLE); // Hacer que la vista sea invisible al finalizar la animación
-                industria.startAnimation(fadeIn); // Iniciar la animación de aparición
+                adrid.setVisibility(View.INVISIBLE);
+                industria.startAnimation(fadeIn);
                 logo.startAnimation(moveAnimation);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-                // No necesitamos hacer nada en repeticiones de la animación
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
+
         fadeIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                industria.setVisibility(View.VISIBLE); // Hacer que la vista sea invisible al finalizar la animación
+                industria.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
-        adrid.startAnimation(fadeOut); // Iniciar la animación de desvanecimiento
 
-        // Manejar el tiempo de espera antes de iniciar la siguiente actividad
+        adrid.startAnimation(fadeOut);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -81,4 +81,5 @@ public class Splash extends AppCompatActivity {
             }
         }, SPLASH_DURATION);
     }
+
 }
