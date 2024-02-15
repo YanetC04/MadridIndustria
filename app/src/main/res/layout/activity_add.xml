@@ -30,21 +30,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:contentDescription="@string/contenido"
+                    android:src="@android:color/background_dark"
                     android:scaleType="centerCrop" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/input_nombre"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <EditText
                         android:id="@+id/nombre"
                         style="@style/textContent"
-                        android:layout_height="50dp"
-                        android:textColorHint="@color/white"
-                        android:textColor="@color/white"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
                         android:hint="Introduce el nombre del patrimonio"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -60,37 +64,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_inaguracion"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/textTitle"
-                        android:text="Inaguración: " />
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/inaguracion"
                         android:layout_width="match_parent"
-                        android:hint="Introduce el año de inaguracion"
-                        style="@style/textContent"/>
-                </LinearLayout>
-
-                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:hint="Introduce el año de inaguracion"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_patrimonio"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/textTitle"
-                        android:text="Patrimonio: " />
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/patrimonio"
                         android:layout_width="match_parent"
-                        android:hint="Introduce la categoría"
-                        style="@style/textContent"/>
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:hint="Introduce la categoría del patrimonio" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,37 +97,51 @@
                         style="@style/textTitle"
                         android:text="Coordenadas: " />
 
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"></Space>
+
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                    <EditText
-                        android:id="@+id/coordenadas_lat"
-                        android:layout_width="match_parent"
-                        android:hint="Introduce la latitud"
-                        style="@style/textContent"/>
-                    <EditText
-                        android:id="@+id/coordenadas_lon"
-                        android:layout_width="match_parent"
-                        android:hint="Introduce la longitud"
-                        style="@style/textContent"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_coordenadas_lat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/coordenadas_lat"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Introduce la latitud"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_coordenadas_lon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/coordenadas_lon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Introduce la longitud"/>
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_metro"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/textTitle"
-                        android:text="Metro: " />
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/metro"
                         android:layout_width="match_parent"
-                        android:hint="Introduce las líneas de metro cercana"
-                        style="@style/textContent"/>
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:hint="Introduce las líneas de metro cercana" />
+                </com.google.android.material.textfield.TextInputLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,24 +156,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_direccion"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/textTitle"
-                        android:text="Dirección: " />
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/direccion"
                         android:layout_width="match_parent"
-                        android:hint="Introduce la dirección"
-                        style="@style/textContent"/>
-                </LinearLayout>
-
-
+                        android:layout_height="wrap_content"
+                        android:hint="Introduce la dirección" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:layout_marginTop="5dp"
