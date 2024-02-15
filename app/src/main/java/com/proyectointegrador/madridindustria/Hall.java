@@ -26,7 +26,7 @@ public class Hall extends AppCompatActivity {
         // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
         if (!isDestroyed()) {
             Glide.with(Hall.this)
-                    .load(R.drawable.ministerio)
+                    .load(getDrawable(R.drawable.ministerio))
                     .into(imagen);
         }
 
