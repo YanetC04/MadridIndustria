@@ -15,9 +15,10 @@ public class Password extends AppCompatActivity {
         setContentView(R.layout.activity_password);
         TextView txt = findViewById(R.id.txt4);
         Button inicio = findViewById(R.id.iniciar);
+        String source = getIntent().getStringExtra("intent");
 
         txt.setOnClickListener(v -> {
-            Intent intent = new Intent(Password.this, Login.class);
+            Intent intent = new Intent(Password.this, Login.class).putExtra("intent", source);
             startActivity(intent);
         });
         inicio.setOnClickListener(v -> {

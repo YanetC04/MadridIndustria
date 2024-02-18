@@ -5,53 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Add">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/Theme.MadridIndustria.NoActionBar.HeaderRed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <TextView
+            android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="AGREGAR"
+            android:textSize="18sp"
+            android:gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/toolbarCollapse"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                style="@style/CollapsingToolbarLayout.MadridIndustria.NoActionBar"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <ImageView
-                    android:id="@+id/imagen"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:contentDescription="@string/contenido"
-                    android:src="@android:color/background_dark"
-                    android:scaleType="centerCrop" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/input_nombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <EditText
-                        android:id="@+id/nombre"
-                        style="@style/textContent"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:hint="Introduce el nombre del patrimonio"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
@@ -64,6 +43,52 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/textTitle"
+                        android:text="Distrito: " />
+
+                    <Spinner
+                        android:id="@+id/distrito"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"/>
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_imagen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <EditText
+                        android:id="@+id/imagen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/ima"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <EditText
+                        android:id="@+id/nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nom"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_inaguracion"
                     android:layout_width="match_parent"
@@ -73,7 +98,7 @@
                         android:id="@+id/inaguracion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Introduce el año de inaguracion"/>
+                        android:hint="@string/ina"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_patrimonio"
@@ -84,7 +109,31 @@
                         android:id="@+id/patrimonio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Introduce la categoría del patrimonio" />
+                        android:hint="@string/pat" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_metro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/metro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/met" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_direccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/dir" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -99,7 +148,7 @@
 
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"></Space>
+                        android:layout_height="wrap_content"/>
 
 
                     <LinearLayout
@@ -116,7 +165,7 @@
                                 android:id="@+id/coordenadas_lat"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Introduce la latitud"/>
+                                android:hint="@string/lat"/>
                         </com.google.android.material.textfield.TextInputLayout>
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/input_coordenadas_lon"
@@ -127,70 +176,38 @@
                                 android:id="@+id/coordenadas_lon"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Introduce la longitud"/>
+                                android:hint="@string/lon"/>
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_metro"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/metro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Introduce las líneas de metro cercana" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/textTitle"
-                        android:text="Distrito: " />
-
-                    <Spinner
-                        android:id="@+id/distrito"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_direccion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/direccion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Introduce la dirección" />
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:layout_marginTop="5dp"
                     style="@style/textTitle"
                     android:text="@string/descripcion" />
 
-                <EditText
-                    android:id="@+id/descripcion"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_descripcion"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    style="@style/textContent"
-                    android:hint="Introduce la descripción del patrimonio. Minimo 200 caracteres."
-                    android:justificationMode="inter_word"/>
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/descripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/des"
+                        android:justificationMode="inter_word"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <Button
                     android:id="@+id/enviar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/button_red"
-                    android:text="ENVIAR" />
+                    android:text="AGREGAR" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.*;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.*;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
 import java.util.Objects;
@@ -21,7 +26,6 @@ public class Login extends AppCompatActivity  {
 
     private EditText email, contrasena;
     private TextInputLayout lay_pass, lay_mail;
-    private final FirebaseAuthHelper authHelper = new FirebaseAuthHelper();
     private String mail, pass;
     private ImageView imagen;
     private Drawable redBorderDrawable;
@@ -61,16 +65,19 @@ public class Login extends AppCompatActivity  {
 
             if (!mail.isEmpty() && !pass.isEmpty()){
                 if (valida(mail)) {
-                    authHelper.signInWithEmailAndPassword(mail, pass, task -> {
-                        if (task.isSuccessful()) {
-                            finish();
-                            try {
-                                startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto"));
-                            } catch (ClassNotFoundException e) {
-                                throw new RuntimeException(e);
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                finish();
+                                try {
+                                    startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto"));
+                                } catch (ClassNotFoundException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                showErrorDialog("Usuario o Correo no registrados.");
                             }
-                        } else {
-                            showErrorDialog("Usuario o Correo no registrados.");
                         }
                     });
                 } else {
@@ -78,7 +85,7 @@ public class Login extends AppCompatActivity  {
                 }
             } else {
                 if (pass.isEmpty()){
-                    lay_pass.setHint("");
+                    lay_pass.setHint(R.string.password);
                     contrasena.setBackground(redBorderDrawable);
                     contrasena.setOnFocusChangeListener((v1, hasFocus) -> {
                         if(!hasFocus){
@@ -89,7 +96,7 @@ public class Login extends AppCompatActivity  {
                 }
 
                 if (mail.isEmpty()){
-                    lay_mail.setHint("");
+                    lay_mail.setHint(R.string.email);
                     email.setBackground(redBorderDrawable);
                     email.setOnFocusChangeListener((v12, hasFocus) -> {
                         if(!hasFocus){
@@ -106,31 +113,19 @@ public class Login extends AppCompatActivity  {
 
             if (!mail.isEmpty()) {
                 if (valida(mail)) {
-                    getCount(count -> {
-                        if (count >= 0) {
-                            for (int i = 1; i <= count; i++) {
-                                new FirestoreDatabase("users", String.valueOf(i), firestoreDatabase1 -> {
-                                    String userMail = firestoreDatabase1.getMail();
-                                    if (userMail != null && userMail.equalsIgnoreCase(mail)) {
-                                        authHelper.getmAuth().sendPasswordResetEmail(mail);
-                                        finish();
-                                        Intent intent = new Intent(Login.this, Password.class);
-                                        startActivity(intent);
-                                    } else {
-                                        showErrorDialog("Correo no registrado en la base de datos.");
-                                    }
-                                });
-                            }
-
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(mail).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Intent intent = new Intent(Login.this, Password.class).putExtra("intent", getIntent().getStringExtra("intent"));
+                            startActivity(intent);
                         } else {
-                            Log.e("FirestoreData", "Error");
+                            showErrorDialog("Correo no registrado en la base de datos.");
                         }
                     });
                 } else {
                     showErrorDialog("Correo no válido.");
                 }
             } else {
-                lay_mail.setHint("");
+                lay_mail.setHint(R.string.email);
                 email.setBackground(redBorderDrawable);
                 email.setOnFocusChangeListener((v13, hasFocus) -> {
                     if(!hasFocus){

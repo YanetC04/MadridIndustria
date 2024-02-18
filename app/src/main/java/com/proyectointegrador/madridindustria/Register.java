@@ -83,7 +83,7 @@ public class Register extends AppCompatActivity {
             }
         } else {
             if (codeText.isEmpty()) {
-                lay_code.setHint("");
+                lay_code.setHint(R.string.code);
                 code.setBackground(redBorderDrawable);
 
                 // COMPROBAMOS QUE SI AGREGA TEXTO LUEGO, VOLVEMOS A PONER EL BORDE EN PREDETERMINADO
@@ -96,7 +96,7 @@ public class Register extends AppCompatActivity {
             }
 
             if (mailText.isEmpty()) {
-                lay_mail.setHint("");
+                lay_mail.setHint(R.string.email);
                 mail.setBackground(redBorderDrawable);
                 mail.setOnFocusChangeListener((v, hasFocus) -> {
                     if(!hasFocus){
@@ -107,7 +107,7 @@ public class Register extends AppCompatActivity {
             }
 
             if (firstPassText.isEmpty()) {
-                lay_first_pass.setHint("");
+                lay_first_pass.setHint(R.string.password);
                 first_pass.setBackground(redBorderDrawable);
                 first_pass.setOnFocusChangeListener((v, hasFocus) -> {
                     if(!hasFocus){
@@ -118,7 +118,7 @@ public class Register extends AppCompatActivity {
             }
 
             if (confirmPassText.isEmpty()) {
-                lay_confirm_pass.setHint("");
+                lay_confirm_pass.setHint(R.string.password2);
                 confirm_pass.setBackground(redBorderDrawable);
                 confirm_pass.setOnFocusChangeListener((v, hasFocus) -> {
                     if(!hasFocus){

@@ -33,14 +33,30 @@
     <string name="info">Info. de la aplicacción</string>
     <string name="english" translatable="false">English</string>
     <string name="spanish" translatable="false">Spanish</string>
+    <string name="lat">Introduce la latitud</string>
+    <string name="lon">Introduce la longitud</string>
+    <string name="nom">Introduce el nombre del patrimonio</string>
+    <string name="ina">Introduce el año de inaguracion</string>
+    <string name="pat">Introduce la categoría del patrimonio</string>
+    <string name="met">Introduce las líneas de metro cercana</string>
+    <string name="des">Minimo 200 caracteres.</string>
+    <string name="dir">Introduce la dirección</string>
+    <string name="ima">Introduce el url de la imagen</string>
     <string-array name="distritos">
         <item>Escoge el distrito</item>
         <item>Distrito Arganzuela</item>
-        <item>Distrito Hortaleza</item>
-        <item>Distrito Retiro</item>
+        <item>Distrito Barajas</item>
         <item>Distrito Centro</item>
-        <item>Distrito Arganzuela</item>
-        <item>Distrito Arganzuela</item>
-        <item>Distrito Arganzuela</item>
+        <item>Distrito Chamartín</item>
+        <item>Distrito Chamberí</item>
+        <item>Distrito Hortaleza</item>
+        <item>Distrito Moncloa-Aravaca</item>
+        <item>Distrito Latina</item>
+        <item>Distrito Retiro</item>
+        <item>Distrito Salamanca</item>
+        <item>Distrito San Blas-Canillejas</item>
+        <item>Distrito Tetuán</item>
+        <item>Distrito Vallecas</item>
+        <item>Distrito Villaverde</item>
     </string-array>
 </resources>

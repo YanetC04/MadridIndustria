@@ -9,7 +9,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="proyectointegrador.madridindustria" />
+                  <option name="appId" value="com.proyectointegrador.madridindustria" />
                 </ConnectionSetting>
               </option>
               <option name="failureTypes">
@@ -28,8 +28,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="proyectointegrador.madridindustria" />
-                  <option name="mobileSdkAppId" value="1:1080380873436:android:a45d0c8da33994025cf219" />
+                  <option name="appId" value="com.proyectointegrador.madridindustria" />
+                  <option name="mobileSdkAppId" value="1:1080380873436:android:9f950afe0041a6a65cf219" />
                   <option name="projectId" value="madridindustria-12690" />
                   <option name="projectNumber" value="1080380873436" />
                 </ConnectionSetting>
