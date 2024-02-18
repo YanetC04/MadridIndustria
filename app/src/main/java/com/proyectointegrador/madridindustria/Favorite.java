@@ -4,6 +4,8 @@ import androidx.appcompat.app.*;
 
 import android.annotation.SuppressLint;
 import android.content.*;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -27,40 +29,61 @@ public class Favorite extends AppCompatActivity {
         linearLayout = findViewById(R.id.linear);
         textView = findViewById(R.id.textView);
 
-        // BASE DE DATOS
-        FirebaseFirestore.getInstance().collection("favorites").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (DocumentSnapshot document : task.getResult()) {
-                    View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
+        // BASE DE DATOS LOCAL
+        localDB dbHelper = new localDB(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                    ImageView imagen = favoriteCard.findViewById(R.id.imagen);
-                    imagenId = favoriteCard.findViewById(R.id.imagen);
-                    TextView nombre = favoriteCard.findViewById(R.id.nombre);
-                    TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
-                    TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
-                    TextView metro = favoriteCard.findViewById(R.id.metro);
-                    TextView direccion = favoriteCard.findViewById(R.id.direccion);
-                    String numeroDeReferencia = document.getReference().getId();
+        Cursor cursor = db.query("favorites", null, null, null, null, null, null);
 
-                    new FirestoreDatabase("favorites", numeroDeReferencia, firestoreDatabase -> {
-                        // ESTABLECER INFORMACION
-                        textView.setVisibility(View.INVISIBLE);
-                        nombre.setText(firestoreDatabase.getNombre());
-                        inaguracion.setText(firestoreDatabase.getInaguracion());
-                        patrimonio.setText(firestoreDatabase.getPatrimonio());
-                        metro.setText(firestoreDatabase.getMetro());
-                        direccion.setText(firestoreDatabase.getDireccion());
-                        Glide.with(Favorite.this)
-                                .load(firestoreDatabase.getImagen())
-                                .centerCrop()
-                                .into(imagen);
+        if (cursor.moveToFirst()) {
+            do {
+                View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
 
-                    });
+                ImageView imagen = favoriteCard.findViewById(R.id.imagen);
+                imagenId = favoriteCard.findViewById(R.id.imagen);
+                TextView nombre = favoriteCard.findViewById(R.id.nombre);
+                TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
+                TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
+                TextView metro = favoriteCard.findViewById(R.id.metro);
+                TextView direccion = favoriteCard.findViewById(R.id.direccion);
+
+                // Verificar si el cursor contiene la columna antes de obtener su índice
+                int columnIndexNombre = cursor.getColumnIndex("nombre");
+                int columnIndexInaguracion = cursor.getColumnIndex("inaguracion");
+                int columnIndexPatrimonio = cursor.getColumnIndex("patrimonio");
+                int columnIndexMetro = cursor.getColumnIndex("metro");
+                int columnIndexDireccion = cursor.getColumnIndex("direccion");
+                int columnIndexImagen = cursor.getColumnIndex("imagen");
+
+                if (columnIndexNombre != -1) {
+                    // Obtener los valores de cada columna
+                    String nombreValor = cursor.getString(columnIndexNombre);
+                    String inaguracionValor = cursor.getString(columnIndexInaguracion);
+                    String patrimonioValor = cursor.getString(columnIndexPatrimonio);
+                    String metroValor = cursor.getString(columnIndexMetro);
+                    String direccionValor = cursor.getString(columnIndexDireccion);
+                    String imagenValor = cursor.getString(columnIndexImagen);
+
+                    // ESTABLECER INFORMACION
+                    textView.setVisibility(View.INVISIBLE);
+                    nombre.setText(nombreValor);
+                    inaguracion.setText(inaguracionValor);
+                    patrimonio.setText(patrimonioValor);
+                    metro.setText(metroValor);
+                    direccion.setText(direccionValor);
+
+                    Glide.with(Favorite.this)
+                            .load(imagenValor)
+                            .centerCrop()
+                            .into(imagen);
 
                     linearLayout.addView(favoriteCard);
                 }
-            }
-        });
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
 
         // BARRA INFERIOR
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

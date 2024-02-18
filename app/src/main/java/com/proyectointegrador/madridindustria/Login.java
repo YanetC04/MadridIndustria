@@ -4,20 +4,14 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.*;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.*;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.*;
 
 import java.util.Objects;
 
@@ -65,19 +59,16 @@ public class Login extends AppCompatActivity  {
 
             if (!mail.isEmpty() && !pass.isEmpty()){
                 if (valida(mail)) {
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                finish();
-                                try {
-                                    startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto"));
-                                } catch (ClassNotFoundException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            } else {
-                                showErrorDialog("Usuario o Correo no registrados.");
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            finish();
+                            try {
+                                startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto"));
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
                             }
+                        } else {
+                            showErrorDialog("Usuario o Correo no registrados.");
                         }
                     });
                 } else {
@@ -133,18 +124,6 @@ public class Login extends AppCompatActivity  {
                         lay_mail.setHint(R.string.email);
                     }
                 });
-            }
-        });
-    }
-
-    public void getCount(final CountCallback countCallback) {
-        FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                int count = task.getResult().size();
-                countCallback.onCallback(count);
-            } else {
-                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
-                countCallback.onCallback(-1); // Indicates an error
             }
         });
     }

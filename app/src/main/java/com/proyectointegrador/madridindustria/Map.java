@@ -156,7 +156,6 @@ public class Map extends AppCompatActivity {
             }
 
             // PONEMOS LOS MARCADORES
-            // PONEMOS LOS MARCADORES
             for (String dist : distritos) {
                 getCount(dist, count -> {
                     for (int i = 1; i <= count; i++) {

@@ -30,8 +30,6 @@ public class FirestoreDatabase {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    mail = document.getString("mail");
-                    pass = document.getString("password");
                     nombre = document.getString("nombre");
                     inaguracion = document.getString("inaguracion");
                     patrimonio = document.getString("patrimonio");
@@ -40,8 +38,6 @@ public class FirestoreDatabase {
                     descripcion = (document.getString("descripcion") != null) ? Objects.requireNonNull(document.getString("descripcion")).replace("\\n", "\n\n"): "";
                     imagen = document.getString("imagen");
                     distrito = document.getString("distrito");
-                    like = document.getString("like");
-                    id = document.getString("id_patrimonio");
                     geo = document.getGeoPoint("geo");
                 } else {
                     // El documento no existe
@@ -58,36 +54,12 @@ public class FirestoreDatabase {
         });
     }
 
-    public String getCollectionPath() {
-        return collectionPath;
-    }
-
-    public void setCollectionPath(String collectionPath) {
-        this.collectionPath = collectionPath;
-    }
-
-    public String getDocumentPath() {
-        return documentPath;
-    }
-
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
-    }
-
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getInaguracion() {
         return inaguracion;
-    }
-
-    public void setInaguracion(String inaguracion) {
-        this.inaguracion = inaguracion;
     }
 
     public String getPatrimonio() {
@@ -102,24 +74,12 @@ public class FirestoreDatabase {
         return metro;
     }
 
-    public void setMetro(String metro) {
-        this.metro = metro;
-    }
-
     public String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public String getDescripcion() {
         return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public String getImagen() {
@@ -133,34 +93,6 @@ public class FirestoreDatabase {
         return distrito;
     }
 
-    public void setDistrito(String distrito) {
-        this.distrito = distrito;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
-    public String getLike() {
-        return like;
-    }
-
-    public void setLike(String like) {
-        this.like = like;
-    }
-
     public String getId() {
         return id;
     }
@@ -171,9 +103,5 @@ public class FirestoreDatabase {
 
     public GeoPoint getGeo() {
         return geo;
-    }
-
-    public void setGeo(GeoPoint geo) {
-        this.geo = geo;
     }
 }

@@ -55,18 +55,9 @@ public class Register extends AppCompatActivity {
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
                         mAuth.createUserWithEmailAndPassword(mailText, firstPassText).addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                                HashMap<String, Object> datos = new HashMap<>();
-                                datos.put("mail", mailText);
-                                datos.put("password", firstPassText);
-
-                                db.collection("users").document().set(datos)
-                                        .addOnSuccessListener(aVoid -> {
-                                            // REDIRIGE AL LOGIN
-                                            Intent intent = new Intent(Register.this, Login.class).putExtra("intent", source);
-                                            startActivity(intent);
-                                        });
+                                // REDIRIGE AL LOGIN
+                                Intent intent = new Intent(Register.this, Login.class).putExtra("intent", source);
+                                startActivity(intent);
                             } else {
                                 Log.e("User", "No Creado");
                             }

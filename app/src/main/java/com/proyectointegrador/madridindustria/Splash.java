@@ -24,7 +24,6 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         logo = findViewById(R.id.logo);
-
         adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
 
