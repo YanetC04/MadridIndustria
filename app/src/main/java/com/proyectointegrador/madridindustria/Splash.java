@@ -47,48 +47,6 @@ public class Splash extends AppCompatActivity {
         adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
 
-        //Animation moveAnimation = AnimationUtils.loadAnimation(this, R.anim.centrar);
-        // Aplicar la animación de desvanecimiento a adrid
-        //Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.desvanecer);
-        // Aplicar la animación de desvanecimiento a industria
-       // Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.aparecer);
-
-        /*fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                // No necesitamos hacer nada en el inicio de la animación
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                adrid.setVisibility(View.INVISIBLE); // Hacer que la vista sea invisible al finalizar la animación
-                industria.startAnimation(fadeIn); // Iniciar la animación de aparición
-                logo.startAnimation(moveAnimation);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // No necesitamos hacer nada en repeticiones de la animación
-            }
-        });
-        fadeIn.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                industria.setVisibility(View.VISIBLE); // Hacer que la vista sea invisible al finalizar la animación
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        adrid.startAnimation(fadeOut); // Iniciar la animación de desvanecimiento*/
-
         // Cargar animaciones desde recursos XML
         ObjectAnimator slideRightX = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_x);
         ObjectAnimator slideRightAlpha = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_alpha);
