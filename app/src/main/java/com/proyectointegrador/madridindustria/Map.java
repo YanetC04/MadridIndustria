@@ -33,36 +33,37 @@ public class Map extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationCallback locationCallback;
-    private final String[] distritos = {"chamartin", "centro", "moncloa", "chamberi", "hortaleza", "arganzuela"};
+        private LocationCallback locationCallback;
+        private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "barajas", "fuencarral", "hortaleza", "latina", "retiro", "salamanca", "sanblas", "tetuan", "vallecas", "villaverde"};
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_map);
 
-        // Comprueba y solicita permisos
-        checkLocationPermission();
+            // Comprueba y solicita permisos
+            checkLocationPermission();
 
-        // Inicializa el mapa
-        initMap();
+            // Inicializa el mapa
+            initMap();
 
-        // Inicializa la ubicación en tiempo real
-        initLocationUpdates();
+            // Inicializa la ubicación en tiempo real
+            initLocationUpdates();
 
-        // BARRA INFERIOR
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.map);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            Intent intent = null;
-            String source = getIntent().getStringExtra("source");
+            // BARRA INFERIOR
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setSelectedItemId(R.id.map);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                Intent intent = null;
+                String source = getIntent().getStringExtra("source");
 
-            if (item.getItemId() == R.id.home) {
-                intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
-            }
-            if (item.getItemId() == R.id.add) {
-                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Add.class);
+                if (item.getItemId() == R.id.home) {
+                    intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
+                }
+                if (item.getItemId() == R.id.add) {
+                    if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+
+                        showDialog(Add.class);
                 } else {
                     intent = new Intent(Map.this, Add.class);
                 }

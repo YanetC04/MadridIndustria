@@ -20,30 +20,12 @@
         android:supportsRtl="true"
         android:screenOrientation="portrait"
         android:theme="@style/Theme.MadridIndustria.NoActionBar"
+        tools:ignore="LockedOrientationActivity"
         tools:targetApi="31">
-        <activity
-            android:name=".Favorite"
-            android:exported="false" />
-        <activity
-            android:name=".Profile"
-            android:exported="false" />
-        <activity
-            android:name=".Add"
-            android:exported="false" />
-        <activity
-            android:name=".Password"
-            android:exported="false" />
-        <activity
-            android:name=".Register"
-            android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDUPbwAJE5D3lLeqwGXrFxrxvzaJoCKPHY" />
-
         <activity
             android:name=".Splash"
             android:theme="@style/Theme.Splash"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,23 +35,50 @@
         </activity>
         <activity
             android:name=".Hall"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity
             android:name=".Login"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Patrimonio"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Map"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Favorite"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Profile"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Add"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Password"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Register"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <activity
-            android:name=".Map"
-            android:exported="true" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDUPbwAJE5D3lLeqwGXrFxrxvzaJoCKPHY" />
     </application>
 
 </manifest>

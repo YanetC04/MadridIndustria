@@ -17,6 +17,7 @@ public class localDB extends SQLiteOpenHelper {
             "patrimonio TEXT, " +
             "metro TEXT, " +
             "direccion TEXT, " +
+            "distrito TEXT, " +
             "imagen TEXT);";
 
     public localDB(Context context) {

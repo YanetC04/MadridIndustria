@@ -149,6 +149,23 @@ public class Login extends AppCompatActivity  {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        int nightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
+            // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
+            Glide.with(Login.this)
+                    .load(R.drawable.whitemadi)
+                    .into(imagen);
+        } else {
+            // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
+            Glide.with(Login.this)
+                    .load(R.drawable.redmadi)
+                    .into(imagen);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }

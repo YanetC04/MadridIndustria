@@ -24,11 +24,10 @@ public class Hall extends AppCompatActivity {
         String source = getIntent().getStringExtra("intent");
 
         // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
-        if (!isDestroyed()) {
-            Glide.with(Hall.this)
-                    .load(getDrawable(R.drawable.ministerio))
-                    .into(imagen);
-        }
+        Glide.with(Hall.this)
+                .load(R.drawable.ministerio)
+                .into(imagen);
+
 
         inicio.setOnClickListener(v -> {
             Intent intent = new Intent(Hall.this, Login.class).putExtra("intent", source);
@@ -61,6 +60,14 @@ public class Hall extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Glide.with(this).clear(imagen);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Glide.with(Hall.this)
+                .load(R.drawable.ministerio)
+                .into(imagen);
     }
 
     @Override

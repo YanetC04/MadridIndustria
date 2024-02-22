@@ -1,5 +1,10 @@
 package com.proyectointegrador.madridindustria;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -7,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -41,13 +47,13 @@ public class Splash extends AppCompatActivity {
         adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
 
-        Animation moveAnimation = AnimationUtils.loadAnimation(this, R.anim.centrar);
+        //Animation moveAnimation = AnimationUtils.loadAnimation(this, R.anim.centrar);
         // Aplicar la animación de desvanecimiento a adrid
-        Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.desvanecer);
+        //Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.desvanecer);
         // Aplicar la animación de desvanecimiento a industria
-        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.aparecer);
+       // Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.aparecer);
 
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+        /*fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 // No necesitamos hacer nada en el inicio de la animación
@@ -81,7 +87,50 @@ public class Splash extends AppCompatActivity {
 
             }
         });
-        adrid.startAnimation(fadeOut); // Iniciar la animación de desvanecimiento
+        adrid.startAnimation(fadeOut); // Iniciar la animación de desvanecimiento*/
+
+        // Cargar animaciones desde recursos XML
+        ObjectAnimator slideRightX = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_x);
+        ObjectAnimator slideRightAlpha = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_alpha);
+        ObjectAnimator slideLeft = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_left);
+
+        // Establecer el objetivo de las animaciones
+        slideRightX.setTarget(adrid);
+        slideRightAlpha.setTarget(adrid);
+        slideLeft.setTarget(logo);
+
+        // Crear un conjunto y agregar los animadores
+        AnimatorSet slideRightSet = new AnimatorSet();
+        slideRightSet.playTogether(slideRightX, slideRightAlpha);
+
+        // Iniciar las animaciones
+        slideRightSet.start();
+        slideLeft.start();
+
+        slideRightSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // No necesitamos hacer nada en el inicio de la animación
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                ObjectAnimator slideDownAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(Splash.this, R.animator.slide_down);
+                slideDownAnimator.setTarget(industria);
+                industria.setVisibility(View.VISIBLE);
+                slideDownAnimator.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // No necesitamos hacer nada si la animación se cancela
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // No necesitamos hacer nada en repeticiones de la animación
+            }
+        });
 
         new Handler().postDelayed(new Runnable() {
             @Override

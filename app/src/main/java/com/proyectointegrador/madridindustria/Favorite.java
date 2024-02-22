@@ -1,5 +1,6 @@
 package com.proyectointegrador.madridindustria;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.*;
 
 import android.annotation.SuppressLint;
@@ -7,26 +8,34 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.Normalizer;
 import java.util.Objects;
 
 public class Favorite extends AppCompatActivity {
-    private LinearLayout linearLayout;
-    private TextView textView;
     private ImageView imagenId;
+    private String imagenV;
+    private TextView textView;
+    private String dist = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-        linearLayout = findViewById(R.id.linear);
+        LinearLayout linearLayout = findViewById(R.id.linear);
         textView = findViewById(R.id.textView);
 
         // BASE DE DATOS LOCAL
@@ -40,7 +49,7 @@ public class Favorite extends AppCompatActivity {
                 View favoriteCard = LayoutInflater.from(Favorite.this).inflate(R.layout.favorite_card, null);
 
                 ImageView imagen = favoriteCard.findViewById(R.id.imagen);
-                imagenId = favoriteCard.findViewById(R.id.imagen);
+                imagenId = imagen;
                 TextView nombre = favoriteCard.findViewById(R.id.nombre);
                 TextView inaguracion = favoriteCard.findViewById(R.id.inaguracion);
                 TextView patrimonio = favoriteCard.findViewById(R.id.patrimonio);
@@ -53,6 +62,7 @@ public class Favorite extends AppCompatActivity {
                 int columnIndexPatrimonio = cursor.getColumnIndex("patrimonio");
                 int columnIndexMetro = cursor.getColumnIndex("metro");
                 int columnIndexDireccion = cursor.getColumnIndex("direccion");
+                int columnIndexDistrito = cursor.getColumnIndex("distrito");
                 int columnIndexImagen = cursor.getColumnIndex("imagen");
 
                 if (columnIndexNombre != -1) {
@@ -62,7 +72,9 @@ public class Favorite extends AppCompatActivity {
                     String patrimonioValor = cursor.getString(columnIndexPatrimonio);
                     String metroValor = cursor.getString(columnIndexMetro);
                     String direccionValor = cursor.getString(columnIndexDireccion);
+                    String distritoValor = cursor.getString(columnIndexDistrito);
                     String imagenValor = cursor.getString(columnIndexImagen);
+                    imagenV = imagenValor;
 
                     // ESTABLECER INFORMACION
                     textView.setVisibility(View.INVISIBLE);
@@ -78,6 +90,13 @@ public class Favorite extends AppCompatActivity {
                             .into(imagen);
 
                     linearLayout.addView(favoriteCard);
+
+                    favoriteCard.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            verPatrimonio(distritoValor, nombreValor);
+                        }
+                    });
                 }
             } while (cursor.moveToNext());
         }
@@ -124,6 +143,54 @@ public class Favorite extends AppCompatActivity {
         });
     }
 
+    private void verPatrimonio(String distritoValor, String nombreValor) {
+        String[] palabras = distritoValor.split("\\s+");
+
+        if (palabras.length >= 2) {
+            String distritoNombre = palabras[1].toLowerCase();
+            distritoNombre = quitarAcentos(distritoNombre);
+
+            if (distritoNombre.equals("san")) {
+                dist = "sanblas";
+            } else {
+                dist = distritoNombre;
+            }
+        }
+
+        CollectionReference patrimoniosRef = FirebaseFirestore.getInstance().collection(dist);
+
+        // Realizar una consulta para buscar el documento con el nombre específico
+        patrimoniosRef.whereEqualTo("nombre", nombreValor)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // La consulta fue exitosa
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Obtener el Document ID
+                                String documentId = document.getId();
+
+                                // Ahora, puedes usar el Document ID como sea necesario
+                                // En este ejemplo, podrías iniciar la actividad Patrimonio con el Document ID como Extra
+                                Intent intent = new Intent(Favorite.this, Patrimonio.class);
+                                intent.putExtra("collection", dist);
+                                intent.putExtra("document", documentId);
+                                startActivity(intent);
+                            }
+                        } else {
+                            // Handle errors
+                            Log.e("Firebase", "Error al realizar la consulta", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public static String quitarAcentos(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+    }
+
     // Diálogo de error
     private void showDialog(Class intent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -152,12 +219,24 @@ public class Favorite extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         if (imagenId != null) {
             Glide.with(this).clear(imagenId);
+        } else {
+            textView.setVisibility(View.VISIBLE);
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (imagenId != null) {
+            Glide.with(Favorite.this)
+                    .load(imagenV)
+                    .into(imagenId);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     protected void onDestroy() {

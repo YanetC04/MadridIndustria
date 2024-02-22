@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class Patrimonio extends AppCompatActivity {
 
-    private String nombreText, inaguracionText, patrimonioText, metroText, direccionText, imagenText;
+    private String nombreText, inaguracionText, patrimonioText, metroText, direccionText, distritoText, imagenText;
     private CollapsingToolbarLayout toolbarCollapse;
     private ImageView imagen;
     private FloatingActionButton boton;
@@ -71,6 +71,7 @@ public class Patrimonio extends AppCompatActivity {
             patrimonioText = firestoreDatabase.getPatrimonio();
             metroText = firestoreDatabase.getMetro();
             direccionText = firestoreDatabase.getDireccion();
+            distritoText = firestoreDatabase.getDistrito();
             imagenText = firestoreDatabase.getImagen();
 
             // ESTABLECEMOS EL ESTADO DEL BOTON
@@ -97,11 +98,9 @@ public class Patrimonio extends AppCompatActivity {
             descripcion.setText(firestoreDatabase.getDescripcion());
 
             // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
-            if (!isDestroyed()) {
-                Glide.with(Patrimonio.this)
-                        .load(imagenText)
-                        .into(imagen);
-            }
+            Glide.with(Patrimonio.this)
+                    .load(imagenText)
+                    .into(imagen);
         });
 
         // ESTABLECEMOS CUANDO APARECE O DESAPARECE EL BOTON
@@ -119,7 +118,7 @@ public class Patrimonio extends AppCompatActivity {
             if (heart) {
                 // CORAZON LLENO
                 Log.e("Click", "true");
-                agregarPatrimonio(nombreText, inaguracionText, patrimonioText, metroText, direccionText, imagenText);
+                agregarPatrimonio(nombreText, inaguracionText, patrimonioText, metroText, direccionText, distritoText, imagenText);
                 boton.setImageDrawable(heartFillDrawable);
             } else {
                 // CORAZON VACIO
@@ -134,7 +133,7 @@ public class Patrimonio extends AppCompatActivity {
         });
     }
 
-    private void agregarPatrimonio(String nombre, String inaguracion, String patrimonio, String metro, String direccion, String imagen) {
+    private void agregarPatrimonio(String nombre, String inaguracion, String patrimonio, String metro, String direccion, String distrito, String imagen) {
         SQLiteDatabase db = localDB.getWritableDatabase();
 
         // Crea un nuevo registro de patrimonio
@@ -145,6 +144,7 @@ public class Patrimonio extends AppCompatActivity {
         values.put("patrimonio", patrimonio);
         values.put("metro", metro);
         values.put("direccion", direccion);
+        values.put("distrito", distrito);
         values.put("imagen", imagen);
 
         // Inserta el nuevo registro en la tabla patrimonio
@@ -162,6 +162,15 @@ public class Patrimonio extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Glide.with(this).clear(imagen);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
+        Glide.with(Patrimonio.this)
+                .load(imagenText)
+                .into(imagen);
     }
 
     @Override
