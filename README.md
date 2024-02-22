@@ -11,6 +11,7 @@ MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad 
 - **Index**: Rama responsable de MainActivity y sus respectivos.
 - **Patrimonio**: Rama responsable de mostrar la información del patrimonio. 
 - **Favorite**: Rama responsable de todo lo relacionado con Favorite.
+- **Map**: Rama responsable de gestionar la visualizacion de los patrimonio en el map.
 - **Register**: Contiene la funcionalidad de la configuración del usuario.
 - **Add**: Rama que gestiona la inserción de patrimonios por gestores.
 - **Profile**: Rama para el perfil del usuario.
@@ -21,8 +22,10 @@ MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad 
 - **FirestoreDatabase**: Funciona como la base de datos central para almacenar información sobre patrimonios.
 - **FirestoreCallback**: Interfaz esencial que permite la comunicación entre MainActivity y FirestoreDatabase, facilitando la obtención y actualización de datos sobre patrimonios.
 - **PatrimonioActivity**: Esta actividad presenta la información relacionada con los patrimonios. Además, incluye funciones adicionales, como la posibilidad de agregar un patrimonio a la lista de favoritos.
-- **Favorite**: Permite mostrar la lista de favoritos del usuario.
-- **Perfilactivity**: Aparece iniciar sesión y registrarse.
+- **FavoriteActivity**: Permite mostrar la lista de favoritos del usuario.
+- **LocalDatabase**: Base de datos local para los favoritos de cada usuario.
+- **MapActivity**: Permite ver la informacion de los patrimonio en el mapa cercanos a ti.
+- **PerfilActivity**: Aparece iniciar sesión y registrarse.
 - **LoginActivity**: Permite Aceder por correo, apple, facebook o el correo electronico que te registraste.
 - **RegisterActivity**: Permite a los usuarios registrarse con la opción de iniciar sesion o registrarte
 - **PasswordActivity**: Permite darte la opcion de enviarte la contraseña.
@@ -36,6 +39,7 @@ MadridIndustria fomenta el interés en el patrimonio industrial de la Comunidad 
 ![Imagen de Patrimonio](img/patrimonio.png)
 ![Imagen de Favorite Activity Vacía](img/favorite_empty.png) 
 ![Imagen de Favorite Activity ](img/favorite.png)
+![Imagen de Mapa ](img/map.png)
 ![Imagen de Hall](img/hall.png)
 ![Imagen de Login](img/login.png)
 ![Imagen de Register](img/register.png)
@@ -64,6 +68,7 @@ MadridIndustria promotes interest in the industrial heritage of the Community of
 - **Index**: Branch responsible for MainActivity and its related components.
 - **Patrimonio**: Branch responsible for displaying heritage information.
 - **Favorite**: Branch responsible for everything related to Favorite.
+- **Map**: Branch responsible for managing the visualization of heritage on the map.
 - **Register**: Contains the Hall functionality of starting or registering, Login allows you to log in in different ways, starting with your email and by chance you forgot the password, it goes to your email or else to the Hall.
 - **Add**: Branch that manages the insertion of assets by managers.
 - **Profile**: Branch for the user's profile.
@@ -74,7 +79,9 @@ MadridIndustria promotes interest in the industrial heritage of the Community of
 - **FirestoreDatabase**: Functions as the central database for storing information about heritage sites.
 - **FirestoreCallback**: Essential interface facilitating communication between MainActivity and FirestoreDatabase, enabling data retrieval and updates for heritage sites.
 - **PatrimonioActivity**: This activity presents information related to heritage. In addition, it includes additional functions, such as the possibility of adding an estate to the favorites list.
-- **Favorite**: Allows you to display the user's favorites list.
+- **FavoriteActivity**: Allows you to display the user's favorites list.
+- **LocalDatabase**: Local database for each user's favorites.
+- **MapActivity**: Allows you to see the information of the heritage sites on the map near you.
 - **HallActivity**: Displays login and register options.
 - **LoginActivity**: Allows logging in through email, Apple, Facebook, or the email used for registration.
 - **RegisterActivity**: Allows users to register with the option to log in or register.
@@ -88,6 +95,7 @@ MadridIndustria promotes interest in the industrial heritage of the Community of
 ![Heritage](img/patrimonio.png)
 ![Empty Favorite](img/favorite_empty.png) 
 ![Favorite](img/favorite.png)
+![Map](img/map.png)
 ![Hall](img/hall.png)
 ![Login](img/login.png)
 ![Register](img/register.png)
