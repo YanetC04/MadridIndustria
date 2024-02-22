@@ -11,9 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.*;
-import com.google.firebase.firestore.*;
-
-import java.util.HashMap;
 
 public class Register extends AppCompatActivity {
     private EditText code, mail, first_pass, confirm_pass;

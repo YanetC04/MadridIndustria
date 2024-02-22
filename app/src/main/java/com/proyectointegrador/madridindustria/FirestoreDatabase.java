@@ -1,11 +1,6 @@
 package com.proyectointegrador.madridindustria;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,13 +10,10 @@ import java.util.Objects;
 
 
 public class FirestoreDatabase {
-    private String collectionPath, documentPath, nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, mail, pass, like, id;
+    private String nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, id;
     private GeoPoint geo;
 
     public FirestoreDatabase(String collectionPath, String documentPath, final FirestoreCallback callback){
-        this.collectionPath = collectionPath;
-        this.documentPath = documentPath;
-
         // INICIALIZAR FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

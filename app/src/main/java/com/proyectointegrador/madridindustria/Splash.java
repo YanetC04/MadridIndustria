@@ -1,35 +1,24 @@
 package com.proyectointegrador.madridindustria;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.animation.*;
+import android.app.*;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
+import android.os.*;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 public class Splash extends AppCompatActivity {
 
-    private ImageView logo;
-    private TextView adrid, industria;
+    private TextView industria;
     private static final int SPLASH_DURATION = 2000;
     private static final String CHANNEL_ID = "splash_notification_channel";
     private static final long MESSAGE_INTERVAL = 10 * 60 * 1000;
-    private Handler messageHandler = new Handler();
-    private Runnable messageRunnable = new Runnable() {
+    private final Handler messageHandler = new Handler();
+    private final Runnable messageRunnable = new Runnable() {
         @Override
         public void run() {
             createNotification();
@@ -43,8 +32,8 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        logo = findViewById(R.id.logo);
-        adrid = findViewById(R.id.adrid);
+        ImageView logo = findViewById(R.id.logo);
+        TextView adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
 
         // Cargar animaciones desde recursos XML
@@ -67,12 +56,12 @@ public class Splash extends AppCompatActivity {
 
         slideRightSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
+            public void onAnimationStart(@NonNull Animator animation) {
                 // No necesitamos hacer nada en el inicio de la animación
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationEnd(@NonNull Animator animation) {
                 ObjectAnimator slideDownAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(Splash.this, R.animator.slide_down);
                 slideDownAnimator.setTarget(industria);
                 industria.setVisibility(View.VISIBLE);
@@ -80,23 +69,20 @@ public class Splash extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
+            public void onAnimationCancel(@NonNull Animator animation) {
                 // No necesitamos hacer nada si la animación se cancela
             }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
+            public void onAnimationRepeat(@NonNull Animator animation) {
                 // No necesitamos hacer nada en repeticiones de la animación
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(Splash.this, MainActivity.class).putExtra("source", "cerrado");
-                startActivity(intent);
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(Splash.this, MainActivity.class).putExtra("source", "cerrado");
+            startActivity(intent);
+            finish();
         }, SPLASH_DURATION);
 
         messageHandler.postDelayed(messageRunnable, MESSAGE_INTERVAL);

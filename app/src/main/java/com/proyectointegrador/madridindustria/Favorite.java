@@ -1,6 +1,4 @@
 package com.proyectointegrador.madridindustria;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.*;
 
 import android.annotation.SuppressLint;
@@ -13,13 +11,8 @@ import android.view.*;
 import android.widget.*;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.*;
 
 import java.text.Normalizer;
 import java.util.Objects;
@@ -91,12 +84,7 @@ public class Favorite extends AppCompatActivity {
 
                     linearLayout.addView(favoriteCard);
 
-                    favoriteCard.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            verPatrimonio(distritoValor, nombreValor);
-                        }
-                    });
+                    favoriteCard.setOnClickListener(v -> verPatrimonio(distritoValor, nombreValor));
                 }
             } while (cursor.moveToNext());
         }
@@ -162,26 +150,23 @@ public class Favorite extends AppCompatActivity {
         // Realizar una consulta para buscar el documento con el nombre específico
         patrimoniosRef.whereEqualTo("nombre", nombreValor)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // La consulta fue exitosa
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Obtener el Document ID
-                                String documentId = document.getId();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // La consulta fue exitosa
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Obtener el Document ID
+                            String documentId = document.getId();
 
-                                // Ahora, puedes usar el Document ID como sea necesario
-                                // En este ejemplo, podrías iniciar la actividad Patrimonio con el Document ID como Extra
-                                Intent intent = new Intent(Favorite.this, Patrimonio.class);
-                                intent.putExtra("collection", dist);
-                                intent.putExtra("document", documentId);
-                                startActivity(intent);
-                            }
-                        } else {
-                            // Handle errors
-                            Log.e("Firebase", "Error al realizar la consulta", task.getException());
+                            // Ahora, puedes usar el Document ID como sea necesario
+                            // En este ejemplo, podrías iniciar la actividad Patrimonio con el Document ID como Extra
+                            Intent intent = new Intent(Favorite.this, Patrimonio.class);
+                            intent.putExtra("collection", dist);
+                            intent.putExtra("document", documentId);
+                            startActivity(intent);
                         }
+                    } else {
+                        // Handle errors
+                        Log.e("Firebase", "Error al realizar la consulta", task.getException());
                     }
                 });
     }

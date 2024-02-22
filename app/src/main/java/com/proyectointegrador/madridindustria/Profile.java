@@ -39,32 +39,27 @@ public class Profile extends AppCompatActivity {
       
         // IDIOMA
         TextView idioma = findViewById(R.id.traduccion);
-        idioma.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(Profile.this, v);
-                popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
+        idioma.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(Profile.this, v);
+            popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
 
-                // Manejar la selección del usuario en el menú desplegable
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int id = item.getItemId();
+            // Manejar la selección del usuario en el menú desplegable
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
 
-                        // Cambiar el idioma de la aplicación según la opción seleccionada
-                        if (id == R.id.english) {
-                            setLocale("en"); // Método para cambiar el idioma a inglés
-                            return true;
-                        } else if (id == R.id.spanish) {
-                            setLocale("es"); // Método para cambiar el idioma a español
-                            return true;
-                        }
+                // Cambiar el idioma de la aplicación según la opción seleccionada
+                if (id == R.id.english) {
+                    setLocale("en"); // Método para cambiar el idioma a inglés
+                    return true;
+                } else if (id == R.id.spanish) {
+                    setLocale("es"); // Método para cambiar el idioma a español
+                    return true;
+                }
 
-                        return false;
-                    }
-                });
+                return false;
+            });
 
-                popupMenu.show();
-            }
+            popupMenu.show();
         });
 
         // BARRA DE NAVEGACIÓN INFERIOR
