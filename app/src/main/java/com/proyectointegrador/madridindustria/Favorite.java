@@ -1,5 +1,6 @@
 package com.proyectointegrador.madridindustria;
 import androidx.appcompat.app.*;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.*;
@@ -23,11 +24,64 @@ public class Favorite extends AppCompatActivity {
     private TextView textView;
     private String dist = null;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            reiniciarApp();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        cargarDatos();
+
+        // BARRA INFERIOR
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.like);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Intent intent = null;
+            String source = getIntent().getStringExtra("source");
+
+            if (item.getItemId() == R.id.home) {
+                intent = new Intent(Favorite.this, MainActivity.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.map) {
+                intent = new Intent(Favorite.this, Map.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.add) {
+                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
+                    showDialog(Add.class);
+                } else {
+                    intent = new Intent(Favorite.this, Add.class);
+                }
+            }
+            if (item.getItemId() == R.id.profile) {
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog(Profile.class);
+                } else {
+                    intent = new Intent(Favorite.this, Profile.class);
+                }
+            }
+
+            if (intent != null) {
+                startActivity(intent);
+                // Sin transición
+                overridePendingTransition(0, 0);
+                return true;
+            }
+
+            return true;
+        });
+    }
+    private void reiniciarApp() {
+        recreate();
+    }
+
+    private void cargarDatos(){
         LinearLayout linearLayout = findViewById(R.id.linear);
         textView = findViewById(R.id.textView);
 
@@ -91,44 +145,6 @@ public class Favorite extends AppCompatActivity {
 
         cursor.close();
         db.close();
-
-        // BARRA INFERIOR
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.like);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            Intent intent = null;
-            String source = getIntent().getStringExtra("source");
-
-            if (item.getItemId() == R.id.home) {
-                intent = new Intent(Favorite.this, MainActivity.class).putExtra("source", source);
-            }
-            if (item.getItemId() == R.id.map) {
-                intent = new Intent(Favorite.this, Map.class).putExtra("source", source);
-            }
-            if (item.getItemId() == R.id.add) {
-                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
-                    showDialog(Add.class);
-                } else {
-                    intent = new Intent(Favorite.this, Add.class);
-                }
-            }
-            if (item.getItemId() == R.id.profile) {
-                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Profile.class);
-                } else {
-                    intent = new Intent(Favorite.this, Profile.class);
-                }
-            }
-
-            if (intent != null) {
-                startActivity(intent);
-                // Sin transición
-                overridePendingTransition(0, 0);
-                return true;
-            }
-
-            return true;
-        });
     }
 
     private void verPatrimonio(String distritoValor, String nombreValor) {
