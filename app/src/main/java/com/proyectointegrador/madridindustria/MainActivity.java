@@ -14,7 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde"};
+    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
