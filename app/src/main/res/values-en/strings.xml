@@ -8,6 +8,7 @@
     <string name="facebook">CONTINUE WITH FACEBOOK</string>
     <string name="gmail">CONTINUE WITH GMAIL</string>
     <string name="bienvenida">Welcome to IndustriaMadrid!</string>
+    <string name="o">OR</string>
     <string name="madrid">Take care of the patrimony of the Community of Madrid</string>
     <string name="saludo">We are delighted to see you again</string>
     <string name="contraseña">Password</string>
@@ -21,6 +22,7 @@
     <string name="ciudad">Discover your city</string>
     <string name="bienvenido">WELCOME</string>
     <string name="tu_contra">YOUR PASSWORD</string>
+    <string name="favorite">YOUR FAVORITES</string>
     <string name="code">Manager Code</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -30,4 +32,13 @@
     <string name="idioma">Application language</string>
     <string name="cerrarSesion">Sign off</string>
     <string name="info">App info</string>
+    <string name="lat">Enter the latitude</string>
+    <string name="lon">Enter the longitude</string>
+    <string name="nom">Enter the heritage\'s name</string>
+    <string name="ina">Enter the year of the inaguration</string>
+    <string name="pat">Enter the category</string>
+    <string name="met">Enter the lines of the meter</string>
+    <string name="des">Min. 200 characters</string>
+    <string name="dir">Enter the address</string>
+    <string name="ima">Enter the url of the image</string>
 </resources>
