@@ -203,7 +203,7 @@
                     android:id="@+id/enviar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/button_red"
+                    style="@style/button_white_black"
                     android:text="AGREGAR" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
