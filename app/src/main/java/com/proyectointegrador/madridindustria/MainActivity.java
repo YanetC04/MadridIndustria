@@ -5,16 +5,18 @@ import androidx.appcompat.app.*;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi"};
+    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "retiro", "tetuan", "fuencarral", "vallecas", "barajas", "hortaleza", "latina", "salamanca"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,36 +32,37 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout internalLinear = externalLayoutView.findViewById(R.id.linearExternal);
             TextView distrito = externalLayoutView.findViewById(R.id.distrito);
 
-            for (int i = 1; i <= 5; i++) {
-                View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
-                ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
-                TextView texto = internalLayoutView.findViewById(R.id.texto);
-                String value = String.valueOf(i);
+            getCount(dist, count -> {
+                for (int i = 1; i <= count; i++) {
+                    View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
+                    ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
+                    TextView texto = internalLayoutView.findViewById(R.id.texto);
+                    String value = String.valueOf(i);
 
-                // BASE DE DATOS
-                new FirestoreDatabase(dist, value, firestoreDatabase -> {
-                    // ESTABLECER INFORMACION
-                    distrito.setText(firestoreDatabase.getDistrito());
-                    texto.setText(firestoreDatabase.getNombre());
+                    // BASE DE DATOS
+                    new FirestoreDatabase(dist, value, firestoreDatabase -> {
+                        // ESTABLECER INFORMACION
+                        distrito.setText(firestoreDatabase.getDistrito());
+                        texto.setText(firestoreDatabase.getNombre());
 
-                    if (!isDestroyed()) {
-                        Glide.with(MainActivity.this)
-                                .load(firestoreDatabase.getImagen())
-                                .centerCrop()
-                                .into(imagen);
-                    }
-                });
+                        if (!isDestroyed()) {
+                            Glide.with(MainActivity.this)
+                                    .load(firestoreDatabase.getImagen())
+                                    .centerCrop()
+                                    .into(imagen);
+                        }
+                    });
 
-                // CONFIGURAMOS LA IMAGEN
-                imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value)));
+                    // CONFIGURAMOS LA IMAGEN
+                    imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value)));
 
-                internalLinear.addView(internalLayoutView);
-            }
+                    internalLinear.addView(internalLayoutView);
+                }
+            });
 
             // AGREGA EL DISEÑO INFLADO AL LINEARLAYOUT DEL SCROLLVIEW
             linearLayout.addView(externalLayoutView);
         }
-
 
         // BARRA INFERIOR
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -82,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.profile) {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Profile.class);
+                    intent = new Intent(MainActivity.this, Profile.class).putExtra("source", "cerrado");
                 } else {
-                    intent = new Intent(MainActivity.this, Profile.class);
+                    intent = new Intent(MainActivity.this, Profile.class).putExtra("source", source);;
                 }
             }
 
@@ -99,7 +102,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Diálogo de error
+    public void getCount(String dist, final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int count = task.getResult().size();
+                countCallback.onCallback(count);
+            } else {
+                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
+                countCallback.onCallback(-1); // Indicates an error
+            }
+        });
+    }
+
+    // DIALOGO DE ERROR
     private void showDialog(Class intent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

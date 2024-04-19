@@ -69,13 +69,13 @@ public class Map extends AppCompatActivity {
             if (item.getItemId() == R.id.like) {
                 intent = new Intent(Map.this, Favorite.class).putExtra("source", source);
             }
-            if (item.getItemId() == R.id.profile) {
-                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Profile.class);
-                } else {
-                    intent = new Intent(Map.this, Profile.class);
+                if (item.getItemId() == R.id.profile) {
+                    if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                        intent = new Intent(Map.this, Profile.class).putExtra("source", "cerrado");
+                    } else {
+                        intent = new Intent(Map.this, Profile.class).putExtra("source", source);;
+                    }
                 }
-            }
 
             if (intent != null) {
                 startActivity(intent);

@@ -46,6 +46,14 @@ public class FirestoreDatabase {
         });
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
+    }
+
     public String getNombre() {
         return nombre;
     }

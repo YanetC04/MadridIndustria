@@ -28,7 +28,7 @@
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="No hay favoritos."
+        android:text="@string/fav"
         android:textAlignment="center"
         android:textSize="16dp"
         android:textColor="@color/grey"

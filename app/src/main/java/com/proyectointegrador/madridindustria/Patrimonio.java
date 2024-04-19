@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.NestedScrollView;
 
 import android.content.ContentValues;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.*;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +40,7 @@ public class Patrimonio extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbarCollapse = findViewById(R.id.toolbarCollapse);
+        NestedScrollView nestedScrollView = findViewById(R.id.nestedScrollView);
         imagen = findViewById(R.id.imagen);
         boton = findViewById(R.id.boton);
         inaguracion = findViewById(R.id.inaguracion);
@@ -61,8 +64,8 @@ public class Patrimonio extends AppCompatActivity {
         }
 
         // ESTABLECEMOS EL FONTFAMILY Y GROSOR
-        Typeface boldTypeface = Typeface.create(ResourcesCompat.getFont(this, R.font.inter_bold), Typeface.BOLD);
-        toolbarCollapse.setExpandedTitleTypeface(boldTypeface);
+        //Typeface boldTypeface = Typeface.create(ResourcesCompat.getFont(this, R.font.inter_bold), Typeface.BOLD);
+        //toolbarCollapse.setExpandedTitleTypeface(boldTypeface);
 
         // OBTENER DATOS DE FIREBASE
         new FirestoreDatabase(getIntent().getStringExtra("collection"), getIntent().getStringExtra("document"), firestoreDatabase -> {

@@ -3,12 +3,14 @@ package com.proyectointegrador.madridindustria;
 import androidx.appcompat.app.*;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.*;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.*;
 import android.widget.*;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.*;
 import com.google.firebase.firestore.*;
@@ -17,42 +19,118 @@ import java.util.Objects;
 
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Profile extends AppCompatActivity {
-    private Boolean llave = true;
+    private Boolean llave = false, esNoche;
+    private ImageView modo;
+    private int nuevaImagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // BOTÓN PARA CERRAR SESIÓN
-        TextView cerrarButton = findViewById(R.id.cerrar);
-        cerrarButton.setOnClickListener(view -> cerrarSesion());
+        String source = getIntent().getStringExtra("source");
+        String correo = getIntent().getStringExtra("correo");
 
-        // BOTÓN PARA CERRAR SESIÓN
-        TextView contrasenaButton = findViewById(R.id.contrasena);
-        contrasenaButton.setOnClickListener(view -> cambiarContrasena());
+        TextView correoText = findViewById(R.id.correo);
+        TextView nombre = findViewById(R.id.nombre);
+        Button cerrarButton = findViewById(R.id.cerrar);
+        Button contrasenaButton = findViewById(R.id.contrasena);
+        Button borrarButton = findViewById(R.id.code);
+        modo = findViewById(R.id.modo);
+        CircleImageView anonimo = findViewById(R.id.usuario);
 
-        // BOTÓN PARA BORRAR CUENTA
-        TextView borrarButton = findViewById(R.id.code);
-        borrarButton.setOnClickListener(view -> borrarCuenta());
-      
-        // IDIOMA
-        TextView idioma = findViewById(R.id.traduccion);
-        idioma.setOnClickListener(v -> {
+        if (source != null && source.equalsIgnoreCase("abierto")) {
+            // CORREO
+            correoText.setVisibility(View.VISIBLE);
+            correoText.setText(correo);
+            nombre.setText(getResources().getString(R.string.gestor));
+
+            // BOTÓN PARA CERRAR SESIÓN
+            cerrarButton.setVisibility(View.VISIBLE);
+            cerrarButton.setOnClickListener(view -> cerrarSesion());
+
+            // BOTÓN PARA CAMBIAR CONTRASEÑA
+            contrasenaButton.setVisibility(View.VISIBLE);
+            contrasenaButton.setOnClickListener(view -> cambiarContrasena());
+
+            // BOTÓN PARA BORRAR CUENTA
+            borrarButton.setVisibility(View.VISIBLE);
+            borrarButton.setOnClickListener(view -> borrarCuenta());
+            llave = true;
+        }
+
+        // MODO
+        int configuracion = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        esNoche = configuracion == Configuration.UI_MODE_NIGHT_YES;
+
+        Glide.with(Profile.this)
+                .load(esNoche ? R.drawable.luna : R.drawable.sol)
+                .into(modo);
+
+        int colorTinte = esNoche ? getColor(R.color.white) : getColor(R.color.eire_black);
+        anonimo.setColorFilter(colorTinte);
+
+        modo.setOnClickListener(v -> {
+            esNoche = !esNoche;
+
+            // Cambiar el modo
+            int nuevoModo = esNoche ? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
+            getApplication().getResources().getConfiguration().uiMode &= ~Configuration.UI_MODE_NIGHT_MASK;
+            getApplication().getResources().getConfiguration().uiMode |= nuevoModo;
+
+            // Cambiar la imagen
+            nuevaImagen = esNoche ? R.drawable.sol : R.drawable.luna;
+            Glide.with(Profile.this)
+                    .load(nuevaImagen)
+                    .into(modo);
+
+            recreate();
+        });
+
+        // BOTÓN DE AYUDA
+        Button ayudaButton = findViewById(R.id.ayuda);
+        ayudaButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getResources().getString(R.string.github))
+                    .setMessage(Html.fromHtml("**<b>Celeste Guillén:</b> @blue_c0de<br>**<b>Alex Mazariegos:</b> @Zan-40<br><b>**Yanet Camacho:</b> @YanetC04"))
+                    .setPositiveButton("OK", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+
+        // BOTÓN DE QR
+        Button QR = findViewById(R.id.qr);
+        QR.setOnClickListener(view -> {
+            Intent intent;
+
+            if (llave)
+                intent = new Intent(Profile.this, QR.class).putExtra("source", "abierto");
+            else
+                intent = new Intent(Profile.this, QR.class).putExtra("source", "cerrado");
+
+            // INICIAR LA ACTIVIDAD SEGÚN EL INTENTO
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        });
+
+        // BOTÓN PARA CAMBIAR IDIOMA
+        Button idiomaButton = findViewById(R.id.idioma);
+        idiomaButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(Profile.this, v);
             popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
 
-            // Manejar la selección del usuario en el menú desplegable
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
 
-                // Cambiar el idioma de la aplicación según la opción seleccionada
                 if (id == R.id.english) {
-                    setLocale("en"); // Método para cambiar el idioma a inglés
+                    setLocale("en");
                     return true;
                 } else if (id == R.id.spanish) {
-                    setLocale("es"); // Método para cambiar el idioma a español
+                    setLocale("es");
                     return true;
                 }
 
@@ -85,7 +163,10 @@ public class Profile extends AppCompatActivity {
                 else
                     intent = new Intent(Profile.this, Favorite.class).putExtra("source", "cerrado");
             } else if (item.getItemId() == R.id.add) {
-                intent = new Intent(Profile.this, Add.class).putExtra("source", "abierto");
+                if (llave)
+                    intent = new Intent(Profile.this, Add.class).putExtra("source", "abierto");
+                else
+                    showDialog(Add.class);
             }
 
             // INICIAR LA ACTIVIDAD SEGÚN EL INTENTO
@@ -101,7 +182,7 @@ public class Profile extends AppCompatActivity {
 
     private void cambiarContrasena() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Cambiar Contraseña");
+        builder.setTitle(getResources().getString(R.string.cambiarcon));
 
         View view = getLayoutInflater().inflate(R.layout.new_password, null);
         final EditText contrasenaActual = view.findViewById(R.id.etOldPassword);
@@ -110,7 +191,7 @@ public class Profile extends AppCompatActivity {
 
         builder.setView(view);
 
-        builder.setPositiveButton("Cambiar", (dialog, which) -> {
+        builder.setPositiveButton(getResources().getString(R.string.cambiar), (dialog, which) -> {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
 
@@ -121,7 +202,7 @@ public class Profile extends AppCompatActivity {
 
                 if (!nueva.equals(confirmar)) {
                     // Las contraseñas no coinciden
-                    showError("Las contraseñas no coinciden.");
+                    showError(getResources().getString(R.string.contrano));
                     return;
                 }
 
@@ -129,7 +210,7 @@ public class Profile extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         user.updatePassword(nueva).addOnCompleteListener(passwordUpdateTask -> {
                             if (passwordUpdateTask.isSuccessful()) {
-                                Toast.makeText(Profile.this, "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Profile.this, getResources().getString(R.string.contrasi), Toast.LENGTH_SHORT).show();
                             } else {
                                 showError("Error al actualizar la contraseña. Asegúrate de que la nueva contraseña cumple con los requisitos de Firebase.");
                             }
@@ -223,6 +304,22 @@ public class Profile extends AppCompatActivity {
     public void onBackPressed() {
         // EVITAR QUE MainActivity VUELVA ATRÁS A Splash.java
         // NO LLAMAR AL super.onBackPressed();
+    }
+
+    private void showDialog(Class intent) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+        builder.setTitle("Modo Gestor")
+                .setMessage("¿Quieres activar el modo Gestor?")
+                .setPositiveButton("SÍ", (dialog, which) -> {
+                    startActivity(new Intent(Profile.this, Hall.class).putExtra("intent", intent.getName()));
+                    overridePendingTransition(0, 0);
+                })
+                .setNegativeButton("NO", null);
+
+        // Creación y visualización del diálogo
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void showError(String message) {

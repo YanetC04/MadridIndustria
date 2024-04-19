@@ -14,7 +14,7 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="redondo" parent="">
+    <style name="redondo">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

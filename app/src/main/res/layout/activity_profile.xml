@@ -7,163 +7,155 @@
     tools:context=".Profile">
 
     <ImageView
+        android:id="@+id/modo"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/usuario"
-        android:layout_width="150dp"
-        android:layout_height="140dp"
-        android:src="@drawable/usericon"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/anonimo"
+        app:civ_border_color="?colorPrimary"
+        app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.048" />
+        app:layout_constraintTop_toBottomOf="@+id/modo" />
 
     <TextView
         android:id="@+id/nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Modo Gestor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/anoni"
+        android:layout_margin="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usuario"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintTop_toBottomOf="@+id/usuario" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/primera"
-        android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/correo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nombre" />
+
+    <Button
+        android:id="@+id/idioma"
+        style="@style/button_mix2"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_marginTop="24dp"
+        android:drawableLeft="@drawable/translate"
+        android:fontFamily="@font/roboto"
+        android:text="@string/idioma"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/correo" />
+
+    <Button
+        android:id="@+id/qr"
+        style="@style/button_mix2"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_marginTop="24dp"
+        android:drawableLeft="@drawable/qr"
+        android:fontFamily="@font/roboto"
+        android:text="@string/qr"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idioma" />
+
+    <Button
+        android:id="@+id/ayuda"
+        style="@style/button_mix2"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:drawableLeft="@drawable/ayuda"
+        android:fontFamily="@font/roboto"
+        android:text="@string/ayuda"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qr" />
+
+
+    <Button
+        android:id="@+id/contrasena"
+        android:textAlignment="textStart"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:drawableLeft="@drawable/lock_reset"
+        style="@style/button_mix2"
+        android:fontFamily="@font/roboto"
+        android:text="@string/cambiarcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ayuda" />
+
+    <Button
+        android:id="@+id/code"
+        android:textAlignment="textStart"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:drawableLeft="@drawable/person"
+        style="@style/button_mix2"
+        android:fontFamily="@font/roboto"
+        android:text="@string/cuenta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contrasena" />
+
+    <Button
+        android:id="@+id/cerrar"
+        android:textAlignment="textStart"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:drawableLeft="@drawable/logout"
+        style="@style/button_mix2"
+        android:fontFamily="@font/roboto"
+        android:text="@string/cerrarSesion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/code" />
+    <TextView
+        android:id="@+id/copy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/grey"
+        android:text="@string/copy"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/copyright"/>
+    <TextView
+        android:id="@+id/copyright"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:text="@string/copy2"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nombre"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/person"
-                android:layout_gravity="center"
-                android:paddingEnd="8dp" />
-
-            <TextView
-                android:id="@+id/code"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:autofillHints="username"
-                android:inputType="none"
-                android:onClick="borrarCuenta"
-                android:text="@string/cuenta" />
-        </LinearLayout>
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/segunda"
-        android:layout_width="0dp"
-        android:layout_margin="16dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/primera">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/lock_reset"
-                android:layout_gravity="center"
-                android:paddingEnd="8dp" />
-
-            <TextView
-                android:id="@+id/contrasena"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints="username"
-                android:textSize="18sp"
-                android:inputType="none"
-                android:onClick="cambiarContraseña"
-                android:text="@string/cambiarcon" />
-        </LinearLayout>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tercera"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/segunda"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/translate"
-                android:layout_gravity="center"
-                android:paddingEnd="8dp" />
-
-            <TextView
-                android:id="@+id/traduccion"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints="username"
-                android:textSize="18sp"
-                android:inputType="none"
-                android:text="@string/idioma" />
-        </LinearLayout>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cuarta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tercera"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logout"
-                android:layout_gravity="center"
-                android:paddingEnd="8dp" />
-
-            <TextView
-                android:id="@+id/cerrar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints="username"
-                android:textSize="18sp"
-                android:inputType="none"
-                android:onClick="cerrarSesion"
-                android:text="@string/cerrarSesion"/>
-        </LinearLayout>
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

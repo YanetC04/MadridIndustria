@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MadridIndustria</string>
     <string name="iniciarSesion">LOG IN</string>
     <string name="datos">Enter your credentials</string>
     <string name="registro">CHECK IN</string>
-    <string name="apple">CONTINUE WITH APPLE</string>
-    <string name="facebook">CONTINUE WITH FACEBOOK</string>
-    <string name="gmail">CONTINUE WITH GMAIL</string>
     <string name="bienvenida">Welcome to IndustriaMadrid!</string>
     <string name="o">OR</string>
-    <string name="madrid">Take care of the patrimony of the Community of Madrid</string>
+    <string name="madrid">Taking care of the heritage of Madrid</string>
+    <string name="atras">Go back</string>
     <string name="saludo">We are delighted to see you again</string>
     <string name="contraseña">Password</string>
     <string name="olvidaste">FORGOT YOUR PASSWORD?</string>
@@ -19,26 +16,89 @@
     <string name="luego">I will later</string>
     <string name="contenido">Content:</string>
     <string name="descripcion">Description:</string>
-    <string name="ciudad">Discover your city</string>
+    <string name="ciudad">Explore</string>
+    <string name="ciudad2">Industrial Heritage</string>
     <string name="bienvenido">WELCOME</string>
     <string name="tu_contra">YOUR PASSWORD</string>
     <string name="favorite">YOUR FAVORITES</string>
+    <string name="fav">No favorites.</string>
     <string name="code">Manager Code</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="password2">Confirm Password</string>
     <string name="cuenta">Delete Account</string>
     <string name="cambiarcon">Change Password</string>
+    <string name="cambiar">Change</string>
+    <string name="ayuda">Help &amp; Support</string>
     <string name="idioma">Application language</string>
     <string name="cerrarSesion">Sign off</string>
     <string name="info">App info</string>
     <string name="lat">Enter the latitude</string>
     <string name="lon">Enter the longitude</string>
     <string name="nom">Enter the heritage\'s name</string>
-    <string name="ina">Enter the year of the inaguration</string>
+    <string name="ina">Enter the year of the inauguration</string>
     <string name="pat">Enter the category</string>
     <string name="met">Enter the lines of the meter</string>
     <string name="des">Min. 200 characters</string>
     <string name="dir">Enter the address</string>
     <string name="ima">Enter the url of the image</string>
+    <string-array name="modo">
+        <item>Add</item>
+        <item>Modify</item>
+        <item>Delete</item>
+    </string-array>
+    <string-array name="distritos">
+        <item>Choose the district</item>
+        <item>Arganzuela District</item>
+        <item>Barajas District</item>
+        <item>Central District</item>
+        <item>Chamartín District</item>
+        <item>Chamberí District</item>
+        <item>Hortaleza District</item>
+        <item>Moncloa-Aravaca District</item>
+        <item>Latina District</item>
+        <item>Retiro District</item>
+        <item>Salamanca District</item>
+        <item>San Blas-Canillejas District</item>
+        <item>Tetuán District</item>
+        <item>Vallecas District</item>
+        <item>Villaverde District</item>
+    </string-array>
+    <string name="direc">Direction</string>
+    <string name="anoni">Anonymous</string>
+    <string name="gestor">Administrator</string>
+    <string name="copy">All rights reserved © Madrid Industria:</string>
+    <string name="copy2">Innovation, Progress, Excellence.</string>
+    <string name="qr">Share with your friends</string>
+    <string name="q">QR</string>
+    <string name="n">LINK</string>
+    <string name="tuqr">SHARE</string>
+    <string name="nfc">Touch the image to share</string>
+    <string name="mod">MODIFY</string>
+    <string name="sabiasque">Did you know…</string>
+    <string name="github">Contact us through GitHub</string>
+    <string name="contrano">The passwords do not match</string>
+    <string name="contrasi">Password changed correctly</string>
+    <string-array name="sabias">
+        <item>El Puente de Toledo, located in Madrid, is a historical symbol of Spanish civil engineering from the 18th century.</item>
+        <item>The La Cartuja ceramics factory in Seville, in San Lorenzo de El Escorial, is an outstanding example of industrial architecture.</item>
+        <item>La Real Fábrica de Tapices, in Madrid, is one of the few carpet factories that still produces artisanal carpets in Europe.</item>
+        <item>The El Águila beer factory, in Madrid, is an icon of industrial architecture from the 19th century.</item>
+        <item>The Real Fábrica de Cristales de La Granja, in San Ildefonso, produces crystals for Spanish royalty for centuries.</item>
+        <item>El Matadero de Madrid, now a cultural center, was in its beginnings one of the main slaughterhouses of the city.</item>
+        <item>The San Isidro Thermal Power Station, in Madrid, was one of the first electrical power stations in the city.</item>
+        <item>The La Cantábrica flour factory, in Madrid, is an example of industrial architecture from the 19th century.</item>
+        <item>The Moncloa ceramics factory, in Madrid, is an important industrial heritage of the city.</item>
+        <item>The Delicias railway station, in Madrid, is a magnificent example of industrial architecture from the 19th century.</item>
+        <item>The Mahou beer factory, in Madrid, is one of the oldest breweries in Spain.</item>
+        <item>The La China ceramics factory, in Madrid, is an outstanding example of neo-Mudejar industrial architecture.</item>
+        <item>The Toledo weapons factory, in Madrid, is an important military industrial heritage.</item>
+        <item>The La Imperial flour factory, in Madrid, is an example of industrial architecture from the 19th century.</item>
+        <item>The old cigarette factory in Lavapiés, in Madrid, is now a cultural center.</item>
+        <item>The El León furniture factory, in Madrid, is an example of industrial architecture from the 19th century.</item>
+        <item>The La Elipa paper factory, in Madrid, is an important industrial heritage of the city.</item>
+        <item>The Vallecas bronze casting factory, in Madrid, is an example of industrial architecture from the 19th century.</item>
+        <item>The old cork factory La Montaña, in Madrid, is now a cultural and leisure space.</item>
+        <item>The La China ceramics factory, in Madrid, is one of the few examples of neo-Mudejar industrial architecture that exists in the city.</item>
+    </string-array>
 </resources>

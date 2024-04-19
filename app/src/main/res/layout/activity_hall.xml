@@ -25,7 +25,7 @@
         android:layout_margin="18dp"
         android:fontFamily="sans-serif"
         android:textSize="16dp"
-        android:text="Cuidando el patrimonio de Madrid"
+        android:text="@string/madrid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -63,7 +63,7 @@
         android:padding="16dp"
         android:fontFamily="sans-serif"
         android:textSize="13dp"
-        android:text="Volver a atrás"
+        android:text="@string/atras"
         android:onClick="volverAtras"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

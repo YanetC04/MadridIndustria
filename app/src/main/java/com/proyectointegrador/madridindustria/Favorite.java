@@ -61,9 +61,9 @@ public class Favorite extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.profile) {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Profile.class);
+                    intent = new Intent(Favorite.this, Profile.class).putExtra("source", "cerrado");
                 } else {
-                    intent = new Intent(Favorite.this, Profile.class);
+                    intent = new Intent(Favorite.this, Profile.class).putExtra("source", source);;
                 }
             }
 

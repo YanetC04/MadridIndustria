@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity  {
                         if (task.isSuccessful()) {
                             finish();
                             try {
-                                startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto"));
+                                startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto").putExtra("correo", mail));
                             } catch (ClassNotFoundException e) {
                                 throw new RuntimeException(e);
                             }
