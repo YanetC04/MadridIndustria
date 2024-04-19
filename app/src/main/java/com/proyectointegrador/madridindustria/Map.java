@@ -21,47 +21,50 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.*;
 
-import java.util.Objects;
+import java.util.*;
+import com.google.maps.*;
+import com.google.maps.model.*;
 
 public class Map extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
-        private LocationCallback locationCallback;
-        private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "barajas", "fuencarral", "hortaleza", "latina", "retiro", "salamanca", "sanblas", "tetuan", "vallecas", "villaverde"};
+    private LocationCallback locationCallback;
+    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "barajas", "fuencarral", "hortaleza", "latina", "retiro", "salamanca", "sanblas", "tetuan", "vallecas", "villaverde"};
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_map);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
 
-            // Comprueba y solicita permisos
-            checkLocationPermission();
+        // Comprueba y solicita permisos
+        checkLocationPermission();
 
-            // Inicializa el mapa
-            initMap();
+        // Inicializa el mapa
+        initMap();
 
-            // Inicializa la ubicación en tiempo real
-            initLocationUpdates();
+        // Inicializa la ubicación en tiempo real
+        initLocationUpdates();
 
-            // BARRA INFERIOR
-            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-            bottomNavigationView.setSelectedItemId(R.id.map);
-            bottomNavigationView.setOnItemSelectedListener(item -> {
-                Intent intent = null;
-                String source = getIntent().getStringExtra("source");
+        // BARRA INFERIOR
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.map);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Intent intent = null;
+            String source = getIntent().getStringExtra("source");
 
-                if (item.getItemId() == R.id.home) {
-                    intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
-                }
-                if (item.getItemId() == R.id.add) {
-                    if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+            if (item.getItemId() == R.id.home) {
+                intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
+            }
+            if (item.getItemId() == R.id.add) {
+                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
 
-                        showDialog(Add.class);
+                    showDialog(Add.class);
                 } else {
                     intent = new Intent(Map.this, Add.class);
                 }
@@ -70,7 +73,7 @@ public class Map extends AppCompatActivity {
                 intent = new Intent(Map.this, Favorite.class).putExtra("source", source);
             }
             if (item.getItemId() == R.id.profile) {
-                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
                     showDialog(Profile.class);
                 } else {
                     intent = new Intent(Map.this, Profile.class);
@@ -150,47 +153,47 @@ public class Map extends AppCompatActivity {
                     if (location != null) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                    }
-                });
-            }
 
-            // PONEMOS LOS MARCADORES
-            for (String dist : distritos) {
-                getCount(dist, count -> {
-                    for (int i = 1; i <= count; i++) {
-                        String numero = String.valueOf(i);
-                        new FirestoreDatabase(dist, numero, firestoreDatabase -> {
-                            if (firestoreDatabase.getGeo() != null) {
-                                GeoPoint geo = firestoreDatabase.getGeo();
-                                LatLng latLng = new LatLng(geo.getLatitude(), geo.getLongitude());
+                        // Asigna la ubicación actual a la variable 'origen'
+                        LatLng origen = latLng;
 
-                                // Crear un VectorDrawable para la imagen del marcador
-                                Drawable drawable = ContextCompat.getDrawable(Map.this, R.drawable.marker);
-                                if (drawable != null) {
-                                    // Convertir el VectorDrawable a un BitmapDescriptor
-                                    BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable));
+                        // PONEMOS LOS MARCADORES
+                        for (String dist : distritos) {
+                            getCount(dist, count -> {
+                                for (int i = 1; i <= count; i++) {
+                                    String numero = String.valueOf(i);
+                                    new FirestoreDatabase(dist, numero, firestoreDatabase -> {
+                                        if (firestoreDatabase.getGeo() != null) {
+                                            GeoPoint geo = firestoreDatabase.getGeo();
+                                            LatLng markerLatLng = new LatLng(geo.getLatitude(), geo.getLongitude());
 
-                                    // Agregar el marcador al mapa
-                                    googleMap.addMarker(new MarkerOptions()
-                                            .position(latLng)
-                                            .snippet(numero)
-                                            .title(dist)
-                                            .icon(icon));
+                                            // Crear un VectorDrawable para la imagen del marcador
+                                            Drawable drawable = ContextCompat.getDrawable(Map.this, R.drawable.marker);
+                                            if (drawable != null) {
+                                                // Convertir el VectorDrawable a un BitmapDescriptor
+                                                BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable));
 
-                                    googleMap.setOnMarkerClickListener(marker -> {
-                                        Log.e("coleccion", Objects.requireNonNull(marker.getTitle()));
-                                        Log.e("documento", Objects.requireNonNull(marker.getSnippet()));
-                                        Intent intent = new Intent(Map.this, Patrimonio.class);
-                                        intent.putExtra("collection", marker.getTitle());
-                                        intent.putExtra("document", marker.getSnippet());
-                                        startActivity(intent);
-                                        return true;
+                                                // Agregar el marcador al mapa
+                                                googleMap.addMarker(new MarkerOptions()
+                                                        .position(markerLatLng)
+                                                        .snippet(numero)
+                                                        .title(dist)
+                                                        .icon(icon));
+
+                                                googleMap.setOnMarkerClickListener(marker -> {
+                                                    LatLng destino = marker.getPosition();
+                                                    calcularYMostrarRuta(origen, destino);
+                                                    return true;
+                                                });
+
+                                            } else {
+                                                Log.e("Map", "Error al obtener el VectorDrawable del marcador.");
+                                            }
+                                        }
                                     });
-                                } else {
-                                    Log.e("Map", "Error al obtener el VectorDrawable del marcador.");
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 });
             }
@@ -271,4 +274,54 @@ public class Map extends AppCompatActivity {
             }
         });
     }
+
+    private void calcularYMostrarRuta(LatLng origen, LatLng destino) {
+        // Crear instancia de GoogleMaps
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("TU_API_KEY")
+                .build();
+
+        // Calcular la ruta utilizando la API Directions
+        DirectionsApiRequest request = DirectionsApi.newRequest(context)
+                .origin(new com.google.maps.model.LatLng(origen.latitude, origen.longitude))
+                .destination(new com.google.maps.model.LatLng(destino.latitude, destino.longitude))
+                .mode(TravelMode.DRIVING); // Modo de transporte, en este caso automóvil
+
+        // Manejar la respuesta de la API
+        request.setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                // Procesar el resultado y mostrar la ruta en el mapa
+                if (result.routes != null && result.routes.length > 0) {
+                    DirectionsRoute route = result.routes[0];
+                    PolylineOptions polylineOptions = new PolylineOptions();
+
+                    // Iterar sobre los pasos de la ruta y agregarlos a la polyline
+                    for (DirectionsLeg leg : route.legs) {
+                        for (DirectionsStep step : leg.steps) {
+                            EncodedPolyline points = step.polyline;
+                            List<com.google.maps.model.LatLng> decodedPath = points.decodePath();
+                            for (com.google.maps.model.LatLng latLng : decodedPath) {
+                                polylineOptions.add(new LatLng(latLng.lat, latLng.lng));
+                            }
+                        }
+                    }
+
+                    // Añadir la polyline al mapa
+                    runOnUiThread(() -> {
+                        if (googleMap != null) {
+                            googleMap.addPolyline(polylineOptions);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                // Manejar errores de la solicitud de ruta
+                e.printStackTrace();
+            }
+        });
+    }
+
 }
