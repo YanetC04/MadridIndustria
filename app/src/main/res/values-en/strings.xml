@@ -10,7 +10,7 @@
     <string name="saludo">We are delighted to see you again</string>
     <string name="contraseña">Password</string>
     <string name="olvidaste">FORGOT YOUR PASSWORD?</string>
-    <string name="esperar">One moment...</string>
+    <string name="esperar">One moment…</string>
     <string name="dato">To change your password, use the link in the email we just sent you.</string>
     <string name="correoir">GO TO EMAIL</string>
     <string name="luego">I will later</string>
@@ -39,7 +39,7 @@
     <string name="ina">Enter the year of the inauguration</string>
     <string name="pat">Enter the category</string>
     <string name="met">Enter the lines of the meter</string>
-    <string name="des">Min. 200 characters</string>
+    <string name="des">Max. 200 characters</string>
     <string name="dir">Enter the address</string>
     <string name="ima">Enter the url of the image</string>
     <string-array name="modo">
@@ -51,7 +51,7 @@
         <item>Choose the district</item>
         <item>Arganzuela District</item>
         <item>Barajas District</item>
-        <item>Central District</item>
+        <item>Centro District</item>
         <item>Chamartín District</item>
         <item>Chamberí District</item>
         <item>Hortaleza District</item>
@@ -101,4 +101,41 @@
         <item>The old cork factory La Montaña, in Madrid, is now a cultural and leisure space.</item>
         <item>The La China ceramics factory, in Madrid, is one of the few examples of neo-Mudejar industrial architecture that exists in the city.</item>
     </string-array>
+    <string name="patno">The heritage does not exist.</string>
+    <string name="patya">The estate already exists.</string>
+    <string name="modi">Data successfully modified.</string>
+    <string name="agr">Data correctly added.</string>
+    <string name="elim">Delete data</string>
+    <string name="eliminar">Do you want to delete the estate?</string>
+    <string name="modif">Modify data</string>
+    <string name="ag">Add data</string>
+    <string name="valorInv">Invalid value for latitude/longitude.</string>
+    <string name="selecDist">Select a district.</string>
+    <string name="si">YES</string>
+    <string name="gest">Administrator Mode</string>
+    <string name="mGestor">Do you want to activate admin mode?</string>
+    <string name="noRes">User or Email not registered.</string>
+    <string name="corNoRes">Email not registered in the database.</string>
+    <string name="corNo">Invalid email.</string>
+    <string name="contraNo">Error updating password. Make sure the new password meets Firebase requirements.</string>
+    <string name="contraInc">The current password is incorrect.</string>
+    <string name="compTit">Share app</string>
+    <string name="compCont">Check out this amazing app!</string>
+    <string name="compVia">Share via</string>
+    <string name="cancelar">Cancel</string>
+    <string name="conf">Confirmation</string>
+    <string name="confCont">Are you sure you want to delete your account?</string>
+    <string name="contNoCoin">Passwords do not match. Please verify.</string>
+    <string name="corrNoCoin">Invalid email. Please verify.</string>
+    <string name="contAnt">Previous password</string>
+    <string name="contNue">New password</string>
+    <string name="contConf">Confirm password</string>
+    <string name="nombre">Name: </string>
+    <string name="distrito">District:</string>
+    <string name="coordenadas">Coordinates:</string>
+    <string name="agregar">ADD</string>
+    <string name="inaguracion">Inauguration:</string>
+    <string name="patrimonio">Heritage:</string>
+    <string name="metro">Meter:</string>
+    <string name="direccion">Address:</string>
 </resources>

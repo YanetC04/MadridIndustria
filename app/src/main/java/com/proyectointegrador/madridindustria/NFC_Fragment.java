@@ -3,7 +3,6 @@ package com.proyectointegrador.madridindustria;
 import android.animation.*;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -28,12 +27,10 @@ public class NFC_Fragment extends Fragment {
         imageView = root.findViewById(R.id.imageView);
         int nightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
-            // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
             Glide.with(NFC_Fragment.this)
                     .load(R.drawable.whitemadi)
                     .into(imageView);
         } else {
-            // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
             Glide.with(NFC_Fragment.this)
                     .load(R.drawable.redmadi)
                     .into(imageView);
@@ -49,11 +46,11 @@ public class NFC_Fragment extends Fragment {
     private void openPlayStore() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Compartir aplicación");
-        String shareMessage = "¡Echa un vistazo a esta increíble aplicación!";
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.compTit));
+        String shareMessage = getResources().getString(R.string.compCont);
         shareMessage = shareMessage + " https://play.google.com/store/apps/details?id=" + requireContext().getPackageName();
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-        requireContext().startActivity(Intent.createChooser(shareIntent, "Compartir vía"));
+        requireContext().startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.compVia)));
     }
 
     private void animacionImagen() {

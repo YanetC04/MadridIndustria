@@ -3,7 +3,9 @@ package com.proyectointegrador.madridindustria;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,21 +23,19 @@ public class Hall extends AppCompatActivity {
         imagen = findViewById(R.id.ministerio);
         Button inicio = findViewById(R.id.inicio);
         Button registro = findViewById(R.id.registro);
-        String source = getIntent().getStringExtra("intent");
 
         // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
         Glide.with(Hall.this)
                 .load(R.drawable.ministerio)
                 .into(imagen);
 
-
         inicio.setOnClickListener(v -> {
-            Intent intent = new Intent(Hall.this, Login.class).putExtra("intent", source);
+            Intent intent = new Intent(Hall.this, Login.class);
             startActivity(intent);
         });
 
         registro.setOnClickListener(v -> {
-            Intent intent = new Intent(Hall.this, Register.class).putExtra("intent", source);
+            Intent intent = new Intent(Hall.this, Register.class);
             startActivity(intent);
         });
 
@@ -70,8 +70,4 @@ public class Hall extends AppCompatActivity {
                 .into(imagen);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

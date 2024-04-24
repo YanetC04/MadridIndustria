@@ -16,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/text"
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         android:fontFamily="sans-serif"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:text="@string/madrid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +55,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/volver" />
+        app:layout_constraintTop_toBottomOf="@+id/volver"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/volver"
@@ -62,9 +64,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:fontFamily="sans-serif"
-        android:textSize="13dp"
+        android:textSize="13sp"
         android:text="@string/atras"
-        android:onClick="volverAtras"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registro" />

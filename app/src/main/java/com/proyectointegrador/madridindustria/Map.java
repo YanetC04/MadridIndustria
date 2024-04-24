@@ -60,8 +60,7 @@ public class Map extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.add) {
                     if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-
-                        showDialog(Add.class);
+                        showDialog();
                 } else {
                     intent = new Intent(Map.this, Add.class);
                 }
@@ -73,7 +72,7 @@ public class Map extends AppCompatActivity {
                     if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
                         intent = new Intent(Map.this, Profile.class).putExtra("source", "cerrado");
                     } else {
-                        intent = new Intent(Map.this, Profile.class).putExtra("source", source);;
+                        intent = new Intent(Map.this, Profile.class).putExtra("source", source);
                     }
                 }
 
@@ -89,20 +88,18 @@ public class Map extends AppCompatActivity {
     }
 
     // Diálogo de error
-    private void showDialog(Class intent) {
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Modo Gestor")
-                .setMessage("¿Quieres activar el modo Gestor?")
-                .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(Map.this, Hall.class).putExtra("intent", intent.getName()));
+        builder.setTitle(getResources().getString(R.string.gest))
+                .setMessage(getResources().getString(R.string.mGestor))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
+                    startActivity(new Intent(Map.this, Hall.class));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
-        // Creación y visualización del diálogo
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
     }
 
     // NO VOLVER ATRAS
@@ -266,8 +263,7 @@ public class Map extends AppCompatActivity {
                 int count = task.getResult().size();
                 countCallback.onCallback(count);
             } else {
-                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
-                countCallback.onCallback(-1); // Indicates an error
+                countCallback.onCallback(-1);
             }
         });
     }

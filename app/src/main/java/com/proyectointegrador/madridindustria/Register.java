@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +14,7 @@ import com.google.firebase.auth.*;
 public class Register extends AppCompatActivity {
     private EditText code, mail, first_pass, confirm_pass;
     private TextInputLayout lay_code, lay_mail, lay_first_pass, lay_confirm_pass;
-    private Drawable redBorderDrawable;
-    private Drawable defaultBorderDrawable;
+    private Drawable redBorderDrawable, defaultBorderDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,6 @@ public class Register extends AppCompatActivity {
         String mailText = mail.getText().toString();
         String firstPassText = first_pass.getText().toString();
         String confirmPassText = confirm_pass.getText().toString();
-        String source = getIntent().getStringExtra("intent");
 
         // COMPRUEBO SI NO ESTAN VACIOS
         if (!codeText.isEmpty() && !mailText.isEmpty() && !firstPassText.isEmpty() && !confirmPassText.isEmpty()) {
@@ -53,19 +50,17 @@ public class Register extends AppCompatActivity {
                         mAuth.createUserWithEmailAndPassword(mailText, firstPassText).addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
                                 // REDIRIGE AL LOGIN
-                                Intent intent = new Intent(Register.this, Login.class).putExtra("intent", source);
+                                Intent intent = new Intent(Register.this, Login.class);
                                 startActivity(intent);
-                            } else {
-                                Log.e("User", "No Creado");
                             }
                         });
                     } else {
-                        showErrorDialog("Las contraseñas no coinciden. Por favor, verifique.");
+                        showErrorDialog(getResources().getString(R.string.contNoCoin));
                         first_pass.setBackground(redBorderDrawable);
                         confirm_pass.setBackground(redBorderDrawable);
                     }
                 } else {
-                    showErrorDialog("Correo electrónico no válido. Por favor, verifique.");
+                    showErrorDialog(getResources().getString(R.string.corrNoCoin));
                     mail.setBackground(redBorderDrawable);
                 }
             }

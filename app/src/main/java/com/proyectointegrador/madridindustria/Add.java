@@ -1,21 +1,17 @@
 package com.proyectointegrador.madridindustria;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
+import android.graphics.Color;
+import android.os.*;
 import android.view.View;
-
 import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.*;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Add extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +31,10 @@ public class Add extends AppCompatActivity {
         modo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String modoSelec = parent.getItemAtPosition(position).toString();
+                ((TextView) view).setTextColor(Color.WHITE);
+                ((TextView) view).setTextSize(19);
 
-                // Realiza diferentes acciones según la opción seleccionada
-                switch (modoSelec) {
+                switch (parent.getItemAtPosition(position).toString()) {
                     case "Añadir": case "Add":
                         redirFragment(new Add_Fragment());
                         break;
@@ -59,8 +55,10 @@ public class Add extends AppCompatActivity {
             }
         });
 
+        barraInferior();
+    }
 
-        // BARRA INFERIOR
+    private void barraInferior(){
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.add);
 

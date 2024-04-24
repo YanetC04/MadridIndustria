@@ -10,7 +10,7 @@
     <string name="saludo">Estamos encantados de volver a verte</string>
     <string name="contraseña">Contraseña</string>
     <string name="olvidaste">¿OLVIDASTE LA CONTRASEÑA?</string>
-    <string name="esperar">Un momento...</string>
+    <string name="esperar">Un momento…</string>
     <string name="dato">Para borrar la contraseña, use el enlace en el correo que le acabamos de enviar.</string>
     <string name="correoir">IR AL CORREO</string>
     <string name="luego">Lo hare luego</string>
@@ -41,7 +41,7 @@
     <string name="ina">Introduce el año de inauguración</string>
     <string name="pat">Introduce la categoría del patrimonio</string>
     <string name="met">Introduce las líneas de metro cercana</string>
-    <string name="des">Minimo 200 caracteres.</string>
+    <string name="des">Máx. 200 caracteres.</string>
     <string name="dir">Introduce la dirección</string>
     <string name="ima">Introduce el url de la imagen</string>
     <string-array name="modo">
@@ -57,7 +57,7 @@
         <item>Distrito Chamartín</item>
         <item>Distrito Chamberí</item>
         <item>Distrito Hortaleza</item>
-        <item>Distrito Moncloa-Aravaca</item>
+        <item>Distrito Moncloa</item>
         <item>Distrito Latina</item>
         <item>Distrito Retiro</item>
         <item>Distrito Salamanca</item>
@@ -77,10 +77,10 @@
     <string name="tuqr">COMPARTIR</string>
     <string name="nfc">Toca la imagen para compartir</string>
     <string name="mod">MODIFICAR</string>
-    <string name="sabiasque">Sabías que...</string>
+    <string name="sabiasque">Sabías que…</string>
     <string name="github">Contáctenos a través de GitHub</string>
-    <string name="contrano">Las contraseñas no coinciden</string>
-    <string name="contrasi">Contraseña cambiada correctamente</string>
+    <string name="contrano">Las contraseñas no coinciden.</string>
+    <string name="contrasi">Contraseña cambiada correctamente.</string>
     <string-array name="sabias">
         <item>El Puente de Toledo, ubicado en Madrid, es un símbolo histórico de la ingeniería civil española del siglo XVIII.</item>
         <item>La fábrica de cerámica La Cartuja de Sevilla, en San Lorenzo de El Escorial, es un ejemplo destacado de arquitectura industrial.</item>
@@ -103,4 +103,41 @@
         <item>La antigua fábrica de corcho La Montaña, en Madrid, es ahora un espacio cultural y de ocio.</item>
         <item>La fábrica de cerámica La China, en Madrid, es uno de los pocos ejemplos de arquitectura industrial neomudéjar que quedan en la ciudad.</item>
     </string-array>
+    <string name="patno">El patrimonio no existe.</string>
+    <string name="patya">El patrimonio ya existe.</string>
+    <string name="modi">Datos correctamente modificados.</string>
+    <string name="agr">Datos correctamente agregados.</string>
+    <string name="elim">Eliminar datos</string>
+    <string name="eliminar">¿Desea eliminar el patrimonio?</string>
+    <string name="modif">Modificar datos</string>
+    <string name="ag">Agregar datos</string>
+    <string name="valorInv">Valor inválido para latitud/longitud.</string>
+    <string name="selecDist">Seleccione un distrito.</string>
+    <string name="si">SI</string>
+    <string name="gest">Modo Administrador</string>
+    <string name="mGestor">¿Quieres activar el modo administrador?</string>
+    <string name="noRes">Usuario o Correo no registrados.</string>
+    <string name="corNoRes">Correo no registrado en la base de datos.</string>
+    <string name="corNo">Correo no válido.</string>
+    <string name="contraNo">Error al actualizar la contraseña. Asegúrate de que la nueva contraseña cumple con los requisitos de Firebase.</string>
+    <string name="contraInc">La contraseña actual es incorrecta.</string>
+    <string name="compTit">Compartir aplicación</string>
+    <string name="compCont">¡Echa un vistazo a esta increíble aplicación!</string>
+    <string name="compVia">Compartir vía</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="conf">Confirmación</string>
+    <string name="confCont">¿Estás seguro de que quieres borrar tu cuenta?</string>
+    <string name="contNoCoin">Las contraseñas no coinciden. Por favor, verifique.</string>
+    <string name="corrNoCoin">Correo electrónico no válido. Por favor, verifique.</string>
+    <string name="contAnt">Contraseña anterior</string>
+    <string name="contNue">Nueva contraseña</string>
+    <string name="contConf">Confirmar contraseña</string>
+    <string name="nombre">Nombre: </string>
+    <string name="distrito">Distrito:</string>
+    <string name="coordenadas">Coordenadas:</string>
+    <string name="agregar">AGREGAR</string>
+    <string name="inaguracion">Inauguración:</string>
+    <string name="patrimonio">Patrimonio:</string>
+    <string name="metro">Metro:</string>
+    <string name="direccion">Dirección:</string>
 </resources>

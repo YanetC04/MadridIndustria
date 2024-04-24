@@ -10,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Objects;
+
 public class QR extends AppCompatActivity {
 
     @Override
@@ -27,20 +29,14 @@ public class QR extends AppCompatActivity {
         // TABLAYOUT
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setText(getResources().getString(R.string.q));
-        tabLayout.getTabAt(1).setText(getResources().getString(R.string.n));
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.q));
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.n));
 
         // ATRAS
         ImageView atras = findViewById(R.id.atras);
         atras.setOnClickListener(view -> {
             String source = getIntent().getStringExtra("source"); 
-            Intent intent;
-
-            if (source != null && source.equalsIgnoreCase("abierto")) {
-                intent = new Intent(QR.this, Profile.class).putExtra("source", source);
-            } else {
-                intent = new Intent(QR.this, Profile.class).putExtra("source", source);
-            }
+            Intent intent = new Intent(QR.this, Profile.class).putExtra("source", source);
 
             // INICIAR LA ACTIVIDAD SEGÚN EL INTENTO
             startActivity(intent);

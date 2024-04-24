@@ -2,7 +2,9 @@ package com.proyectointegrador.madridindustria;
 
 import android.animation.*;
 import android.app.*;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.*;
 import android.view.View;
 import android.widget.*;
@@ -41,6 +43,11 @@ public class Splash extends AppCompatActivity {
         TextView adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
         sabiasQue = getResources().getStringArray(R.array.sabias);
+
+        // Cargar modo
+        int nuevoModo = (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esNoche", false))? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
+        getApplication().getResources().getConfiguration().uiMode &= ~Configuration.UI_MODE_NIGHT_MASK;
+        getApplication().getResources().getConfiguration().uiMode |= nuevoModo;
 
         // Cargar animaciones desde recursos XML
         ObjectAnimator slideRightX = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_x);

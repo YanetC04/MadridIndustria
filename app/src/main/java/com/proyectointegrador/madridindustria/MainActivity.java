@@ -5,7 +5,6 @@ import androidx.appcompat.app.*;
 import android.annotation.SuppressLint;
 import android.content.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                     // CONFIGURAMOS LA IMAGEN
-                    imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value)));
+                    imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value).putExtra("source", getIntent().getStringExtra("source"))));
 
                     internalLinear.addView(internalLayoutView);
                 }
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.add) {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Add.class);
+                    showDialog();
                 } else {
                     intent = new Intent(MainActivity.this, Add.class);
                 }
@@ -87,13 +86,12 @@ public class MainActivity extends AppCompatActivity {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
                     intent = new Intent(MainActivity.this, Profile.class).putExtra("source", "cerrado");
                 } else {
-                    intent = new Intent(MainActivity.this, Profile.class).putExtra("source", source);;
+                    intent = new Intent(MainActivity.this, Profile.class).putExtra("source", source);
                 }
             }
 
             if (intent != null) {
                 startActivity(intent);
-                // Sin transición
                 overridePendingTransition(0, 0);
                 return true;
             }
@@ -108,27 +106,24 @@ public class MainActivity extends AppCompatActivity {
                 int count = task.getResult().size();
                 countCallback.onCallback(count);
             } else {
-                Log.e("FirestoreData", "Error getting document count: " + Objects.requireNonNull(task.getException()).getMessage());
-                countCallback.onCallback(-1); // Indicates an error
+                countCallback.onCallback(-1);
             }
         });
     }
 
     // DIALOGO DE ERROR
-    private void showDialog(Class intent) {
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Modo Gestor")
-                .setMessage("¿Quieres activar el modo Gestor?")
-                .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(MainActivity.this, Hall.class).putExtra("intent", intent.getName()));
+        builder.setTitle(getResources().getString(R.string.gest))
+                .setMessage(getResources().getString(R.string.mGestor))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
+                    startActivity(new Intent(MainActivity.this, Hall.class));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
-        // Creación y visualización del diálogo
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
     }
 
     // NO VOLVER ATRAS

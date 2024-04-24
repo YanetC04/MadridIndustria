@@ -30,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
                 android:layout_marginBottom="10dp"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:importantForAccessibility="no" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -39,12 +40,16 @@
 
                 <TextView
                     style="@style/textTitle"
-                    android:textSize="16dp"
-                    android:text="Inaguración: " />
+                    android:textSize="16sp"
+                    android:text="@string/inaguracion" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/inaguracion"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     style="@style/textContent"/>
             </LinearLayout>
 
@@ -55,12 +60,16 @@
 
                 <TextView
                     style="@style/textTitle"
-                    android:textSize="16dp"
-                    android:text="Patrimonio: " />
+                    android:textSize="16sp"
+                    android:text="@string/patrimonio" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/patrimonio"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     style="@style/textContent"/>
             </LinearLayout>
 
@@ -71,12 +80,16 @@
 
                 <TextView
                     style="@style/textTitle"
-                    android:textSize="16dp"
-                    android:text="Metro: " />
+                    android:textSize="16sp"
+                    android:text="@string/metro" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/metro"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     style="@style/textContent"/>
             </LinearLayout>
 
@@ -87,13 +100,13 @@
 
                 <TextView
                     style="@style/textTitle"
-                    android:textSize="16dp"
-                    android:text="Dirección: " />
+                    android:textSize="16sp"
+                    android:text="@string/direccion" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/direccion"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 style="@style/textContent"/>
         </LinearLayout>
 
@@ -107,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:theme="@style/Box.MadridIndustria.NoActionBar"
                 android:textAlignment="center"
                 android:layout_gravity="center"/>

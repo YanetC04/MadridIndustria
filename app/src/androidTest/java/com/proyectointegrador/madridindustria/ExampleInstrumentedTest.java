@@ -1,4 +1,4 @@
-package com.example.madridindustria;
+package com.proyectointegrador.madridindustria;
 
 import android.content.Context;
 

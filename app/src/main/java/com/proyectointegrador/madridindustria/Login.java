@@ -12,18 +12,13 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
-
-
 public class Login extends AppCompatActivity  {
 
     private EditText email, contrasena;
     private TextInputLayout lay_pass, lay_mail;
     private String mail, pass;
     private ImageView imagen;
-    private Drawable redBorderDrawable;
-    private Drawable defaultBorderDrawable;
+    private Drawable redBorderDrawable, defaultBorderDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +42,6 @@ public class Login extends AppCompatActivity  {
                     .load(R.drawable.whitemadi)
                     .into(imagen);
         } else {
-            // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
             Glide.with(Login.this)
                     .load(R.drawable.redmadi)
                     .into(imagen);
@@ -62,17 +56,13 @@ public class Login extends AppCompatActivity  {
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             finish();
-                            try {
-                                startActivity(new Intent(Login.this,Class.forName(Objects.requireNonNull(getIntent().getStringExtra("intent")))).putExtra("source", "abierto").putExtra("correo", mail));
-                            } catch (ClassNotFoundException e) {
-                                throw new RuntimeException(e);
-                            }
+                            startActivity(new Intent(Login.this, Add.class).putExtra("source", "abierto").putExtra("correo", mail));
                         } else {
-                            showErrorDialog("Usuario o Correo no registrados.");
+                            showErrorDialog(getResources().getString(R.string.noRes));
                         }
                     });
                 } else {
-                    showErrorDialog("Correo no válido.");
+                    showErrorDialog(getResources().getString(R.string.corNo));
                 }
             } else {
                 if (pass.isEmpty()){
@@ -106,14 +96,14 @@ public class Login extends AppCompatActivity  {
                 if (valida(mail)) {
                     FirebaseAuth.getInstance().sendPasswordResetEmail(mail).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(Login.this, Password.class).putExtra("intent", getIntent().getStringExtra("intent"));
+                            Intent intent = new Intent(Login.this, Password.class);
                             startActivity(intent);
                         } else {
-                            showErrorDialog("Correo no registrado en la base de datos.");
+                            showErrorDialog(getResources().getString(R.string.corNoRes));
                         }
                     });
                 } else {
-                    showErrorDialog("Correo no válido.");
+                    showErrorDialog(getResources().getString(R.string.corNo));
                 }
             } else {
                 lay_mail.setHint(R.string.email);
@@ -165,8 +155,4 @@ public class Login extends AppCompatActivity  {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

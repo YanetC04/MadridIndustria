@@ -14,15 +14,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        // Aquí debes devolver el Fragment correspondiente a cada posición
-        // Por ejemplo:
         switch (position) {
             case 0:
                 return new QR_Fragment();
             case 1:
                 return new NFC_Fragment();
             default:
-                return null;
+                return new Fragment();
         }
     }
 

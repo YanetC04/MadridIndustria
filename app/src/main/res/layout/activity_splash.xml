@@ -29,7 +29,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/industry_logo" />
+                app:srcCompat="@drawable/industry_logo"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/adrid"
@@ -38,7 +39,7 @@
                 android:fontFamily="@font/pathwaygothicone_regular"
                 android:text="ADRID"
                 android:textColor="@color/white"
-                android:textSize="70dp"
+                android:textSize="70sp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +54,7 @@
             android:fontFamily="@font/pathwaygothicone_regular"
             android:text="INDUSTRIA"
             android:textColor="@color/white"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:visibility="invisible" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

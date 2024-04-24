@@ -7,7 +7,6 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -23,7 +22,6 @@ public class Favorite extends AppCompatActivity {
     private String imagenV;
     private TextView textView;
     private String dist = null;
-
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -54,7 +52,7 @@ public class Favorite extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.add) {
                 if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
-                    showDialog(Add.class);
+                    showDialog();
                 } else {
                     intent = new Intent(Favorite.this, Add.class);
                 }
@@ -63,13 +61,13 @@ public class Favorite extends AppCompatActivity {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
                     intent = new Intent(Favorite.this, Profile.class).putExtra("source", "cerrado");
                 } else {
-                    intent = new Intent(Favorite.this, Profile.class).putExtra("source", source);;
+                    intent = new Intent(Favorite.this, Profile.class).putExtra("source", source);
                 }
             }
 
             if (intent != null) {
                 startActivity(intent);
-                // Sin transición
+                // SIN TRANSICION
                 overridePendingTransition(0, 0);
                 return true;
             }
@@ -103,7 +101,7 @@ public class Favorite extends AppCompatActivity {
                 TextView metro = favoriteCard.findViewById(R.id.metro);
                 TextView direccion = favoriteCard.findViewById(R.id.direccion);
 
-                // Verificar si el cursor contiene la columna antes de obtener su índice
+                // VERIFICAR SI EL CURSOR CONTIENE LA COLUMNA ANTES DE OBTENER SU INDICE
                 int columnIndexNombre = cursor.getColumnIndex("nombre");
                 int columnIndexInaguracion = cursor.getColumnIndex("inaguracion");
                 int columnIndexPatrimonio = cursor.getColumnIndex("patrimonio");
@@ -113,7 +111,7 @@ public class Favorite extends AppCompatActivity {
                 int columnIndexImagen = cursor.getColumnIndex("imagen");
 
                 if (columnIndexNombre != -1) {
-                    // Obtener los valores de cada columna
+                    // OBTENER VALORES CADA COLUMNA
                     String nombreValor = cursor.getString(columnIndexNombre);
                     String inaguracionValor = cursor.getString(columnIndexInaguracion);
                     String patrimonioValor = cursor.getString(columnIndexPatrimonio);
@@ -163,26 +161,19 @@ public class Favorite extends AppCompatActivity {
 
         CollectionReference patrimoniosRef = FirebaseFirestore.getInstance().collection(dist);
 
-        // Realizar una consulta para buscar el documento con el nombre específico
+        // CONSULTA PARA BUSCAR DOC CON NOMBRE ESPECIFICO
         patrimoniosRef.whereEqualTo("nombre", nombreValor)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // La consulta fue exitosa
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Obtener el Document ID
+                            // OBTENER DOCUMENTO ID
                             String documentId = document.getId();
-
-                            // Ahora, puedes usar el Document ID como sea necesario
-                            // En este ejemplo, podrías iniciar la actividad Patrimonio con el Document ID como Extra
                             Intent intent = new Intent(Favorite.this, Patrimonio.class);
                             intent.putExtra("collection", dist);
                             intent.putExtra("document", documentId);
                             startActivity(intent);
                         }
-                    } else {
-                        // Handle errors
-                        Log.e("Firebase", "Error al realizar la consulta", task.getException());
                     }
                 });
     }
@@ -192,28 +183,24 @@ public class Favorite extends AppCompatActivity {
                 .replaceAll("\\p{M}", "");
     }
 
-    // Diálogo de error
-    private void showDialog(Class intent) {
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Modo Gestor")
-                .setMessage("¿Quieres activar el modo Gestor?")
-                .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(Favorite.this, Hall.class).putExtra("intent", intent.getName()));
+        builder.setTitle(getResources().getString(R.string.gest))
+                .setMessage(getResources().getString(R.string.mGestor))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
+                    startActivity(new Intent(Favorite.this, Hall.class));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
-        // Creación y visualización del diálogo
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
     }
 
     // NO VOLVER ATRAS
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        // Evitar que MainActivity vuelva atrás a Splash.java
         // No llames al super.onBackPressed();
     }
 
@@ -239,8 +226,4 @@ public class Favorite extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

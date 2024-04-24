@@ -4,56 +4,35 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.text.*;
 import android.view.*;
 import android.webkit.WebView;
 import android.widget.*;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.*;
 
 import java.text.Normalizer;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Add_Fragment extends Fragment {
 
+    private Spinner distrito;
+    private Drawable redBorderDrawable, defaultBorderDrawable;
     private EditText nombreEditText, inaguracionEditText, patrimonioEditText,coordenadas_latEditText, coordenadas_lonEditText,  metroEditText, direccionEditText, descripcionEditText, imagenEditText;
     private TextInputLayout nombreInputLayout, inaguracionInputLayout, patrimonioInputLayout, coordenadas_latInputLayout, coordenadas_lonInputLayout, metroInputLayout, direccionInputLayout, imagenInputLayout, descripcionInputLayout;
-    private String nombreText, inaguracionText, patrimonioText,coordenadas_latText, coordenadas_lonText,  metroText, direccionText, descripcionText, distritoText, imagenText;
-    private Spinner distrito;
-    private String dist = "";
-    private Drawable redBorderDrawable, defaultBorderDrawable;
+    private String nombreText, inaguracionText, patrimonioText,coordenadas_latText, coordenadas_lonText,  metroText, direccionText, descripcionText, distritoText, imagenText, dist = "";
 
-    public Add_Fragment() {
+        public Add_Fragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private void showErrorDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setTitle("Error")
-                .setMessage(message)
-                .setPositiveButton("OK", null);
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    public static String quitarAcentos(String input) {
-        return Normalizer.normalize(input, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "");
     }
 
     @Override
@@ -101,7 +80,7 @@ public class Add_Fragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 String html = "<html><body style='margin:0; padding:0;'><img style='object-fit: contain; width:100%; height:100%;' src='" + imagenEditText.getText().toString() + "' /></body></html>";
-                webView.setBackgroundColor(getResources().getColor(R.color.transparent));
+                webView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent));
                 webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
             }
         });
@@ -134,9 +113,10 @@ public class Add_Fragment extends Fragment {
                         distrito.setBackground(defaultBorderDrawable);
                         distritoText = distrito.getSelectedItem().toString();
                         if (!distritoText.isEmpty()) {
+                            int pos = (new Locale("es").getDisplayLanguage().equalsIgnoreCase(distritoText)) ? 1 : 0;
                             String[] palabras = distritoText.split("\\s+");
                             if (palabras.length >= 2) {
-                                String distritoNombre = palabras[1].toLowerCase();
+                                String distritoNombre = palabras[pos].toLowerCase();
                                 distritoNombre = quitarAcentos(distritoNombre);
 
                                 if (distritoNombre.equals("san")) {
@@ -146,13 +126,15 @@ public class Add_Fragment extends Fragment {
                                 }
                             }
                         }
-                    } else
-                        distritoText="";
+                    } else {
+                        distritoText = "";
+                        showErrorDialog(getResources().getString(R.string.selecDist));
+                        distrito.setBackground(redBorderDrawable);
+                    }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-                    showErrorDialog("Seleccione un distrito.");
                 }
             });
 
@@ -164,7 +146,7 @@ public class Add_Fragment extends Fragment {
                     latitude = Double.parseDouble(coordenadas_latText);
                     longitude = Double.parseDouble(coordenadas_lonText);
                 } catch (NumberFormatException e) {
-                    showErrorDialog("Formato inválido para latitud/longitud");
+                    showErrorDialog(getResources().getString(R.string.valorInv));
                     return;
                 }
             } else {
@@ -183,7 +165,7 @@ public class Add_Fragment extends Fragment {
                 if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
                     datos.put("geo", new GeoPoint(latitude, longitude));
                 } else {
-                    showErrorDialog("Valor inválido para latitud/longitud");
+                    showErrorDialog(getResources().getString(R.string.valorInv));
                     return;
                 }
                 datos.put("metro", metroText);
@@ -194,14 +176,14 @@ public class Add_Fragment extends Fragment {
                 db.collection(dist).whereEqualTo("nombre", nombreText).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (!task.getResult().isEmpty()) {
-                            showErrorDialog("El patrimonio ya existe.");
+                            showErrorDialog(getResources().getString(R.string.patya));
                         } else {
                             db.collection(dist).document().set(datos);
                             new AlertDialog.Builder(requireActivity())
-                                    .setTitle("Success")
-                                    .setMessage("Data correctamente enviada.")
+                                    .setTitle(getResources().getString(R.string.ag))
+                                    .setMessage(getResources().getString(R.string.agr))
                                     .setPositiveButton("OK", (dialog, which) -> {
-                                        // Reset input fields
+                                        // LIMPIAR INPUTS
                                         imagenEditText.getText().clear();
                                         nombreEditText.getText().clear();
                                         inaguracionEditText.getText().clear();
@@ -216,14 +198,13 @@ public class Add_Fragment extends Fragment {
                                     })
                                     .show();
                         }
-                    } else {
-                        Log.e("FirestoreData", "Error checking for document existence: " + Objects.requireNonNull(task.getException()).getMessage());
                     }
                 });
             } else {
-                if(dist.isEmpty()){
+                if(distrito.getSelectedItemPosition() == 0){
                     distrito.setBackground(redBorderDrawable);
                 }
+
                 marcarError(imagenText, imagenInputLayout, R.string.ima, imagenEditText);
                 marcarError(nombreText, nombreInputLayout, R.string.nom, nombreEditText);
                 marcarError(inaguracionText, inaguracionInputLayout, R.string.ina, inaguracionEditText);
@@ -237,11 +218,19 @@ public class Add_Fragment extends Fragment {
         return root;
     }
 
-    public static boolean isImageFormat(String input) {
-        String imageFormatRegex = "(?i)\\.(jpg|jpeg|png|gif|bmp|webp)$";
-        Pattern pattern = Pattern.compile(imageFormatRegex);
-        Matcher matcher = pattern.matcher(input);
-        return matcher.find();
+    private void showErrorDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton("OK", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public static String quitarAcentos(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
     }
 
     private void marcarError(String text, TextInputLayout input, int valor, EditText edit){

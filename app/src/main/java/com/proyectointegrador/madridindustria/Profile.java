@@ -87,6 +87,8 @@ public class Profile extends AppCompatActivity {
                     .load(nuevaImagen)
                     .into(modo);
 
+            guardarModoNoche(esNoche);
+
             recreate();
         });
 
@@ -166,7 +168,7 @@ public class Profile extends AppCompatActivity {
                 if (llave)
                     intent = new Intent(Profile.this, Add.class).putExtra("source", "abierto");
                 else
-                    showDialog(Add.class);
+                    showDialog();
             }
 
             // INICIAR LA ACTIVIDAD SEGÚN EL INTENTO
@@ -178,6 +180,13 @@ public class Profile extends AppCompatActivity {
 
             return true;
         });
+    }
+
+    private void guardarModoNoche(boolean esNoche) {
+        SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("esNoche", esNoche);
+        editor.apply();
     }
 
     private void cambiarContrasena() {
@@ -201,7 +210,6 @@ public class Profile extends AppCompatActivity {
                 String confirmar = confirmarNuevaContrasena.getText().toString();
 
                 if (!nueva.equals(confirmar)) {
-                    // Las contraseñas no coinciden
                     showError(getResources().getString(R.string.contrano));
                     return;
                 }
@@ -212,17 +220,17 @@ public class Profile extends AppCompatActivity {
                             if (passwordUpdateTask.isSuccessful()) {
                                 Toast.makeText(Profile.this, getResources().getString(R.string.contrasi), Toast.LENGTH_SHORT).show();
                             } else {
-                                showError("Error al actualizar la contraseña. Asegúrate de que la nueva contraseña cumple con los requisitos de Firebase.");
+                                showError(getResources().getString(R.string.contraNo));
                             }
                         });
                     } else {
-                        showError("La contraseña actual es incorrecta.");
+                        showError(getResources().getString(R.string.contraInc));
                     }
                 });
             }
         });
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getResources().getString(R.string.cancelar), (dialog, which) -> dialog.dismiss());
 
         builder.show();
     }
@@ -230,9 +238,9 @@ public class Profile extends AppCompatActivity {
     // MÉTODO PARA BORRAR LA CUENTA
     private void borrarCuenta() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmación")
-                .setMessage("¿Estás seguro de que quieres borrar tu cuenta?")
-                .setPositiveButton("Sí", (dialog, which) -> {
+        builder.setTitle(getResources().getString(R.string.conf))
+                .setMessage(getResources().getString(R.string.confCont))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
                     // ELIMINAR LA CUENTA DEL USUARIO
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -270,7 +278,7 @@ public class Profile extends AppCompatActivity {
                                 });
                     }
                 })
-                .setNegativeButton("No", (dialog, which) -> {
+                .setNegativeButton("NO", (dialog, which) -> {
                     // EL USUARIO HIZO CLIC EN "No", DESCARTAR EL DIÁLOGO
                     dialog.dismiss();
                 });
@@ -306,20 +314,18 @@ public class Profile extends AppCompatActivity {
         // NO LLAMAR AL super.onBackPressed();
     }
 
-    private void showDialog(Class intent) {
+    private void showDialog() {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
 
-        builder.setTitle("Modo Gestor")
-                .setMessage("¿Quieres activar el modo Gestor?")
-                .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(Profile.this, Hall.class).putExtra("intent", intent.getName()));
+        builder.setTitle(getResources().getString(R.string.gest))
+                .setMessage(getResources().getString(R.string.mGestor))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
+                    startActivity(new Intent(Profile.this, Hall.class));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
-        // Creación y visualización del diálogo
-        androidx.appcompat.app.AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
     }
 
     private void showError(String message) {

@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_margin="16dp"
+                    android:contentDescription="@string/favorite"
                     android:src="@drawable/heart"
                     app:layout_anchor="@id/appBarLayout"
                     app:shapeAppearanceOverlay="@style/redondo" />
@@ -74,7 +75,11 @@
 
                     <TextView
                         style="@style/textTitle"
-                        android:text="Inaguración: " />
+                        android:text="@string/inaguracion" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/inaguracion"
@@ -88,7 +93,11 @@
 
                     <TextView
                         style="@style/textTitle"
-                        android:text="Patrimonio: " />
+                        android:text="@string/patrimonio" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/patrimonio"
@@ -102,26 +111,44 @@
 
                     <TextView
                         style="@style/textTitle"
-                        android:text="Metro: " />
+                        android:text="@string/metro" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/metro"
                         style="@style/textContent" />
                 </LinearLayout>
 
+                <TextView
+                    style="@style/textTitle"
+                    android:text="@string/direccion" />
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/dir"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/textTitle"
-                        android:text="Dirección: " />
-                </LinearLayout>
+                        android:id="@+id/direccion"
+                        android:layout_weight="1"
+                        android:layout_gravity="bottom"
+                        style="@style/textContent"
+                        android:layout_width="0dp" />
 
-                <TextView
-                    android:id="@+id/direccion"
-                    style="@style/textContent" />
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/dir"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
 
                 <Space
                     android:layout_width="wrap_content"
