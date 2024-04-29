@@ -278,7 +278,7 @@ public class Map extends AppCompatActivity {
     private void calcularYMostrarRuta(LatLng origen, LatLng destino) {
         // Crear instancia de GoogleMaps
         GeoApiContext context = new GeoApiContext.Builder()
-                .apiKey("TU_API_KEY")
+                .apiKey("AIzaSyCG3YHX-TT69TpQq3R1cw_u3p8h66nFpS4")
                 .build();
 
         // Calcular la ruta utilizando la API Directions
