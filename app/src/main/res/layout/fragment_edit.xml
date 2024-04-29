@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_layout_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_nombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nom"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/imagen"
+            android:layout_width="55dp"
+            android:layout_height="23dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/search"
+            android:importantForAccessibility="no" />
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:padding="16dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:text="@string/nombre"
+            android:textStyle="bold"
+            android:layout_width="175dp"
+            android:textSize="18sp"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+        <TextView
+            android:text="@string/distrito"
+            android:layout_width="175dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_row="0"
+            android:layout_column="1"/>
+    </GridLayout>
+</LinearLayout>

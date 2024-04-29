@@ -5,14 +5,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import android.content.ContentValues;
+import android.content.*;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.*;
 
 import com.bumptech.glide.Glide;
@@ -27,8 +26,7 @@ public class Patrimonio extends AppCompatActivity {
     private FloatingActionButton boton;
     private boolean heart = true;
     private TextView direccion, inaguracion, metro, descripcion, patrimonio;
-    private Drawable heartDrawable;
-    private Drawable heartFillDrawable;
+    private Drawable heartDrawable, heartFillDrawable;
     private final localDB localDB = new localDB(this);
 
     @Override
@@ -47,6 +45,10 @@ public class Patrimonio extends AppCompatActivity {
         descripcion = findViewById(R.id.descripcion);
         heartDrawable = ContextCompat.getDrawable(this, R.drawable.heart);
         heartFillDrawable = ContextCompat.getDrawable(this, R.drawable.heart_fill);
+        LinearLayout dir = findViewById(R.id.dir);
+
+        // REDIRIGE AL MAPA
+        dir.setOnClickListener(v -> startActivity(new Intent(Patrimonio.this, Map.class).putExtra("source", getIntent().getStringExtra("source"))));
 
         // ESTABLECEMOS ESTE TOOLBAR COMO PREDETERMINADO
         setSupportActionBar(toolbar);
@@ -118,26 +120,22 @@ public class Patrimonio extends AppCompatActivity {
         boton.setOnClickListener(v -> {
             if (heart) {
                 // CORAZON LLENO
-                Log.e("Click", "true");
                 agregarPatrimonio(nombreText, inaguracionText, patrimonioText, metroText, direccionText, distritoText, imagenText);
                 boton.setImageDrawable(heartFillDrawable);
             } else {
                 // CORAZON VACIO
-                Log.e("Click", "false");
                 eliminarPatrimonio();
                 boton.setImageDrawable(heartDrawable);
             }
 
-            Log.e("Estado", String.valueOf(heart));
             heart = !heart;
-            Log.e("Estado", String.valueOf(heart));
         });
     }
 
     private void agregarPatrimonio(String nombre, String inaguracion, String patrimonio, String metro, String direccion, String distrito, String imagen) {
         SQLiteDatabase db = localDB.getWritableDatabase();
 
-        // Crea un nuevo registro de patrimonio
+        // CREA UN NUEVO REGISTRO DE PATRIMONIO
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("love", "true");
@@ -148,7 +146,7 @@ public class Patrimonio extends AppCompatActivity {
         values.put("distrito", distrito);
         values.put("imagen", imagen);
 
-        // Inserta el nuevo registro en la tabla patrimonio
+        // INSERTAR EL NUEVO REGISTRO
         db.insert("favorites", null, values);
 
         db.close();
@@ -168,14 +166,9 @@ public class Patrimonio extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
         Glide.with(Patrimonio.this)
                 .load(imagenText)
                 .into(imagen);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

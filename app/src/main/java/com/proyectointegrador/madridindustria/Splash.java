@@ -2,7 +2,9 @@ package com.proyectointegrador.madridindustria;
 
 import android.animation.*;
 import android.app.*;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.*;
 import android.view.View;
 import android.widget.*;
@@ -11,18 +13,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Random;
+
 public class Splash extends AppCompatActivity {
 
     private TextView industria;
     private static final int SPLASH_DURATION = 2000;
     private static final String CHANNEL_ID = "splash_notification_channel";
     private static final long MESSAGE_INTERVAL = 10 * 60 * 1000;
-    private final Handler messageHandler = new Handler();
+    private final Handler MESSAGE_HANDLER = new Handler();
+    private String[] sabiasQue;
+
+
     private final Runnable messageRunnable = new Runnable() {
         @Override
         public void run() {
             createNotification();
-            messageHandler.postDelayed(this, MESSAGE_INTERVAL);
+            MESSAGE_HANDLER.postDelayed(this, MESSAGE_INTERVAL);
         }
     };
 
@@ -35,6 +42,12 @@ public class Splash extends AppCompatActivity {
         ImageView logo = findViewById(R.id.logo);
         TextView adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
+        sabiasQue = getResources().getStringArray(R.array.sabias);
+
+        // Cargar modo
+        int nuevoModo = (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esNoche", false))? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
+        getApplication().getResources().getConfiguration().uiMode &= ~Configuration.UI_MODE_NIGHT_MASK;
+        getApplication().getResources().getConfiguration().uiMode |= nuevoModo;
 
         // Cargar animaciones desde recursos XML
         ObjectAnimator slideRightX = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_x);
@@ -85,7 +98,7 @@ public class Splash extends AppCompatActivity {
             finish();
         }, SPLASH_DURATION);
 
-        messageHandler.postDelayed(messageRunnable, MESSAGE_INTERVAL);
+        MESSAGE_HANDLER.postDelayed(messageRunnable, MESSAGE_INTERVAL);
     }
 
     private void createNotification() {
@@ -102,8 +115,8 @@ public class Splash extends AppCompatActivity {
         // Construir la notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification)
-                .setContentTitle("Sabías que...")
-                .setContentText("La estación de Atocha fue construida en 1851.")
+                .setContentTitle(getResources().getString(R.string.sabiasque))
+                .setContentText(sabiasQue[new Random().nextInt(sabiasQue.length)])
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         // Mostrar la notificación

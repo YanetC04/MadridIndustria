@@ -10,11 +10,12 @@ import android.widget.*;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi"};
+    private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "retiro", "tetuan", "fuencarral", "vallecas", "barajas", "hortaleza", "latina", "salamanca"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,36 +31,37 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout internalLinear = externalLayoutView.findViewById(R.id.linearExternal);
             TextView distrito = externalLayoutView.findViewById(R.id.distrito);
 
-            for (int i = 1; i <= 5; i++) {
-                View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
-                ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
-                TextView texto = internalLayoutView.findViewById(R.id.texto);
-                String value = String.valueOf(i);
+            getCount(dist, count -> {
+                for (int i = 1; i <= count; i++) {
+                    View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
+                    ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
+                    TextView texto = internalLayoutView.findViewById(R.id.texto);
+                    String value = String.valueOf(i);
 
-                // BASE DE DATOS
-                new FirestoreDatabase(dist, value, firestoreDatabase -> {
-                    // ESTABLECER INFORMACION
-                    distrito.setText(firestoreDatabase.getDistrito());
-                    texto.setText(firestoreDatabase.getNombre());
+                    // BASE DE DATOS
+                    new FirestoreDatabase(dist, value, firestoreDatabase -> {
+                        // ESTABLECER INFORMACION
+                        distrito.setText(firestoreDatabase.getDistrito());
+                        texto.setText(firestoreDatabase.getNombre());
 
-                    if (!isDestroyed()) {
-                        Glide.with(MainActivity.this)
-                                .load(firestoreDatabase.getImagen())
-                                .centerCrop()
-                                .into(imagen);
-                    }
-                });
+                        if (!isDestroyed()) {
+                            Glide.with(MainActivity.this)
+                                    .load(firestoreDatabase.getImagen())
+                                    .centerCrop()
+                                    .into(imagen);
+                        }
+                    });
 
-                // CONFIGURAMOS LA IMAGEN
-                imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value)));
+                    // CONFIGURAMOS LA IMAGEN
+                    imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value).putExtra("source", getIntent().getStringExtra("source"))));
 
-                internalLinear.addView(internalLayoutView);
-            }
+                    internalLinear.addView(internalLayoutView);
+                }
+            });
 
             // AGREGA EL DISEÑO INFLADO AL LINEARLAYOUT DEL SCROLLVIEW
             linearLayout.addView(externalLayoutView);
         }
-
 
         // BARRA INFERIOR
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.add) {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Add.class);
+                    showDialog();
                 } else {
                     intent = new Intent(MainActivity.this, Add.class);
                 }
@@ -82,15 +84,14 @@ public class MainActivity extends AppCompatActivity {
             }
             if (item.getItemId() == R.id.profile) {
                 if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
-                    showDialog(Profile.class);
+                    intent = new Intent(MainActivity.this, Profile.class).putExtra("source", "cerrado");
                 } else {
-                    intent = new Intent(MainActivity.this, Profile.class);
+                    intent = new Intent(MainActivity.this, Profile.class).putExtra("source", source);
                 }
             }
 
             if (intent != null) {
                 startActivity(intent);
-                // Sin transición
                 overridePendingTransition(0, 0);
                 return true;
             }
@@ -99,21 +100,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Diálogo de error
-    private void showDialog(Class intent) {
+    public void getCount(String dist, final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int count = task.getResult().size();
+                countCallback.onCallback(count);
+            } else {
+                countCallback.onCallback(-1);
+            }
+        });
+    }
+
+    // DIALOGO DE ERROR
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Modo Gestor")
-                .setMessage("¿Quieres activar el modo Gestor?")
-                .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(MainActivity.this, Hall.class).putExtra("intent", intent.getName()));
+        builder.setTitle(getResources().getString(R.string.gest))
+                .setMessage(getResources().getString(R.string.mGestor))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
+                    startActivity(new Intent(MainActivity.this, Hall.class));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
-        // Creación y visualización del diálogo
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
     }
 
     // NO VOLVER ATRAS

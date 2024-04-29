@@ -9,7 +9,8 @@
         android:layout_width="195dp"
         android:layout_height="272dp"
         android:layout_marginStart="10dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:importantForAccessibility="no" />
 
     <View
         android:id="@+id/shadowView"

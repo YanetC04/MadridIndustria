@@ -1,24 +1,15 @@
 package com.proyectointegrador.madridindustria;
 
-import android.util.Log;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.*;
 
 import java.util.Objects;
-
-
 public class FirestoreDatabase {
     private String nombre, inaguracion, metro, direccion, descripcion, imagen, distrito, patrimonio, id;
     private GeoPoint geo;
 
     public FirestoreDatabase(String collectionPath, String documentPath, final FirestoreCallback callback){
         // INICIALIZAR FIREBASE
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        DocumentReference patrimonioRef = db.collection(collectionPath).document(documentPath);
-        patrimonioRef.get().addOnCompleteListener(task -> {
+        FirebaseFirestore.getInstance().collection(collectionPath).document(documentPath).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
@@ -31,19 +22,21 @@ public class FirestoreDatabase {
                     imagen = document.getString("imagen");
                     distrito = document.getString("distrito");
                     geo = document.getGeoPoint("geo");
-                } else {
-                    // El documento no existe
-                    Log.d("FirestoreData", "Documento no encontrado");
                 }
-            } else {
-                // Error al leer el documento
-                Log.e("FirestoreData", "Error al leer datos: " + Objects.requireNonNull(task.getException()).getMessage());
             }
 
             if (callback != null) {
                 callback.onCallback(FirestoreDatabase.this);
             }
         });
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
     }
 
     public String getNombre() {

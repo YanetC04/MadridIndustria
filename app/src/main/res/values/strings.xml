@@ -3,32 +3,34 @@
     <string name="iniciarSesion">INICIAR SESIÓN</string>
     <string name="datos">Introduzca sus datos</string>
     <string name="registro">REGISTRARSE</string>
-    <string name="apple">CONTINUAR CON APPLE</string>
-    <string name="facebook">CONTINUAR CON FACEBOOK</string>
-    <string name="gmail">CONTINUAR CON GMAIL</string>
     <string name="bienvenida">Bienvenido a IndustriaMadrid!</string>
     <string name="o">O</string>
-    <string name="madrid">Cuidado el patrimonio de la Comunidad de Madrid</string>
+    <string name="madrid">Cuidando el patrimonio de Madrid</string>
+    <string name="atras">Volver a atrás</string>
     <string name="saludo">Estamos encantados de volver a verte</string>
     <string name="contraseña">Contraseña</string>
     <string name="olvidaste">¿OLVIDASTE LA CONTRASEÑA?</string>
-    <string name="esperar">Un momento...</string>
+    <string name="esperar">Un momento…</string>
     <string name="dato">Para borrar la contraseña, use el enlace en el correo que le acabamos de enviar.</string>
     <string name="correoir">IR AL CORREO</string>
     <string name="luego">Lo hare luego</string>
     <string name="contenido">Contenido: </string>
     <string name="descripcion">Descripción</string>
-    <string name="ciudad">Conoce tu propia\nciudad</string>
+    <string name="ciudad">Explora el</string>
+    <string name="ciudad2">Patrimonio Industrial</string>
     <string name="bienvenido">BIENVENID@</string>
     <string name="tu_contra">TU CONTRASEÑA</string>
     <string name="favorite">TUS FAVORITOS</string>
+    <string name="fav">No hay favoritos.</string>
     <string name="code">Código de Gestor</string>
     <string name="email">Correo Electrónico</string>
     <string name="password">Contraseña</string>
     <string name="password2">Confirmar Contraseña</string>
     <string name="cuenta">Borrar Cuenta</string>
     <string name="cambiarcon">Cambiar Contraseña</string>
+    <string name="cambiar">Cambiar</string>
     <string name="idioma">Idioma de la aplicación</string>
+    <string name="ayuda">Ayuda &amp; Soporte</string>
     <string name="cerrarSesion">Cerrar Sesion</string>
     <string name="info">Info. de la aplicacción</string>
     <string name="english" translatable="false">English</string>
@@ -36,12 +38,17 @@
     <string name="lat">Introduce la latitud</string>
     <string name="lon">Introduce la longitud</string>
     <string name="nom">Introduce el nombre del patrimonio</string>
-    <string name="ina">Introduce el año de inaguracion</string>
+    <string name="ina">Introduce el año de inauguración</string>
     <string name="pat">Introduce la categoría del patrimonio</string>
     <string name="met">Introduce las líneas de metro cercana</string>
-    <string name="des">Minimo 200 caracteres.</string>
+    <string name="des">Máx. 200 caracteres.</string>
     <string name="dir">Introduce la dirección</string>
     <string name="ima">Introduce el url de la imagen</string>
+    <string-array name="modo">
+        <item>Añadir</item>
+        <item>Modificar</item>
+        <item>Eliminar</item>
+    </string-array>
     <string-array name="distritos">
         <item>Escoge el distrito</item>
         <item>Distrito Arganzuela</item>
@@ -50,7 +57,7 @@
         <item>Distrito Chamartín</item>
         <item>Distrito Chamberí</item>
         <item>Distrito Hortaleza</item>
-        <item>Distrito Moncloa-Aravaca</item>
+        <item>Distrito Moncloa</item>
         <item>Distrito Latina</item>
         <item>Distrito Retiro</item>
         <item>Distrito Salamanca</item>
@@ -59,4 +66,78 @@
         <item>Distrito Vallecas</item>
         <item>Distrito Villaverde</item>
     </string-array>
+    <string name="direc">Dirección</string>
+    <string name="anoni">Anónimo</string>
+    <string name="gestor">Administrador</string>
+    <string name="copy">Todos los derechos reservados © Madrid Industria:</string>
+    <string name="copy2">Innovación, Progreso, Excelencia.</string>
+    <string name="qr">Comparte con tus amigos</string>
+    <string name="q">QR</string>
+    <string name="n">ENLACE</string>
+    <string name="tuqr">COMPARTIR</string>
+    <string name="nfc">Toca la imagen para compartir</string>
+    <string name="mod">MODIFICAR</string>
+    <string name="sabiasque">Sabías que…</string>
+    <string name="github">Contáctenos a través de GitHub</string>
+    <string name="contrano">Las contraseñas no coinciden.</string>
+    <string name="contrasi">Contraseña cambiada correctamente.</string>
+    <string-array name="sabias">
+        <item>El Puente de Toledo, ubicado en Madrid, es un símbolo histórico de la ingeniería civil española del siglo XVIII.</item>
+        <item>La fábrica de cerámica La Cartuja de Sevilla, en San Lorenzo de El Escorial, es un ejemplo destacado de arquitectura industrial.</item>
+        <item>La Real Fábrica de Tapices, en Madrid, es una de las pocas fábricas de tapices que todavía producen tapices de manera artesanal en Europa.</item>
+        <item>La fábrica de cerveza El Águila, en Madrid, es un icono de la arquitectura industrial del siglo XIX.</item>
+        <item>La Real Fábrica de Cristales de La Granja, en San Ildefonso, produjo cristales para la realeza española durante siglos.</item>
+        <item>El Matadero de Madrid, ahora un centro cultural, era en sus inicios uno de los principales mataderos de la ciudad.</item>
+        <item>La Central Térmica de San Isidro, en Madrid, fue una de las primeras centrales eléctricas de la ciudad.</item>
+        <item>La fábrica de harinas La Cantábrica, en Madrid, es un ejemplo de la arquitectura industrial del siglo XIX.</item>
+        <item>La fábrica de cerámica de la Moncloa, en Madrid, es un importante patrimonio industrial de la ciudad.</item>
+        <item>La estación de ferrocarril de Delicias, en Madrid, es un magnífico ejemplo de arquitectura industrial del siglo XIX.</item>
+        <item>La fábrica de cerveza Mahou, en Madrid, es una de las cervecerías más antiguas de España.</item>
+        <item>La fábrica de cerámica La China, en Madrid, es un ejemplo destacado de arquitectura industrial neomudéjar.</item>
+        <item>La fábrica de armas de Toledo, en Madrid, es un importante patrimonio industrial militar.</item>
+        <item>La fábrica de harinas La Imperial, en Madrid, es un ejemplo de arquitectura industrial del siglo XIX.</item>
+        <item>La antigua fábrica de cigarros de Lavapiés, en Madrid, es ahora un centro cultural.</item>
+        <item>La fábrica de hilaturas El León, en Madrid, es un ejemplo de arquitectura industrial del siglo XIX.</item>
+        <item>La fábrica de papel de La Elipa, en Madrid, es un importante patrimonio industrial de la ciudad.</item>
+        <item>La fábrica de fundición de bronce de Vallecas, en Madrid, es un ejemplo de arquitectura industrial del siglo XIX.</item>
+        <item>La antigua fábrica de corcho La Montaña, en Madrid, es ahora un espacio cultural y de ocio.</item>
+        <item>La fábrica de cerámica La China, en Madrid, es uno de los pocos ejemplos de arquitectura industrial neomudéjar que quedan en la ciudad.</item>
+    </string-array>
+    <string name="patno">El patrimonio no existe.</string>
+    <string name="patya">El patrimonio ya existe.</string>
+    <string name="modi">Datos correctamente modificados.</string>
+    <string name="agr">Datos correctamente agregados.</string>
+    <string name="elim">Eliminar datos</string>
+    <string name="eliminar">¿Desea eliminar el patrimonio?</string>
+    <string name="modif">Modificar datos</string>
+    <string name="ag">Agregar datos</string>
+    <string name="valorInv">Valor inválido para latitud/longitud.</string>
+    <string name="selecDist">Seleccione un distrito.</string>
+    <string name="si">SI</string>
+    <string name="gest">Modo Administrador</string>
+    <string name="mGestor">¿Quieres activar el modo administrador?</string>
+    <string name="noRes">Usuario o Correo no registrados.</string>
+    <string name="corNoRes">Correo no registrado en la base de datos.</string>
+    <string name="corNo">Correo no válido.</string>
+    <string name="contraNo">Error al actualizar la contraseña. Asegúrate de que la nueva contraseña cumple con los requisitos de Firebase.</string>
+    <string name="contraInc">La contraseña actual es incorrecta.</string>
+    <string name="compTit">Compartir aplicación</string>
+    <string name="compCont">¡Echa un vistazo a esta increíble aplicación!</string>
+    <string name="compVia">Compartir vía</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="conf">Confirmación</string>
+    <string name="confCont">¿Estás seguro de que quieres borrar tu cuenta?</string>
+    <string name="contNoCoin">Las contraseñas no coinciden. Por favor, verifique.</string>
+    <string name="corrNoCoin">Correo electrónico no válido. Por favor, verifique.</string>
+    <string name="contAnt">Contraseña anterior</string>
+    <string name="contNue">Nueva contraseña</string>
+    <string name="contConf">Confirmar contraseña</string>
+    <string name="nombre">Nombre: </string>
+    <string name="distrito">Distrito:</string>
+    <string name="coordenadas">Coordenadas:</string>
+    <string name="agregar">AGREGAR</string>
+    <string name="inaguracion">Inauguración:</string>
+    <string name="patrimonio">Patrimonio:</string>
+    <string name="metro">Metro:</string>
+    <string name="direccion">Dirección:</string>
 </resources>
