@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.*;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Locale;
+
 public class Patrimonio extends AppCompatActivity {
 
     private String nombreText, inaguracionText, patrimonioText, metroText, direccionText, distritoText, imagenText;
@@ -90,15 +92,34 @@ public class Patrimonio extends AppCompatActivity {
                 heart = true;
             }
 
-            // ESTABLECEMOS EL TITULO
-            toolbarCollapse.setTitle(nombreText);
-
             // ESTABLECEMOS LA INFORMACION
-            inaguracion.setText(inaguracionText);
-            patrimonio.setText(patrimonioText);
-            metro.setText(metroText);
-            direccion.setText(direccionText);
-            descripcion.setText(firestoreDatabase.getDescripcion());
+            if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+                inaguracion.setText(inaguracionText);
+                patrimonio.setText(patrimonioText);
+                metro.setText(metroText);
+                direccion.setText(direccionText);
+                descripcion.setText(firestoreDatabase.getDescripcion());
+
+                // ESTABLECEMOS EL TITULO
+                toolbarCollapse.setTitle(nombreText);
+            } else {
+                traducirTexto(inaguracion, inaguracionText);
+                traducirTexto(patrimonio, patrimonioText);
+                traducirTexto(metro, metroText);
+                traducirTexto(direccion, direccionText);
+                traducirTexto(descripcion, firestoreDatabase.getDescripcion());
+                Traductor.traducirTexto(nombreText, new Traductor.OnTranslationComplete() {
+                    @Override
+                    public void onTranslationComplete(String translatedText) {
+                        toolbarCollapse.setTitle(translatedText);
+                    }
+
+                    @Override
+                    public void onTranslationFailed(String errorMessage) {
+
+                    }
+                });
+            }
 
             // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
             Glide.with(Patrimonio.this)
@@ -129,6 +150,20 @@ public class Patrimonio extends AppCompatActivity {
             }
 
             heart = !heart;
+        });
+    }
+
+    private void traducirTexto(TextView view, String texto){
+        Traductor.traducirTexto(texto, new Traductor.OnTranslationComplete() {
+            @Override
+            public void onTranslationComplete(String translatedText) {
+                view.setText(translatedText);
+            }
+
+            @Override
+            public void onTranslationFailed(String errorMessage) {
+
+            }
         });
     }
 

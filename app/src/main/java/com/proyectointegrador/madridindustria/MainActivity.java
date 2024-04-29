@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.Normalizer;
+import java.util.Locale;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,9 +42,25 @@ public class MainActivity extends AppCompatActivity {
 
                     // BASE DE DATOS
                     new FirestoreDatabase(dist, value, firestoreDatabase -> {
-                        // ESTABLECER INFORMACION
-                        distrito.setText(firestoreDatabase.getDistrito());
-                        texto.setText(firestoreDatabase.getNombre());
+                        // ESTABLECER INFORMACION TRADUCIDA
+                        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+                            distrito.setText(firestoreDatabase.getDistrito());
+                            texto.setText(firestoreDatabase.getNombre());
+                        } else {
+                            distrito.setText(obtenerDistrito(firestoreDatabase.getDistrito()));
+
+                            Traductor.traducirTexto(firestoreDatabase.getNombre(), new Traductor.OnTranslationComplete() {
+                                @Override
+                                public void onTranslationComplete(String translatedText) {
+                                    texto.setText(translatedText);
+                                }
+
+                                @Override
+                                public void onTranslationFailed(String errorMessage) {
+
+                                }
+                            });
+                        }
 
                         if (!isDestroyed()) {
                             Glide.with(MainActivity.this)
@@ -98,6 +116,22 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+    }
+
+    private String obtenerDistrito(String distritoText) {
+        String distritoNombre = distritoText.split("\\s+")[1];
+        distritoNombre = quitarAcentos(distritoNombre);
+
+        if (distritoNombre.equals("San")) {
+            return "Distrito San Blas-Canillejas";
+        }
+
+        return distritoNombre + " District";
+    }
+
+    public static String quitarAcentos(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
     }
 
     public void getCount(String dist, final CountCallback countCallback) {

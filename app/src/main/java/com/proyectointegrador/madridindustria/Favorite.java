@@ -123,11 +123,20 @@ public class Favorite extends AppCompatActivity {
 
                     // ESTABLECER INFORMACION
                     textView.setVisibility(View.INVISIBLE);
-                    nombre.setText(nombreValor);
-                    inaguracion.setText(inaguracionValor);
-                    patrimonio.setText(patrimonioValor);
-                    metro.setText(metroValor);
-                    direccion.setText(direccionValor);
+                    if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+                        nombre.setText(nombreValor);
+                        inaguracion.setText(inaguracionValor);
+                        patrimonio.setText(patrimonioValor);
+                        metro.setText(metroValor);
+                        direccion.setText(direccionValor);
+                    } else {
+                        traducirTexto(nombre, nombreValor);
+                        traducirTexto(inaguracion, inaguracionValor);
+                        traducirTexto(patrimonio, patrimonioValor);
+                        traducirTexto(metro, metroValor);
+                        traducirTexto(direccion, direccionValor);
+                    }
+
 
                     Glide.with(Favorite.this)
                             .load(imagenValor)
@@ -177,6 +186,21 @@ public class Favorite extends AppCompatActivity {
                     }
                 });
     }
+
+    private void traducirTexto(TextView view, String texto){
+        Traductor.traducirTexto(texto, new Traductor.OnTranslationComplete() {
+            @Override
+            public void onTranslationComplete(String translatedText) {
+                view.setText(translatedText);
+            }
+
+            @Override
+            public void onTranslationFailed(String errorMessage) {
+
+            }
+        });
+    }
+
 
     public static String quitarAcentos(String input) {
         return Normalizer.normalize(input, Normalizer.Form.NFD)

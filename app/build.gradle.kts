@@ -35,6 +35,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.2.0")
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.google.mlkit:translate:17.0.2")
 
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-analytics")
@@ -44,7 +45,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.activity:activity:1.8.2")
+    implementation("androidx.activity:activity:1.9.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
