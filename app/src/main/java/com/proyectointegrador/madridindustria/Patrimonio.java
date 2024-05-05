@@ -83,7 +83,7 @@ public class Patrimonio extends AppCompatActivity {
             Cursor cursor = db.query("favorites", new String[]{"love"}, "nombre = ?", new String[]{nombreText}, null, null, null);
             boolean exists = cursor.getCount() > 0;
             cursor.close();
-            
+
             if (exists){
                 boton.setImageDrawable(heartFillDrawable);
                 heart = false;

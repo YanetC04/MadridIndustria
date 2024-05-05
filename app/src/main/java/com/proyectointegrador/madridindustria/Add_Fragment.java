@@ -1,6 +1,8 @@
 package com.proyectointegrador.madridindustria;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -101,7 +103,7 @@ public class Add_Fragment extends Fragment {
                 if (position!=0) {
                     distrito.setBackground(defaultBorderDrawable);
                     distritoText = distrito.getSelectedItem().toString();
-                    int pos = (new Locale("es").getDisplayLanguage().equalsIgnoreCase(distritoText)) ? 1 : 0;
+                    int pos = getContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? 1 : 0;
                     String[] palabras = distritoText.split("\\s+");
                     if (palabras.length >= 2) {
                         String distritoNombre = palabras[pos].toLowerCase();

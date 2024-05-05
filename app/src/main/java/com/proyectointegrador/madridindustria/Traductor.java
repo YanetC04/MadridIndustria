@@ -18,19 +18,17 @@ public class Traductor {
                         .setSourceLanguage(TranslateLanguage.SPANISH)
                         .setTargetLanguage(TranslateLanguage.ENGLISH)
                         .build();
-        final Translator englishGermanTranslator =
+        final Translator translator =
                 Translation.getClient(options);
 
         DownloadConditions conditions = new DownloadConditions.Builder()
                 .requireWifi()
                 .build();
 
-        englishGermanTranslator.downloadModelIfNeeded(conditions)
+        translator.downloadModelIfNeeded(conditions)
                 .addOnSuccessListener(aVoid -> {
-                    englishGermanTranslator.translate(texto)
-                            .addOnSuccessListener(s -> {
-                                callback.onTranslationComplete(s);
-                            })
+                    translator.translate(texto)
+                            .addOnSuccessListener(callback::onTranslationComplete)
                             .addOnFailureListener(e -> {
                                 callback.onTranslationFailed(e.getMessage());
                             });

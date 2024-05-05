@@ -4,6 +4,7 @@ import androidx.appcompat.app.*;
 
 import android.annotation.SuppressLint;
 import android.content.*;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esEspanol")){
+            setLocale(getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? "es" : "en");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout linearLayout = findViewById(R.id.linear);
@@ -158,6 +162,16 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("NO", null);
 
         builder.create().show();
+    }
+
+    private void setLocale(String idioma) {
+        Locale nuevoLocale = new Locale(idioma);
+        Locale.setDefault(nuevoLocale);
+
+        Configuration configuracion = this.getResources().getConfiguration();
+        configuracion.setLocale(nuevoLocale);
+
+        getBaseContext().getResources().updateConfiguration(configuracion, getBaseContext().getResources().getDisplayMetrics());
     }
 
     // NO VOLVER ATRAS

@@ -1,7 +1,10 @@
 package com.proyectointegrador.madridindustria;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.*;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -29,6 +32,13 @@ public class Profile extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esEspanol")){
+            Locale locale = new Locale(getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? "es" : "en");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -341,19 +351,12 @@ public class Profile extends AppCompatActivity {
 
     // Método para cambiar el idioma de la aplicación
     private void setLocale(String idioma) {
-        Locale nuevoLocale = new Locale(idioma);
-        Locale.setDefault(nuevoLocale);
-
-        Configuration configuracion = this.getResources().getConfiguration();
-        configuracion.setLocale(nuevoLocale);
-
-        getBaseContext().getResources().updateConfiguration(configuracion, getBaseContext().getResources().getDisplayMetrics());
-
-        // Reiniciar la actividad actual
-        Intent intent = new Intent(this, Profile.class);
-        this.startActivity(intent);
-        overridePendingTransition(0, 0);
-        ((Profile) this).finish();
+        Locale locale = new Locale(idioma);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        recreate();
     }
 
     private void guardarIdioma(boolean esEspanol) {

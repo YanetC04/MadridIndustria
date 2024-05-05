@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 public class NFC_Fragment extends Fragment {
 
     private ImageView imageView;
-    private boolean isScaled = false;
 
     @Nullable
     @Override
@@ -25,6 +24,19 @@ public class NFC_Fragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_nfc, container, false);
 
         imageView = root.findViewById(R.id.imageView);
+        imageView.animate()
+                .scaleX(0.8f)
+                .scaleY(0.8f)
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                    }
+                })
+                .start();
+
         int nightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
             Glide.with(NFC_Fragment.this)
@@ -36,8 +48,20 @@ public class NFC_Fragment extends Fragment {
                     .into(imageView);
         }
         imageView.setOnClickListener(v -> {
-            animacionImagen();
+            imageView.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                        }
+                    })
+                    .start();
             openPlayStore();
+            requireActivity().recreate();
         });
 
         return root;
@@ -51,37 +75,5 @@ public class NFC_Fragment extends Fragment {
         shareMessage = shareMessage + " https://play.google.com/store/apps/details?id=" + requireContext().getPackageName();
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
         requireContext().startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.compVia)));
-    }
-
-    private void animacionImagen() {
-        if (!isScaled) {
-            imageView.animate()
-                    .scaleX(0.8f)
-                    .scaleY(0.8f)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            isScaled = true;
-                        }
-                    })
-                    .start();
-        } else {
-            imageView.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            isScaled = false;
-                        }
-                    })
-                    .start();
-        }
     }
 }
