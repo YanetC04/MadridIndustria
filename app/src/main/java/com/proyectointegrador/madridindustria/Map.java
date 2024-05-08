@@ -2,6 +2,7 @@ package com.proyectointegrador.madridindustria;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -38,6 +39,7 @@ import com.google.maps.model.TravelMode;
 
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
@@ -50,6 +52,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esEspanol")){
+            setLocale(getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? "es" : "en");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
@@ -68,9 +73,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 intent = new Intent(Map.this, MainActivity.class).putExtra("source", source);
             }
             if (item.getItemId() == R.id.add) {
-                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
-
-                    showDialog(Add.class);
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    showDialog();
                 } else {
                     intent = new Intent(Map.this, Add.class);
                 }
@@ -79,10 +83,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 intent = new Intent(Map.this, Favorite.class).putExtra("source", source);
             }
             if (item.getItemId() == R.id.profile) {
-                if (Objects.requireNonNull(source).equalsIgnoreCase("cerrado")) {
-                    showDialog(Profile.class);
+                if(Objects.requireNonNull(source).equalsIgnoreCase("cerrado")){
+                    intent = new Intent(Map.this, Profile.class).putExtra("source", "cerrado");
                 } else {
-                    intent = new Intent(Map.this, Profile.class);
+                    intent = new Intent(Map.this, Profile.class).putExtra("source", source);
                 }
             }
 
@@ -308,23 +312,31 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     // Diálogo de error
-    private void showDialog(Class intent) {
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Modo Gestor")
-                .setMessage("¿Quieres activar el modo Gestor?")
-                .setPositiveButton("SÍ", (dialog, which) -> {
-                    startActivity(new Intent(Map.this, Hall.class).putExtra("intent", intent.getName()));
+        builder.setTitle(getResources().getString(R.string.gest))
+                .setMessage(getResources().getString(R.string.mGestor))
+                .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> {
+                    startActivity(new Intent(Map.this, Hall.class));
                     overridePendingTransition(0, 0);
                 })
                 .setNegativeButton("NO", null);
 
-        // Creación y visualización del diálogo
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
     }
 
     interface CountCallback {
         void onCallback(int count);
+    }
+
+    private void setLocale(String idioma) {
+        Locale nuevoLocale = new Locale(idioma);
+        Locale.setDefault(nuevoLocale);
+
+        Configuration configuracion = this.getResources().getConfiguration();
+        configuracion.setLocale(nuevoLocale);
+
+        getBaseContext().getResources().updateConfiguration(configuracion, getBaseContext().getResources().getDisplayMetrics());
     }
 }
