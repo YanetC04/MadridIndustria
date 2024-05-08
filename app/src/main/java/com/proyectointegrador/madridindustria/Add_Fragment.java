@@ -1,10 +1,14 @@
 package com.proyectointegrador.madridindustria;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.*;
+import android.util.Log;
 import android.view.*;
 import android.webkit.WebView;
 import android.widget.*;
@@ -24,10 +28,9 @@ public class Add_Fragment extends Fragment {
     private Drawable redBorderDrawable, defaultBorderDrawable;
     private EditText nombreEditText, inaguracionEditText, patrimonioEditText,coordenadas_latEditText, coordenadas_lonEditText,  metroEditText, direccionEditText, descripcionEditText, imagenEditText;
     private TextInputLayout nombreInputLayout, inaguracionInputLayout, patrimonioInputLayout, coordenadas_latInputLayout, coordenadas_lonInputLayout, metroInputLayout, direccionInputLayout, imagenInputLayout, descripcionInputLayout;
-    private String nombreText, inaguracionText, patrimonioText,coordenadas_latText, coordenadas_lonText,  metroText, direccionText, descripcionText, distritoText, imagenText, dist = "";
+    private String nombreText, inaguracionText, patrimonioText,coordenadas_latText, coordenadas_lonText,  metroText, direccionText, descripcionText, distritoText, imagenText, dist = null;
 
-        public Add_Fragment() {
-        // Required empty public constructor
+    public Add_Fragment() {
     }
 
     @Override
@@ -93,6 +96,33 @@ public class Add_Fragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         distrito.setAdapter(adapter);
 
+        //SPINNER DISTRITOS
+        distrito.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                if (position!=0) {
+                    distrito.setBackground(defaultBorderDrawable);
+                    distritoText = distrito.getSelectedItem().toString();
+                    int pos = getContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? 1 : 0;
+                    String[] palabras = distritoText.split("\\s+");
+                    if (palabras.length >= 2) {
+                        String distritoNombre = palabras[pos].toLowerCase();
+                        distritoNombre = quitarAcentos(distritoNombre);
+
+                        if (distritoNombre.equals("san")) {
+                            dist = "sanblas";
+                        } else {
+                            dist = distritoNombre;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
         // ENVIAR
         enviar.setOnClickListener(v -> {
             imagenText = imagenEditText.getText().toString();
@@ -104,39 +134,6 @@ public class Add_Fragment extends Fragment {
             metroText = metroEditText.getText().toString();
             direccionText = direccionEditText.getText().toString();
             descripcionText = descripcionEditText.getText().toString();
-
-            //SPINNER DISTRITOS
-            distrito.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                    if (position!=0) {
-                        distrito.setBackground(defaultBorderDrawable);
-                        distritoText = distrito.getSelectedItem().toString();
-                        if (!distritoText.isEmpty()) {
-                            int pos = (new Locale("es").getDisplayLanguage().equalsIgnoreCase(distritoText)) ? 1 : 0;
-                            String[] palabras = distritoText.split("\\s+");
-                            if (palabras.length >= 2) {
-                                String distritoNombre = palabras[pos].toLowerCase();
-                                distritoNombre = quitarAcentos(distritoNombre);
-
-                                if (distritoNombre.equals("san")) {
-                                    dist = "sanblas";
-                                } else {
-                                    dist = distritoNombre;
-                                }
-                            }
-                        }
-                    } else {
-                        distritoText = "";
-                        showErrorDialog(getResources().getString(R.string.selecDist));
-                        distrito.setBackground(redBorderDrawable);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
 
             double latitude = 0.0;
             double longitude = 0.0;
@@ -156,66 +153,86 @@ public class Add_Fragment extends Fragment {
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            if (!imagenText.isEmpty() && !nombreText.isEmpty() && !inaguracionText.isEmpty() && !patrimonioText.isEmpty() && !metroText.isEmpty() && !direccionText.isEmpty() && !descripcionText.isEmpty() && !dist.isEmpty()) {
-                HashMap<String, Object> datos = new HashMap<>();
-                datos.put("imagen", imagenText);
-                datos.put("nombre", nombreText);
-                datos.put("inaguracion", inaguracionText);
-                datos.put("patrimonio", patrimonioText);
-                if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
-                    datos.put("geo", new GeoPoint(latitude, longitude));
-                } else {
-                    showErrorDialog(getResources().getString(R.string.valorInv));
-                    return;
-                }
-                datos.put("metro", metroText);
-                datos.put("direccion", direccionText);
-                datos.put("descripcion", descripcionText);
-                datos.put("distrito", distritoText);
-
-                db.collection(dist).whereEqualTo("nombre", nombreText).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (!task.getResult().isEmpty()) {
-                            showErrorDialog(getResources().getString(R.string.patya));
-                        } else {
-                            db.collection(dist).document().set(datos);
-                            new AlertDialog.Builder(requireActivity())
-                                    .setTitle(getResources().getString(R.string.ag))
-                                    .setMessage(getResources().getString(R.string.agr))
-                                    .setPositiveButton("OK", (dialog, which) -> {
-                                        // LIMPIAR INPUTS
-                                        imagenEditText.getText().clear();
-                                        nombreEditText.getText().clear();
-                                        inaguracionEditText.getText().clear();
-                                        patrimonioEditText.getText().clear();
-                                        coordenadas_latEditText.getText().clear();
-                                        coordenadas_lonEditText.getText().clear();
-                                        metroEditText.getText().clear();
-                                        direccionEditText.getText().clear();
-                                        descripcionEditText.getText().clear();
-                                        distrito.setSelection(0);
-                                        dist="";
-                                    })
-                                    .show();
-                        }
+            if (distrito.getSelectedItemPosition() != 0) {
+                if (!imagenText.isEmpty() && !nombreText.isEmpty() && !inaguracionText.isEmpty() && !patrimonioText.isEmpty() && !metroText.isEmpty() && !direccionText.isEmpty() && !descripcionText.isEmpty() && !dist.isEmpty()) {
+                    HashMap<String, Object> datos = new HashMap<>();
+                    datos.put("imagen", imagenText);
+                    datos.put("nombre", nombreText);
+                    datos.put("inaguracion", inaguracionText);
+                    datos.put("patrimonio", patrimonioText);
+                    if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+                        datos.put("geo", new GeoPoint(latitude, longitude));
+                    } else {
+                        showErrorDialog(getResources().getString(R.string.valorInv));
+                        return;
                     }
-                });
-            } else {
-                if(distrito.getSelectedItemPosition() == 0){
-                    distrito.setBackground(redBorderDrawable);
-                }
+                    datos.put("metro", metroText);
+                    datos.put("direccion", direccionText);
+                    datos.put("descripcion", descripcionText);
+                    datos.put("distrito", obtenerDistrito());
 
-                marcarError(imagenText, imagenInputLayout, R.string.ima, imagenEditText);
-                marcarError(nombreText, nombreInputLayout, R.string.nom, nombreEditText);
-                marcarError(inaguracionText, inaguracionInputLayout, R.string.ina, inaguracionEditText);
-                marcarError(patrimonioText, patrimonioInputLayout, R.string.pat, patrimonioEditText);
-                marcarError(metroText, metroInputLayout, R.string.met, metroEditText);
-                marcarError(direccionText, direccionInputLayout, R.string.dir, direccionEditText);
-                marcarError(descripcionText, descripcionInputLayout, R.string.des, descripcionEditText);
+                    // BUSCAR SI EXISTE EN LA BD UN NOMBRE SIMILAR
+                    db.collection(dist).whereEqualTo("nombre", nombreText).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                showErrorDialog(getResources().getString(R.string.patya));
+                            } else {
+                                getCount(dist, count -> {
+                                    int nuevoID = count + 1;
+
+                                    // ESTABLECER NUEVOS DATOS
+                                    db.collection(dist).document(String.valueOf(nuevoID)).set(datos);
+                                });
+
+                                new AlertDialog.Builder(requireActivity())
+                                        .setTitle(getResources().getString(R.string.ag))
+                                        .setMessage(getResources().getString(R.string.agr))
+                                        .setPositiveButton("OK", (dialog, which) -> {
+                                            // LIMPIAR INPUTS
+                                            imagenEditText.getText().clear();
+                                            nombreEditText.getText().clear();
+                                            inaguracionEditText.getText().clear();
+                                            patrimonioEditText.getText().clear();
+                                            coordenadas_latEditText.getText().clear();
+                                            coordenadas_lonEditText.getText().clear();
+                                            metroEditText.getText().clear();
+                                            direccionEditText.getText().clear();
+                                            descripcionEditText.getText().clear();
+                                            distrito.setSelection(0);
+                                            dist="";
+                                        })
+                                        .show();
+                            }
+                        }
+                    });
+                } else {
+                    marcarError(imagenText, imagenInputLayout, R.string.ima, imagenEditText);
+                    marcarError(nombreText, nombreInputLayout, R.string.nom, nombreEditText);
+                    marcarError(inaguracionText, inaguracionInputLayout, R.string.ina, inaguracionEditText);
+                    marcarError(patrimonioText, patrimonioInputLayout, R.string.pat, patrimonioEditText);
+                    marcarError(metroText, metroInputLayout, R.string.met, metroEditText);
+                    marcarError(direccionText, direccionInputLayout, R.string.dir, direccionEditText);
+                    marcarError(descripcionText, descripcionInputLayout, R.string.des, descripcionEditText);
+                }
+            } else {
+                showErrorDialog(getResources().getString(R.string.selecDist));
+                distrito.setBackground(redBorderDrawable);
             }
+
         });
 
         return root;
+    }
+
+    private String obtenerDistrito() {
+        String distritoNombre = distritoText.split("\\s+")[(new Locale("es").getDisplayLanguage().equalsIgnoreCase(distritoText)) ? 1 : 0];
+        distritoNombre = quitarAcentos(distritoNombre);
+
+        if (distritoNombre.equals("San")) {
+            return "Distrito San Blas-Canillejas";
+        }
+
+        return "Distrito " +distritoNombre;
     }
 
     private void showErrorDialog(String message) {
@@ -231,6 +248,17 @@ public class Add_Fragment extends Fragment {
     public static String quitarAcentos(String input) {
         return Normalizer.normalize(input, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "");
+    }
+
+    public void getCount(String dist, final CountCallback countCallback) {
+        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int count = task.getResult().size();
+                countCallback.onCallback(count);
+            } else {
+                countCallback.onCallback(-1);
+            }
+        });
     }
 
     private void marcarError(String text, TextInputLayout input, int valor, EditText edit){

@@ -2,7 +2,7 @@
     <string name="app_name">MadridIndustria</string>
     <string name="iniciarSesion">LOG IN</string>
     <string name="datos">Enter your credentials</string>
-    <string name="registro">CHECK IN</string>
+    <string name="registro">REGISTER</string>
     <string name="bienvenida">Welcome to IndustriaMadrid!</string>
     <string name="o">OR</string>
     <string name="madrid">Taking care of the heritage of Madrid</string>
