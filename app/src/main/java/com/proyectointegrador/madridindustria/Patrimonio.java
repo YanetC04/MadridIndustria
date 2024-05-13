@@ -118,7 +118,7 @@ public class Patrimonio extends AppCompatActivity {
                     public void onTranslationFailed(String errorMessage) {
 
                     }
-                });
+                }, this);
             }
 
             // UTILIZAMOS GLIDE PARA CARGAR LA IMAGEN
@@ -164,7 +164,7 @@ public class Patrimonio extends AppCompatActivity {
             public void onTranslationFailed(String errorMessage) {
 
             }
-        });
+        }, this);
     }
 
     private void agregarPatrimonio(String nombre, String inaguracion, String patrimonio, String metro, String direccion, String distrito, String imagen) {

@@ -203,7 +203,7 @@ public class Favorite extends AppCompatActivity {
             public void onTranslationFailed(String errorMessage) {
 
             }
-        });
+        }, this);
     }
 
 
