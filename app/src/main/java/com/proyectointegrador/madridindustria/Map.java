@@ -3,6 +3,7 @@ package com.proyectointegrador.madridindustria;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -10,17 +11,16 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -36,8 +36,6 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 import com.google.maps.model.TravelMode;
-
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -48,6 +46,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
+    private Polyline currentPolyline;
     private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "barajas", "fuencarral", "hortaleza", "latina", "retiro", "salamanca", "sanblas", "tetuan", "vallecas", "villaverde"};
 
     @Override
@@ -115,7 +114,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onMapReady(@NonNull GoogleMap map) {
         googleMap = map;
 
         int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
@@ -151,24 +150,19 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 googleMap.setMyLocationEnabled(true);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                drawMarkers(latLng);
+                addMarkersFromFirestore();
             }
         });
     }
 
-    private void drawMarkers(LatLng origen) {
+    private void addMarkersFromFirestore() {
         for (String dist : distritos) {
             getCount(dist, count -> {
                 for (int i = 1; i <= count; i++) {
                     new FirestoreDatabase(dist, String.valueOf(i), firestoreDatabase -> {
                         if (firestoreDatabase.getGeo() != null) {
                             LatLng markerLatLng = new LatLng(firestoreDatabase.getGeo().getLatitude(), firestoreDatabase.getGeo().getLongitude());
-                            Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.marker);
-                            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable));
-                            googleMap.addMarker(new MarkerOptions()
-                                    .position(markerLatLng)
-                                    .title(dist)
-                                    .icon(icon));
+                            addMarkerToMap(markerLatLng, dist);
                         }
                     });
                 }
@@ -176,15 +170,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 
-    private void addMarker(LatLng position, String title, String snippet, LatLng origen) {
-        Drawable drawable = ContextCompat.getDrawable(Map.this, R.drawable.marker);
+    private void addMarkerToMap(LatLng position, String title) {
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.marker);
         if (drawable != null) {
             BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable));
 
             // Crear y agregar el marcador al mapa
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(position)
-                    .snippet(snippet)
                     .title(title)
                     .icon(icon));
 
@@ -192,7 +185,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    calcularYMostrarRuta(origen, marker.getPosition());
+                    mostrarOpcionesDialogo(marker);
+                    //calcularYMostrarRuta(origen, marker.getPosition());
                     return true;
                 }
             });
@@ -200,6 +194,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             Log.e("Map", "Error al obtener el VectorDrawable del marcador.");
         }
     }
+
 
     private Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -221,14 +216,18 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void calcularYMostrarRuta(LatLng origen, LatLng destino) {
+        // Eliminar la ruta anterior si existe
+        if (currentPolyline != null) {
+            currentPolyline.remove();
+        }
+
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyCG3YHX-TT69TpQq3R1cw_u3p8h66nFpS4")
                 .build();
 
         DirectionsApiRequest request = DirectionsApi.newRequest(context)
                 .origin(new com.google.maps.model.LatLng(origen.latitude, origen.longitude))
-                .destination(new com.google.maps.model.LatLng(destino.latitude, destino.longitude))
-                .mode(TravelMode.DRIVING);
+                .destination(new com.google.maps.model.LatLng(destino.latitude, destino.longitude));
 
         request.setCallback(new PendingResult.Callback<DirectionsResult>() {
             @Override
@@ -247,9 +246,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
                     }
 
+                    // Agregar la nueva ruta al mapa y almacenarla en currentPolyline
                     runOnUiThread(() -> {
                         if (googleMap != null) {
-                            googleMap.addPolyline(polylineOptions);
+                            currentPolyline = googleMap.addPolyline(polylineOptions.color(ContextCompat.getColor(Map.this, R.color.red)));
                         }
                     });
                 }
@@ -261,6 +261,59 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
     }
+
+
+
+    private void mostrarOpcionesDialogo(Marker marker) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona una opción")
+                .setItems(new CharSequence[]{"Información", "Mostrar ruta", "Cómo llegar"},
+                        (dialog, which) -> {
+                            // Acciones dependiendo de la opción seleccionada
+                            switch (which) {
+                                case 0:
+                                    // Acción para la Opción "Información"
+                                    Log.e("coleccion", Objects.requireNonNull(marker.getTitle()));
+                                    Log.e("documento", Objects.requireNonNull(marker.getSnippet()));
+                                    Intent intent = new Intent(Map.this, Patrimonio.class);
+                                    intent.putExtra("collection", marker.getTitle());
+                                    intent.putExtra("document", marker.getSnippet());
+                                    startActivity(intent);
+                                    break;
+                                case 1:
+                                    // Acción para la Opción "Mostrar ruta"
+                                    getCurrentLocation(location -> {
+                                        if (location != null) {
+                                            LatLng destino = marker.getPosition(); // Obtener la ubicación del marcador
+                                            calcularYMostrarRuta(location, destino);
+                                        } else {
+                                            // Manejar el caso donde no se pudo obtener la ubicación actual
+                                            Log.e("Map", "No se pudo obtener la ubicación actual");
+                                        }
+                                    });
+                                    break;
+                                case 2:
+                                    // Acción para la Opción "Cómo llegar"
+                                    String destination = marker.getPosition().latitude + "," + marker.getPosition().longitude;
+                                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + destination);
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                                        startActivity(mapIntent);
+                                    } else {
+                                        // Manejar el caso donde Google Maps no está instalado
+                                        Toast.makeText(Map.this, "Google Maps no está instalado en este dispositivo", Toast.LENGTH_SHORT).show();
+                                    }
+                                    break;
+                            }
+                        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
 
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -339,4 +392,29 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         getBaseContext().getResources().updateConfiguration(configuracion, getBaseContext().getResources().getDisplayMetrics());
     }
+
+    private void getCurrentLocation(OnLocationReadyListener listener) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+                if (location != null) {
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    listener.onLocationReady(latLng); // Llamar al callback con la ubicación obtenida
+                } else {
+                    listener.onLocationReady(null); // Llamar al callback con null si la ubicación es nula
+                }
+            }).addOnFailureListener(e -> {
+                Log.e("Map", "Error al obtener la ubicación actual", e);
+                listener.onLocationReady(null); // Llamar al callback con null en caso de error
+            });
+        } else {
+            listener.onLocationReady(null); // Llamar al callback con null si no se tienen permisos
+        }
+    }
+
+    // Interfaz para el callback de ubicación
+    interface OnLocationReadyListener {
+        void onLocationReady(LatLng location);
+    }
+
+
 }
