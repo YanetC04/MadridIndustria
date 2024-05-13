@@ -103,7 +103,7 @@ public class Add_Fragment extends Fragment {
                 if (position!=0) {
                     distrito.setBackground(defaultBorderDrawable);
                     distritoText = distrito.getSelectedItem().toString();
-                    int pos = getContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? 1 : 0;
+                    int pos = root.getContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? 1 : 0;
                     String[] palabras = distritoText.split("\\s+");
                     if (palabras.length >= 2) {
                         String distritoNombre = palabras[pos].toLowerCase();
@@ -225,7 +225,7 @@ public class Add_Fragment extends Fragment {
     }
 
     private String obtenerDistrito() {
-        String distritoNombre = distritoText.split("\\s+")[(new Locale("es").getDisplayLanguage().equalsIgnoreCase(distritoText)) ? 1 : 0];
+        String distritoNombre = distritoText.split("\\s+")[getContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? 1 : 0];
         distritoNombre = quitarAcentos(distritoNombre);
 
         if (distritoNombre.equals("San")) {

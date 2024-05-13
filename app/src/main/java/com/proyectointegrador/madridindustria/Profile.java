@@ -1,12 +1,11 @@
 package com.proyectointegrador.madridindustria;
 
-import static java.security.AccessController.getContext;
 
 import androidx.appcompat.app.*;
+
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.os.Handler;
 import android.text.Html;
 import android.view.*;
 import android.annotation.SuppressLint;
@@ -29,6 +28,9 @@ public class Profile extends AppCompatActivity {
     private Boolean llave = false, esNoche;
     private ImageView modo;
     private int nuevaImagen;
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

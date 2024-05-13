@@ -29,7 +29,6 @@ public class Edit_Fragment extends Fragment {
     private TextInputLayout nombreInputLayout, imagenInputLayout, descripcionInputLayout;
     private Spinner distritoT;
     private String dis = null;
-    private String distSelec = null;
 
     public Edit_Fragment() {
         // Required empty public constructor
@@ -171,7 +170,6 @@ public class Edit_Fragment extends Fragment {
 
             if (palabras.length >= 2) {
                 String distritoNombre = palabras[1].toLowerCase();
-                distSelec = palabras[1];
                 distritoNombre = quitarAcentos(distritoNombre);
 
                 if (distritoNombre.equals("san")) {
@@ -183,9 +181,8 @@ public class Edit_Fragment extends Fragment {
 
             int disPos = 0;
             for (int i = 0; i < adapter.getCount(); i++) {
-
                 String distritoA = Objects.requireNonNull(adapter.getItem(i)).toString();
-                if (distritoA.startsWith(distSelec)) {
+                if (distritoA.startsWith(firestoreDatabase.getDistrito())) {
                     disPos = i;
                 }
             }
@@ -196,8 +193,8 @@ public class Edit_Fragment extends Fragment {
             nombreEditText.setText(firestoreDatabase.getNombre());
             inaguracionEditText.setText(firestoreDatabase.getInaguracion());
             patrimonioEditText.setText(firestoreDatabase.getPatrimonio());
-            coordenadas_latEditText.setText(String.format(Locale.getDefault(), "%.6f", lat));
-            coordenadas_lonEditText.setText(String.format(Locale.getDefault(), "%.6f", lon));
+            coordenadas_latEditText.setText(Double.toString(lat));
+            coordenadas_lonEditText.setText(Double.toString(lon));
             metroEditText.setText(firestoreDatabase.getMetro());
             distritoT.setSelection(disPos);
             direccionEditText.setText(firestoreDatabase.getDireccion());

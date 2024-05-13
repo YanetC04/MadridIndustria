@@ -2,21 +2,17 @@ package com.proyectointegrador.madridindustria;
 
 import android.animation.*;
 import android.app.*;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.res.Configuration;
 import android.os.*;
 import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.*;
 import androidx.core.app.NotificationCompat;
 
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class Splash extends AppCompatActivity {
 
@@ -56,6 +52,21 @@ public class Splash extends AppCompatActivity {
             boolean esEspanol = currentLocale.getLanguage().equals("es");
             guardarIdioma(esEspanol);
         }
+
+        // Cargar descarga
+        if (!getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esDescargado")){
+            SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("esDescargado", false);
+            editor.apply();
+        }
+        Traductor.descargarModeloTraduccion(this);
+
+        // Cargar Huella
+        SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("esRegistrado", false);
+        editor.apply();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -128,11 +139,17 @@ public class Splash extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
+        // Construir el estilo de texto expandido
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle()
+                .bigText(sabiasQue[new Random().nextInt(sabiasQue.length)]);
+
+
         // Construir la notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification)
                 .setContentTitle(getResources().getString(R.string.sabiasque))
                 .setContentText(sabiasQue[new Random().nextInt(sabiasQue.length)])
+                .setStyle(bigTextStyle)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         // Mostrar la notificación

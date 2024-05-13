@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onTranslationFailed(String errorMessage) {
 
                                 }
-                            });
+                            }, this);
                         }
 
                         if (!isDestroyed()) {

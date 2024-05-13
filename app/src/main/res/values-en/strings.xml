@@ -138,4 +138,7 @@
     <string name="patrimonio">Heritage:</string>
     <string name="metro">Meter:</string>
     <string name="direccion">Address:</string>
+    <string name="codgest">Invalid manager code.</string>
+    <string name="actualizacion">LANGUAGE UPDATE</string>
+    <string name="actmsj">You need to restart the app to update the changes.</string>
 </resources>

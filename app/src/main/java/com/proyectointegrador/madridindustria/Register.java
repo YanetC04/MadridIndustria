@@ -63,6 +63,8 @@ public class Register extends AppCompatActivity {
                     showErrorDialog(getResources().getString(R.string.corrNoCoin));
                     mail.setBackground(redBorderDrawable);
                 }
+            } else {
+                showErrorDialog(getResources().getString(R.string.codgest));
             }
         } else {
             if (codeText.isEmpty()) {
