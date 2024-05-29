@@ -1,26 +1,40 @@
 package com.proyectointegrador.madridindustria;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.*;
-import android.util.Log;
-import android.view.*;
+import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.*;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.Normalizer;
-import java.util.*;
+import java.util.HashMap;
 
 public class Add_Fragment extends Fragment {
 
@@ -29,6 +43,9 @@ public class Add_Fragment extends Fragment {
     private EditText nombreEditText, inaguracionEditText, patrimonioEditText,coordenadas_latEditText, coordenadas_lonEditText,  metroEditText, direccionEditText, descripcionEditText, imagenEditText;
     private TextInputLayout nombreInputLayout, inaguracionInputLayout, patrimonioInputLayout, coordenadas_latInputLayout, coordenadas_lonInputLayout, metroInputLayout, direccionInputLayout, imagenInputLayout, descripcionInputLayout;
     private String nombreText, inaguracionText, patrimonioText,coordenadas_latText, coordenadas_lonText,  metroText, direccionText, descripcionText, distritoText, imagenText, dist = null;
+    private WebView webView;
+    private Uri fileUri;
+    private static final int GALLERY_REQUEST_CODE = 123;
 
     public Add_Fragment() {
     }
@@ -65,9 +82,12 @@ public class Add_Fragment extends Fragment {
         descripcionInputLayout = root.findViewById(R.id.input_descripcion);
         redBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.red_border);
         defaultBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.default_border);
+        FloatingActionButton fab = root.findViewById(R.id.boton);
+
+        fab.setOnClickListener(view -> openGallery());
 
         // WEBVIEW
-        WebView webView = root.findViewById(R.id.webView);
+        webView = root.findViewById(R.id.webView);
         webView.setEnabled(false);
         webView.setBackgroundColor(Color.GRAY);
 
@@ -270,6 +290,42 @@ public class Add_Fragment extends Fragment {
                     edit.setBackground(defaultBorderDrawable);
                     input.setHint(valor);
                 }
+            });
+        }
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            fileUri = data.getData();
+            uploadImageToFirebaseStorage();
+        }
+    }
+
+    private void uploadImageToFirebaseStorage() {
+        if (fileUri != null) {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imagesRef = storageRef.child("images/" + fileUri.getLastPathSegment());
+
+            UploadTask uploadTask = imagesRef.putFile(fileUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+                    webView.setWebViewClient(new WebViewClient());
+                    webView.loadUrl(imageUrl);
+                    imagenEditText.setText(imageUrl);
+                }).addOnFailureListener(exception -> {
+                    // Error al obtener la URL de descarga
+                });
+            }).addOnFailureListener(exception -> {
+                // Error al subir la imagen
             });
         }
     }

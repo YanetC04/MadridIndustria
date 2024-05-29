@@ -1,20 +1,29 @@
 package com.proyectointegrador.madridindustria;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.*;
 
+import android.provider.MediaStore;
 import android.text.*;
 import android.view.*;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.*;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.*;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.Normalizer;
 import java.util.*;
@@ -29,6 +38,10 @@ public class Edit_Fragment extends Fragment {
     private TextInputLayout nombreInputLayout, imagenInputLayout, descripcionInputLayout;
     private Spinner distritoT;
     private String dis = null;
+    private WebView webView;
+    private Uri fileUri;
+    private static final int GALLERY_REQUEST_CODE = 123;
+    private FloatingActionButton fab;
 
     public Edit_Fragment() {
         // Required empty public constructor
@@ -135,8 +148,12 @@ public class Edit_Fragment extends Fragment {
             redBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.red_border);
             defaultBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.default_border);
 
+            fab = root.findViewById(R.id.boton);
+
+            fab.setOnClickListener(view -> openGallery());
+
             // WEBVIEW
-            WebView webView = root.findViewById(R.id.webView);
+            webView = root.findViewById(R.id.webView);
             webView.setEnabled(false);
             webView.setBackgroundColor(Color.GRAY);
 
@@ -297,5 +314,41 @@ public class Edit_Fragment extends Fragment {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            fileUri = data.getData();
+            uploadImageToFirebaseStorage();
+        }
+    }
+
+    private void uploadImageToFirebaseStorage() {
+        if (fileUri != null) {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imagesRef = storageRef.child("images/" + fileUri.getLastPathSegment());
+
+            UploadTask uploadTask = imagesRef.putFile(fileUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+                    webView.setWebViewClient(new WebViewClient());
+                    webView.loadUrl(imageUrl);
+                    imagenEditText.setText(imageUrl);
+                }).addOnFailureListener(exception -> {
+                    // Error al obtener la URL de descarga
+                });
+            }).addOnFailureListener(exception -> {
+                // Error al subir la imagen
+            });
+        }
     }
 }

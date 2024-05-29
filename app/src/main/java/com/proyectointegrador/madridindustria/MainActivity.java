@@ -12,6 +12,8 @@ import android.widget.*;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.Normalizer;
 import java.util.Locale;
@@ -30,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.linear);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        // BUSQUEDA
+        ImageView busqueda = findViewById(R.id.busqueda);
+        busqueda.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Busqueda.class).putExtra("source", getIntent().getStringExtra("source"))));
+
         // DINAMICAMENTE CREAR SCROLLVIEW PARA CADA DISTRITO
         for (String dist : distritos) {
             // INFLA EL DISEÑO external_layout.xml
@@ -37,49 +43,54 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout internalLinear = externalLayoutView.findViewById(R.id.linearExternal);
             TextView distrito = externalLayoutView.findViewById(R.id.distrito);
 
-            getCount(dist, count -> {
-                for (int i = 1; i <= count; i++) {
-                    View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
-                    ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
-                    TextView texto = internalLayoutView.findViewById(R.id.texto);
-                    String value = String.valueOf(i);
+            // BASE DE DATOS
+            FirebaseFirestore.getInstance().collection(dist)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null) {
+                                for (QueryDocumentSnapshot document : querySnapshot) {
+                                    View internalLayoutView = LayoutInflater.from(this).inflate(R.layout.internal_layout, null);
+                                    ImageView imagen = internalLayoutView.findViewById(R.id.imagen);
+                                    TextView texto = internalLayoutView.findViewById(R.id.texto);
+                                    String value = document.getId();
 
-                    // BASE DE DATOS
-                    new FirestoreDatabase(dist, value, firestoreDatabase -> {
-                        // ESTABLECER INFORMACION TRADUCIDA
-                        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
-                            distrito.setText(firestoreDatabase.getDistrito());
-                            texto.setText(firestoreDatabase.getNombre());
-                        } else {
-                            distrito.setText(obtenerDistrito(firestoreDatabase.getDistrito()));
+                                    // ESTABLECER INFORMACION TRADUCIDA
+                                    if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+                                        distrito.setText(document.getString("distrito"));
+                                        texto.setText(document.getString("nombre"));
+                                    } else {
+                                        distrito.setText(obtenerDistrito(document.getString("distrito")));
 
-                            Traductor.traducirTexto(firestoreDatabase.getNombre(), new Traductor.OnTranslationComplete() {
-                                @Override
-                                public void onTranslationComplete(String translatedText) {
-                                    texto.setText(translatedText);
+                                        Traductor.traducirTexto(document.getString("nombre"), new Traductor.OnTranslationComplete() {
+                                            @Override
+                                            public void onTranslationComplete(String translatedText) {
+                                                texto.setText(translatedText);
+                                            }
+
+                                            @Override
+                                            public void onTranslationFailed(String errorMessage) {
+
+                                            }
+                                        }, this);
+                                    }
+
+                                    if (!isDestroyed()) {
+                                        Glide.with(MainActivity.this)
+                                                .load(document.getString("imagen"))
+                                                .centerCrop()
+                                                .into(imagen);
+                                    }
+
+                                    // CONFIGURAMOS LA IMAGEN
+                                    imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value).putExtra("source", getIntent().getStringExtra("source"))));
+
+                                    internalLinear.addView(internalLayoutView);
                                 }
-
-                                @Override
-                                public void onTranslationFailed(String errorMessage) {
-
-                                }
-                            }, this);
-                        }
-
-                        if (!isDestroyed()) {
-                            Glide.with(MainActivity.this)
-                                    .load(firestoreDatabase.getImagen())
-                                    .centerCrop()
-                                    .into(imagen);
+                            }
                         }
                     });
-
-                    // CONFIGURAMOS LA IMAGEN
-                    imagen.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Patrimonio.class).putExtra("collection", dist).putExtra("document", value).putExtra("source", getIntent().getStringExtra("source"))));
-
-                    internalLinear.addView(internalLayoutView);
-                }
-            });
 
             // AGREGA EL DISEÑO INFLADO AL LINEARLAYOUT DEL SCROLLVIEW
             linearLayout.addView(externalLayoutView);

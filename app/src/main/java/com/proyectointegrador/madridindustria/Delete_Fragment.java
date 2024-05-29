@@ -47,40 +47,44 @@ public class Delete_Fragment extends Fragment {
             }
 
             for (String dist : distritos) {
-                getCount(dist, count -> {
-                    for (int i = 1; i <= count; i++) {
-                        new FirestoreDatabase(dist, Integer.toString(i), firestoreDatabase -> {
-                            String nombreF = firestoreDatabase.getNombre();
-                            String parteDelNombreABuscar = nombre.getText().toString();
+                FirebaseFirestore.getInstance().collection(dist)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot querySnapshot = task.getResult();
+                                if (querySnapshot != null) {
+                                    for (QueryDocumentSnapshot document : querySnapshot) {
+                                        String nombreF = document.getString("nombre");
+                                        String parteDelNombreABuscar = nombre.getText().toString();
 
-                            if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
-                                agregarFila(firestoreDatabase);
-                            } else {
-                                marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
+                                        if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
+                                            agregarFila(document);
+                                        } else {
+                                            marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
+                                        }
+                                    }
+                                }
                             }
                         });
-                    }
-                });
             }
         });
 
         return root;
     }
 
-    private void agregarFila(FirestoreDatabase firestoreDatabase) {
+    private void agregarFila(QueryDocumentSnapshot document) {
         TextView nombreTextView = new TextView(getContext());
-        nombreTextView.setText(firestoreDatabase.getNombre());
+        nombreTextView.setText(document.getString("nombre"));
         nombreTextView.setTextSize(16);
         TextView distritoTextView = new TextView(getContext());
-        distritoTextView.setText(firestoreDatabase.getDistrito());
+        distritoTextView.setText(document.getString("distrito"));
         distritoTextView.setTextSize(16);
 
         gridLayout.addView(nombreTextView);
         gridLayout.addView(distritoTextView);
 
         nombreTextView.setOnClickListener(v -> {
-
-            String[] palabras = firestoreDatabase.getDistrito().split("\\s+");
+            String[] palabras = document.getString("distrito").split("\\s+");
 
             if (palabras.length >= 2) {
                 String distritoNombre = palabras[1].toLowerCase();
@@ -97,12 +101,12 @@ public class Delete_Fragment extends Fragment {
                     .setTitle(getResources().getString(R.string.elim))
                     .setMessage(getResources().getString(R.string.eliminar))
                     .setPositiveButton(getResources().getString(R.string.si), (dialog, which) -> FirebaseFirestore.getInstance().collection(dis)
-                            .whereEqualTo("nombre", firestoreDatabase.getNombre())
+                            .whereEqualTo("nombre", document.getString("nombre"))
                             .get()
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        String documentId = document.getId();
+                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                        String documentId = document2.getId();
                                         FirebaseFirestore.getInstance().collection(dis)
                                                 .document(documentId)
                                                 .delete();
@@ -130,17 +134,6 @@ public class Delete_Fragment extends Fragment {
     public static String quitarAcentos(String input) {
         return Normalizer.normalize(input, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "");
-    }
-
-    public void getCount(String dist, final CountCallback countCallback) {
-        FirebaseFirestore.getInstance().collection(dist).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                int count = task.getResult().size();
-                countCallback.onCallback(count);
-            } else {
-                countCallback.onCallback(-1); // Indicates an error
-            }
-        });
     }
 
     private void marcarError(String text, TextInputLayout input, int valor, EditText edit){

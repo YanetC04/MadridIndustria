@@ -5,19 +5,34 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import android.content.*;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.*;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.*;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Patrimonio extends AppCompatActivity {
@@ -30,6 +45,19 @@ public class Patrimonio extends AppCompatActivity {
     private TextView direccion, inaguracion, metro, descripcion, patrimonio;
     private Drawable heartDrawable, heartFillDrawable;
     private final localDB localDB = new localDB(this);
+    private RatingBar ratingBar;
+    private TextView rating_value;
+    private TextView total_reviews;
+    private ProgressBar progressBar5;
+    private ProgressBar progressBar4;
+    private ProgressBar progressBar3;
+    private ProgressBar progressBar2;
+    private ProgressBar progressBar1;
+    private TextView percentage5;
+    private TextView percentage4;
+    private TextView percentage3;
+    private TextView percentage2;
+    private TextView percentage1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +158,7 @@ public class Patrimonio extends AppCompatActivity {
         // ESTABLECEMOS CUANDO APARECE O DESAPARECE EL BOTON
         AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
         appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
-            if (verticalOffset==0){
+            if (verticalOffset == 0) {
                 boton.show();
             } else {
                 boton.hide();
@@ -151,6 +179,32 @@ public class Patrimonio extends AppCompatActivity {
 
             heart = !heart;
         });
+
+        // Calificaciones
+        ratingBar = findViewById(R.id.ratingBar);
+        rating_value = findViewById(R.id.rating_value);
+        total_reviews = findViewById(R.id.total_reviews);
+        progressBar5 = findViewById(R.id.progressBar5);
+        progressBar4 = findViewById(R.id.progressBar4);
+        progressBar3 = findViewById(R.id.progressBar3);
+        progressBar2 = findViewById(R.id.progressBar2);
+        progressBar1 = findViewById(R.id.progressBar1);
+        percentage5 = findViewById(R.id.percentage5);
+        percentage4 = findViewById(R.id.percentage4);
+        percentage3 = findViewById(R.id.percentage3);
+        percentage2 = findViewById(R.id.percentage2);
+        percentage1 = findViewById(R.id.percentage1);
+
+        // Cargar estado de la calificación
+        ratingBar.setRating(0);
+
+        ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            if (fromUser) {
+                guardarCalificacionEnFirestore(nombreText, rating);
+            }
+        });
+
+        cargarCalificacionesDeFirestore(nombreText);
     }
 
     private void traducirTexto(TextView view, String texto){
@@ -190,6 +244,7 @@ public class Patrimonio extends AppCompatActivity {
     private void eliminarPatrimonio(){
         SQLiteDatabase db = localDB.getWritableDatabase();
         db.delete("favorites", "nombre = ?", new String[]{nombreText});
+        db.close();
     }
 
     @Override
@@ -206,4 +261,71 @@ public class Patrimonio extends AppCompatActivity {
                 .into(imagen);
     }
 
+    private void guardarCalificacionEnFirestore(String nombrePatrimonio, float calificacion) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference valoracionesRef = db.collection("valoraciones");
+
+        HashMap<String, Object> valoracion = new HashMap<>();
+        valoracion.put("nombrePatrimonio", nombrePatrimonio);
+        valoracion.put("calificacion", calificacion);
+
+        valoracionesRef.add(valoracion).addOnSuccessListener(documentReference -> {
+            cargarCalificacionesDeFirestore(nombrePatrimonio);
+        });
+    }
+
+    private void cargarCalificacionesDeFirestore(String nombrePatrimonio) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference valoracionesRef = db.collection("valoraciones");
+
+        valoracionesRef.whereEqualTo("nombrePatrimonio", nombrePatrimonio).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    float sumaCalificaciones = 0;
+                    int totalCalificaciones = querySnapshot.size();
+                    int[] calificacionesContador = new int[5];
+
+                    for (DocumentSnapshot document : querySnapshot) {
+                        Double calificacion = document.getDouble("calificacion");
+                        if (calificacion != null) {
+                            sumaCalificaciones += calificacion;
+                            int index = calificacion.intValue() - 1;
+                            if (index >= 0 && index < calificacionesContador.length) {
+                                calificacionesContador[index]++;
+                            }
+                        }
+                    }
+
+                    float promedioCalificaciones = sumaCalificaciones / totalCalificaciones;
+                    rating_value.setText(String.format(Locale.getDefault(), "%.1f", promedioCalificaciones));
+                    total_reviews.setText(String.format(Locale.getDefault(), "%d opiniones", totalCalificaciones));
+
+                    actualizarProgressBar(calificacionesContador, totalCalificaciones);
+                }
+            }
+        });
+    }
+
+    private void actualizarProgressBar(int[] calificacionesContador, int totalCalificaciones) {
+        if (totalCalificaciones == 0) return;
+
+        int porcentaje1 = (calificacionesContador[0] * 100) / totalCalificaciones;
+        int porcentaje2 = (calificacionesContador[1] * 100) / totalCalificaciones;
+        int porcentaje3 = (calificacionesContador[2] * 100) / totalCalificaciones;
+        int porcentaje4 = (calificacionesContador[3] * 100) / totalCalificaciones;
+        int porcentaje5 = (calificacionesContador[4] * 100) / totalCalificaciones;
+
+        progressBar1.setProgress(porcentaje1);
+        progressBar2.setProgress(porcentaje2);
+        progressBar3.setProgress(porcentaje3);
+        progressBar4.setProgress(porcentaje4);
+        progressBar5.setProgress(porcentaje5);
+
+        percentage1.setText(String.format(Locale.getDefault(), "%d%%", porcentaje1));
+        percentage2.setText(String.format(Locale.getDefault(), "%d%%", porcentaje2));
+        percentage3.setText(String.format(Locale.getDefault(), "%d%%", porcentaje3));
+        percentage4.setText(String.format(Locale.getDefault(), "%d%%", porcentaje4));
+        percentage5.setText(String.format(Locale.getDefault(), "%d%%", porcentaje5));
+    }
 }

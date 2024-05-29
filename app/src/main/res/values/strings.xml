@@ -143,4 +143,13 @@
     <string name="codgest">Código de gestor no válido.</string>
     <string name="actualizacion">ACTUALIZACIÓN DE IDIOMA</string>
     <string name="actmsj">Es necesario reiniciar la app para actualizar los cambios.</string>
+    <string name="resena">Resumen de Reseñas</string>
+    <string name="cinco">5</string>
+    <string name="cuatro">4</string>
+    <string name="tres">3</string>
+    <string name="dos">2</string>
+    <string name="uno">1</string>
+    <string name="ceroPorciento">0%</string>
+    <string name="ceroResena">0 reseñas</string>
+    <string name="media">0.0</string>
 </resources>
