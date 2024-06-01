@@ -32,24 +32,42 @@
             android:layout_height="48dp"/>
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_imagen"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/imagen"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_imagen"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/ima"
-            android:inputType="textUri"
-            android:autoLink="web"
-            android:autofillHints="webUri" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <EditText
+                android:id="@+id/imagen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ima"
+                android:inputType="textUri"
+                android:autoLink="web"
+                android:autofillHints="webUri" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/boton"
+            style="@style/Theme.MadridIndustria.NoActionBar.FloatingButtonInverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:src="@drawable/baseline_add_a_photo_24"
+            app:shapeAppearanceOverlay="@style/redondo"
+            android:layout_marginStart="10dp"
+            android:outlineSpotShadowColor="@color/transparent"/>
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_nombre"

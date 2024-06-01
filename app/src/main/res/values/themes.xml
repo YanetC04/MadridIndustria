@@ -37,6 +37,11 @@
         <item name="tint">@color/red</item>
     </style>
 
+    <style name="Theme.MadridIndustria.NoActionBar.FloatingButtonInverse" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/red</item>
+        <item name="tint">@color/white</item>
+    </style>
+
     <!-- IMAGES -->
     <style name="Image.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:tint">@color/red</item>

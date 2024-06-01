@@ -2,18 +2,17 @@ package com.proyectointegrador.madridindustria;
 
 import android.animation.*;
 import android.app.*;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.content.res.Configuration;
 import android.os.*;
 import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.*;
 import androidx.core.app.NotificationCompat;
 
-import java.util.Random;
+import java.util.*;
 
 public class Splash extends AppCompatActivity {
 
@@ -36,6 +35,39 @@ public class Splash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Cargar modo antes de que se cree el splash
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esNoche")){
+            AppCompatDelegate.setDefaultNightMode((getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esNoche", false)) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        } else  {
+            int configuracion = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            boolean esNoche = configuracion == Configuration.UI_MODE_NIGHT_YES;
+            guardarModoNoche(esNoche);
+        }
+
+        // Cargar idioma
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esEspanol")){
+            setLocale(getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? "es" : "en");
+        } else  {
+            Locale currentLocale = getResources().getConfiguration().locale;
+            boolean esEspanol = currentLocale.getLanguage().equals("es");
+            guardarIdioma(esEspanol);
+        }
+
+        // Cargar descarga
+        if (!getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esDescargado")){
+            SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("esDescargado", false);
+            editor.apply();
+        }
+        Traductor.descargarModeloTraduccion(this);
+
+        // Cargar Huella
+        SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("esRegistrado", false);
+        editor.apply();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
@@ -43,11 +75,6 @@ public class Splash extends AppCompatActivity {
         TextView adrid = findViewById(R.id.adrid);
         industria = findViewById(R.id.industria);
         sabiasQue = getResources().getStringArray(R.array.sabias);
-
-        // Cargar modo
-        int nuevoModo = (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esNoche", false))? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
-        getApplication().getResources().getConfiguration().uiMode &= ~Configuration.UI_MODE_NIGHT_MASK;
-        getApplication().getResources().getConfiguration().uiMode |= nuevoModo;
 
         // Cargar animaciones desde recursos XML
         ObjectAnimator slideRightX = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.slide_right_x);
@@ -112,15 +139,45 @@ public class Splash extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
+        // Construir el estilo de texto expandido
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle()
+                .bigText(sabiasQue[new Random().nextInt(sabiasQue.length)]);
+
+
         // Construir la notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification)
                 .setContentTitle(getResources().getString(R.string.sabiasque))
                 .setContentText(sabiasQue[new Random().nextInt(sabiasQue.length)])
+                .setStyle(bigTextStyle)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         // Mostrar la notificación
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.notify(0, builder.build());
+    }
+
+    private void guardarModoNoche(boolean esNoche) {
+        SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("esNoche", esNoche);
+        editor.apply();
+    }
+
+    private void guardarIdioma(boolean esEspanol) {
+        SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("esEspanol", esEspanol);
+        editor.apply();
+    }
+
+    private void setLocale(String idioma) {
+        Locale nuevoLocale = new Locale(idioma);
+        Locale.setDefault(nuevoLocale);
+
+        Configuration configuracion = this.getResources().getConfiguration();
+        configuracion.setLocale(nuevoLocale);
+
+        getBaseContext().getResources().updateConfiguration(configuracion, getBaseContext().getResources().getDisplayMetrics());
     }
 }

@@ -30,6 +30,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:theme="@style/Theme.MadridIndustria.NoActionBar"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.core.widget.NestedScrollView

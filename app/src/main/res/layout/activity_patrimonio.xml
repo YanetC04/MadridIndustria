@@ -162,6 +162,212 @@
                     android:id="@+id/descripcion"
                     style="@style/textContent"
                     android:justificationMode="inter_word" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    style="@style/textTitle"
+                    android:text="@string/resena"
+                    android:layout_marginBottom="10dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:numStars="5"
+                        android:stepSize="1.0"
+                        android:minHeight="48dp"
+                        android:maxHeight="48dp"
+                        android:rating="0"
+                        android:isIndicator="false" />
+
+                    <TextView
+                        android:id="@+id/rating_value"
+                        style="@style/textContent"
+                        android:layout_marginStart="10dp"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/media" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!--Para 5 estrellas -->
+                    <LinearLayout
+                        android:id="@+id/barraPro5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            style="@style/textContent"
+                            android:text="@string/cinco"
+                            android:layout_weight="1" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:progress="0"
+                            android:max="100"
+                            style="?android:attr/progressBarStyleHorizontal" />
+
+                        <TextView
+                            android:id="@+id/percentage5"
+                            android:text="@string/ceroPorciento"
+                            style="@style/textContent"
+                            android:layout_weight="1"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!--Para 4 estrellas -->
+                    <LinearLayout
+                        android:id="@+id/barraPro4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:text="@string/cuatro"
+                            style="@style/textContent"
+                            android:layout_weight="1" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:progress="0"
+                            android:max="100"
+                            style="?android:attr/progressBarStyleHorizontal" />
+
+                        <TextView
+                            android:id="@+id/percentage4"
+                            android:text="@string/ceroPorciento"
+                            style="@style/textContent"
+                            android:layout_weight="1"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!--Para 3 estrellas -->
+                    <LinearLayout
+                        android:id="@+id/barraPro3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_weight="1"
+                            style="@style/textContent"
+                            android:text="@string/tres" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:progress="0"
+                            android:max="100"
+                            style="?android:attr/progressBarStyleHorizontal" />
+
+                        <TextView
+                            android:id="@+id/percentage3"
+                            android:text="@string/ceroPorciento"
+                            style="@style/textContent"
+                            android:layout_weight="1"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!--Para 2 estrellas -->
+                    <LinearLayout
+                        android:id="@+id/barraPro2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:text="@string/dos"
+                            style="@style/textContent"
+                            android:layout_weight="1" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:progress="0"
+                            android:max="100"
+                            style="?android:attr/progressBarStyleHorizontal" />
+
+                        <TextView
+                            android:id="@+id/percentage2"
+                            android:text="@string/ceroPorciento"
+                            style="@style/textContent"
+                            android:layout_weight="1"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <!--Para 1 estrellas -->
+                    <LinearLayout
+                        android:id="@+id/barraPro1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <TextView
+                            android:text="@string/uno"
+                            style="@style/textContent"
+                            android:layout_weight="1" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:progress="0"
+                            android:max="100"
+                            style="?android:attr/progressBarStyleHorizontal" />
+
+                        <TextView
+                            android:id="@+id/percentage1"
+                            android:text="@string/ceroPorciento"
+                            style="@style/textContent"
+                            android:layout_weight="1"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/total_reviews"
+                        android:text="@string/ceroResena"
+                        style="@style/textContent"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

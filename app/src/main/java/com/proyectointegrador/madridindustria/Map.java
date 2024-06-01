@@ -26,6 +26,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.*;
+
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
@@ -45,8 +46,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationCallback locationCallback;
     private Polyline currentPolyline;
+    private LocationCallback locationCallback;
     private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "barajas", "fuencarral", "hortaleza", "latina", "retiro", "salamanca", "sanblas", "tetuan", "vallecas", "villaverde"};
 
     @Override
@@ -417,6 +418,4 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     interface OnLocationReadyListener {
         void onLocationReady(LatLng location);
     }
-
-
 }

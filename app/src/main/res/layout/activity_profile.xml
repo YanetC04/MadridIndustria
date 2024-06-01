@@ -50,89 +50,105 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
-    <Button
-        android:id="@+id/idioma"
-        style="@style/button_mix2"
+
+    <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:layout_marginTop="24dp"
-        android:drawableLeft="@drawable/translate"
-        android:fontFamily="@font/roboto"
-        android:text="@string/idioma"
-        android:textAlignment="textStart"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/copy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/correo" />
+        app:layout_constraintTop_toBottomOf="@+id/correo">
 
-    <Button
-        android:id="@+id/qr"
-        style="@style/button_mix2"
-        android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:layout_marginTop="24dp"
-        android:drawableLeft="@drawable/qr"
-        android:fontFamily="@font/roboto"
-        android:text="@string/qr"
-        android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idioma" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/ayuda"
-        style="@style/button_mix2"
-        android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:drawableLeft="@drawable/ayuda"
-        android:fontFamily="@font/roboto"
-        android:text="@string/ayuda"
-        android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr" />
+            <Button
+                android:id="@+id/idioma"
+                style="@style/button_mix2"
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:layout_marginTop="24dp"
+                android:drawableLeft="@drawable/translate"
+                android:fontFamily="@font/roboto"
+                android:text="@string/idioma"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/qr"
+                style="@style/button_mix2"
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:layout_marginTop="24dp"
+                android:drawableLeft="@drawable/qr"
+                android:fontFamily="@font/roboto"
+                android:text="@string/qr"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idioma" />
+
+            <Button
+                android:id="@+id/ayuda"
+                style="@style/button_mix2"
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/ayuda"
+                android:fontFamily="@font/roboto"
+                android:text="@string/ayuda"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/qr" />
 
 
-    <Button
-        android:id="@+id/contrasena"
-        android:textAlignment="textStart"
-        android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        android:drawableLeft="@drawable/lock_reset"
-        style="@style/button_mix2"
-        android:fontFamily="@font/roboto"
-        android:text="@string/cambiarcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ayuda" />
+            <Button
+                android:id="@+id/contrasena"
+                style="@style/button_mix2"
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/lock_reset"
+                android:fontFamily="@font/roboto"
+                android:text="@string/cambiarcon"
+                android:textAlignment="textStart"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ayuda" />
 
-    <Button
-        android:id="@+id/code"
-        android:textAlignment="textStart"
-        android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        android:drawableLeft="@drawable/person"
-        style="@style/button_mix2"
-        android:fontFamily="@font/roboto"
-        android:text="@string/cuenta"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contrasena" />
+            <Button
+                android:id="@+id/code"
+                style="@style/button_mix2"
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/person"
+                android:fontFamily="@font/roboto"
+                android:text="@string/cuenta"
+                android:textAlignment="textStart"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contrasena" />
 
-    <Button
-        android:id="@+id/cerrar"
-        android:textAlignment="textStart"
-        android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        android:drawableLeft="@drawable/logout"
-        style="@style/button_mix2"
-        android:fontFamily="@font/roboto"
-        android:text="@string/cerrarSesion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/code" />
+            <Button
+                android:id="@+id/cerrar"
+                style="@style/button_mix2"
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/logout"
+                android:fontFamily="@font/roboto"
+                android:text="@string/cerrarSesion"
+                android:textAlignment="textStart"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/code" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
     <TextView
         android:id="@+id/copy"
         android:layout_width="match_parent"
@@ -157,6 +173,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:max="100"
+        android:progress="0"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

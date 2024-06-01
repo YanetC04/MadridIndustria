@@ -4,6 +4,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.*;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.*;
 
 import java.text.Normalizer;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Favorite extends AppCompatActivity {
@@ -26,6 +28,9 @@ public class Favorite extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esEspanol")){
+            setLocale(getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? "es" : "en");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
@@ -123,11 +128,20 @@ public class Favorite extends AppCompatActivity {
 
                     // ESTABLECER INFORMACION
                     textView.setVisibility(View.INVISIBLE);
-                    nombre.setText(nombreValor);
-                    inaguracion.setText(inaguracionValor);
-                    patrimonio.setText(patrimonioValor);
-                    metro.setText(metroValor);
-                    direccion.setText(direccionValor);
+                    if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+                        nombre.setText(nombreValor);
+                        inaguracion.setText(inaguracionValor);
+                        patrimonio.setText(patrimonioValor);
+                        metro.setText(metroValor);
+                        direccion.setText(direccionValor);
+                    } else {
+                        traducirTexto(nombre, nombreValor);
+                        traducirTexto(inaguracion, inaguracionValor);
+                        traducirTexto(patrimonio, patrimonioValor);
+                        traducirTexto(metro, metroValor);
+                        traducirTexto(direccion, direccionValor);
+                    }
+
 
                     Glide.with(Favorite.this)
                             .load(imagenValor)
@@ -178,6 +192,21 @@ public class Favorite extends AppCompatActivity {
                 });
     }
 
+    private void traducirTexto(TextView view, String texto){
+        Traductor.traducirTexto(texto, new Traductor.OnTranslationComplete() {
+            @Override
+            public void onTranslationComplete(String translatedText) {
+                view.setText(translatedText);
+            }
+
+            @Override
+            public void onTranslationFailed(String errorMessage) {
+
+            }
+        }, this);
+    }
+
+
     public static String quitarAcentos(String input) {
         return Normalizer.normalize(input, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "");
@@ -226,4 +255,13 @@ public class Favorite extends AppCompatActivity {
         }
     }
 
+    private void setLocale(String idioma) {
+        Locale nuevoLocale = new Locale(idioma);
+        Locale.setDefault(nuevoLocale);
+
+        Configuration configuracion = this.getResources().getConfiguration();
+        configuracion.setLocale(nuevoLocale);
+
+        getBaseContext().getResources().updateConfiguration(configuracion, getBaseContext().getResources().getDisplayMetrics());
+    }
 }

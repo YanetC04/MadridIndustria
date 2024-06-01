@@ -38,6 +38,12 @@
         <item name="rippleColor">@color/white</item>
     </style>
 
+    <style name="Theme.MadridIndustria.NoActionBar.FloatingButtonInverse" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/reddark</item>
+        <item name="tint">@color/white</item>
+        <item name="rippleColor">@color/reddark</item>
+    </style>
+
     <!-- IMAGES -->
     <style name="Image.MadridIndustria.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:tint">@color/white</item>

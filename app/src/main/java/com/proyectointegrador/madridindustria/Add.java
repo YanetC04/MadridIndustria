@@ -1,7 +1,10 @@
 package com.proyectointegrador.madridindustria;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.*;
 import android.view.View;
@@ -10,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.*;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
+import java.util.Locale;
 
 public class Add extends AppCompatActivity {
 
@@ -90,6 +96,29 @@ public class Add extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
+    }
+
+    // Cambio dinámico de idioma
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(updateBaseContextLocale(newBase));
+    }
+
+    private Context updateBaseContextLocale(Context context) {
+        if (context != null) {
+            SharedPreferences preferences = context.getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+            boolean esEspanol = preferences.getBoolean("esEspanol", true);
+
+            Locale locale = new Locale(esEspanol ? "es" : "en");
+            Locale.setDefault(locale);
+
+            Configuration configuration = new Configuration(context.getResources().getConfiguration());
+            configuration.setLocale(locale);
+
+            return context.createConfigurationContext(configuration);
+        } else {
+            return context;
+        }
     }
 
     // NO VOLVER ATRAS

@@ -1,8 +1,11 @@
 package com.proyectointegrador.madridindustria;
 
+
 import androidx.appcompat.app.*;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.view.*;
 import android.annotation.SuppressLint;
@@ -25,9 +28,19 @@ public class Profile extends AppCompatActivity {
     private Boolean llave = false, esNoche;
     private ImageView modo;
     private int nuevaImagen;
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSharedPreferences("ModoApp", Context.MODE_PRIVATE).contains("esEspanol")){
+            Locale locale = new Locale(getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true) ? "es" : "en");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -76,18 +89,16 @@ public class Profile extends AppCompatActivity {
         modo.setOnClickListener(v -> {
             esNoche = !esNoche;
 
+            guardarModoNoche(esNoche);
+
             // Cambiar el modo
-            int nuevoModo = esNoche ? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
-            getApplication().getResources().getConfiguration().uiMode &= ~Configuration.UI_MODE_NIGHT_MASK;
-            getApplication().getResources().getConfiguration().uiMode |= nuevoModo;
+            AppCompatDelegate.setDefaultNightMode(esNoche ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
             // Cambiar la imagen
             nuevaImagen = esNoche ? R.drawable.sol : R.drawable.luna;
             Glide.with(Profile.this)
                     .load(nuevaImagen)
                     .into(modo);
-
-            guardarModoNoche(esNoche);
 
             recreate();
         });
@@ -129,9 +140,11 @@ public class Profile extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.english) {
+                    guardarIdioma(false);
                     setLocale("en");
                     return true;
                 } else if (id == R.id.spanish) {
+                    guardarIdioma(true);
                     setLocale("es");
                     return true;
                 }
@@ -339,14 +352,19 @@ public class Profile extends AppCompatActivity {
     }
 
     // Método para cambiar el idioma de la aplicación
-    private void setLocale(String languageCode) {
-        Locale locale = new Locale(languageCode);
+    private void setLocale(String idioma) {
+        Locale locale = new Locale(idioma);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-        // Reiniciar la actividad para aplicar los cambios de idioma
+        getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         recreate();
+    }
+
+    private void guardarIdioma(boolean esEspanol) {
+        SharedPreferences preferences = getSharedPreferences("ModoApp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("esEspanol", esEspanol);
+        editor.apply();
     }
 }
