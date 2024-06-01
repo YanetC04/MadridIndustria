@@ -89,7 +89,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDUPbwAJE5D3lLeqwGXrFxrxvzaJoCKPHY" />
+            android:value="AIzaSyCG3YHX-TT69TpQq3R1cw_u3p8h66nFpS4" />
     </application>
 
 </manifest>
