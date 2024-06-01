@@ -4,7 +4,7 @@
         <!-- Fondo con borde -->
         <shape android:shape="rectangle">
             <solid android:color="?attr/backColor" />
-            <corners android:radius="20dp" />
+            <corners android:radius="5dp" />
             <stroke
                 android:width="1dp"
                 android:color="?attr/primaryColor" />

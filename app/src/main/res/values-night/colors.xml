@@ -17,5 +17,5 @@
     <color name="red_text">#ffe4ea</color>
     <color name="grey">#7F8083</color>
     <color name="light_grey">#373737</color>
-    <color name="fingerprint_color">#FF000000</color>
+    <color name="fingerprint_color">#FFFFFFFF</color>
 </resources>
