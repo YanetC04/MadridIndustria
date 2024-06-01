@@ -141,4 +141,13 @@
     <string name="codgest">Invalid manager code.</string>
     <string name="actualizacion">LANGUAGE UPDATE</string>
     <string name="actmsj">You need to restart the app to update the changes.</string>
+    <string name="resena">Review Summary</string>
+    <string name="cinco">5</string>
+    <string name="cuatro">4</string>
+    <string name="tres">3</string>
+    <string name="dos">2</string>
+    <string name="uno">1</string>
+    <string name="ceroPorciento">0%</string>
+    <string name="ceroResena">0 review</string>
+    <string name="media">0.0</string>
 </resources>

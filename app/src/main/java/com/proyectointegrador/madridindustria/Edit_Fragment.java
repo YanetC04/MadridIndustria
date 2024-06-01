@@ -2,6 +2,7 @@ package com.proyectointegrador.madridindustria;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -199,7 +200,7 @@ public class Edit_Fragment extends Fragment {
             int disPos = 0;
             for (int i = 0; i < adapter.getCount(); i++) {
                 String distritoA = Objects.requireNonNull(adapter.getItem(i)).toString();
-                if (distritoA.startsWith(firestoreDatabase.getDistrito())) {
+                if (distritoA.startsWith(obtenerDistrito(firestoreDatabase.getDistrito()))) {
                     disPos = i;
                 }
             }
@@ -350,5 +351,20 @@ public class Edit_Fragment extends Fragment {
                 // Error al subir la imagen
             });
         }
+    }
+
+    private String obtenerDistrito(String distritoText) {
+        if (!requireContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+            String distritoNombre = distritoText.split("\\s+")[1];
+            distritoNombre = quitarAcentos(distritoNombre);
+
+            if (distritoNombre.equals("San")) {
+                return "Distrito San Blas-Canillejas";
+            }
+
+            return distritoNombre + " District";
+        }
+
+        return distritoText;
     }
 }
