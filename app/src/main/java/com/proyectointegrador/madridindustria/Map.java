@@ -159,10 +159,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         for (String dist : distritos) {
             getCount(dist, count -> {
                 for (int i = 1; i <= count; i++) {
-                    new FirestoreDatabase(dist, String.valueOf(i), firestoreDatabase -> {
+                    String numero = String.valueOf(i);
+                    new FirestoreDatabase(dist, numero, firestoreDatabase -> {
                         if (firestoreDatabase.getGeo() != null) {
                             LatLng markerLatLng = new LatLng(firestoreDatabase.getGeo().getLatitude(), firestoreDatabase.getGeo().getLongitude());
-                            addMarkerToMap(markerLatLng, dist);
+                            addMarkerToMap(markerLatLng, dist, numero);
                         }
                     });
                 }
@@ -170,7 +171,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 
-    private void addMarkerToMap(LatLng position, String title) {
+    private void addMarkerToMap(LatLng position, String dist, String numero) {
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.marker);
         if (drawable != null) {
             BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(drawable));
@@ -178,7 +179,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             // Crear y agregar el marcador al mapa
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(position)
-                    .title(title)
+                    .snippet(numero)
+                    .title(dist)
                     .icon(icon));
 
             // Configurar el listener para el clic en el marcador
