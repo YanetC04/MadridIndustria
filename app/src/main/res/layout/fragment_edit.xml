@@ -36,29 +36,30 @@
             android:importantForAccessibility="no" />
     </LinearLayout>
 
-    <GridLayout
-        android:id="@+id/gridLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:rowCount="2"
-        android:columnCount="2"
-        android:padding="16dp"
-        android:layout_marginTop="16dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:text="@string/nombre"
-            android:textStyle="bold"
-            android:layout_width="175dp"
-            android:textSize="18sp"
-            android:layout_row="0"
-            android:layout_column="0"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:text="@string/distrito"
-            android:layout_width="175dp"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_row="0"
-            android:layout_column="1"/>
-    </GridLayout>
+            <!-- Aquí van otros elementos si es necesario -->
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="2"
+                android:padding="16dp"
+                android:layout_marginTop="16dp">
+                <!-- Tus elementos en el GridLayout aquí -->
+            </GridLayout>
+
+            <!-- Aquí van otros elementos si es necesario -->
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

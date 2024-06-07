@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.*;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.*;
@@ -136,17 +137,32 @@ public class Edit_Fragment extends Fragment {
     }
 
     private void agregarFila(FirestoreDatabase firestoreDatabase) {
-        TextView nombreTextView = new TextView(getContext());
+        LinearLayout cardView = (LinearLayout) getLayoutInflater().inflate(R.layout.favorite_card, null);
+
+        // Obtener los elementos de la card
+        TextView nombreTextView = cardView.findViewById(R.id.nombre);
+        TextView inauguracionTextView = cardView.findViewById(R.id.inaguracion);
+        TextView patrimonioTextView = cardView.findViewById(R.id.patrimonio);
+        TextView metroTextView = cardView.findViewById(R.id.metro);
+        TextView direccionTextView = cardView.findViewById(R.id.direccion);
+        ImageView imagenView = cardView.findViewById(R.id.imagen); // Asegúrate de que el ImageView tenga el ID correcto
+
+        // Configurar los valores de los elementos de la card
         nombreTextView.setText(firestoreDatabase.getNombre());
-        nombreTextView.setTextSize(16);
-        TextView distritoTextView = new TextView(getContext());
-        distritoTextView.setText(firestoreDatabase.getDistrito());
-        distritoTextView.setTextSize(16);
+        inauguracionTextView.setText(firestoreDatabase.getInaguracion());
+        patrimonioTextView.setText(firestoreDatabase.getPatrimonio());
+        metroTextView.setText(firestoreDatabase.getMetro());
+        direccionTextView.setText(firestoreDatabase.getDireccion());
 
-        gridLayout.addView(nombreTextView);
-        gridLayout.addView(distritoTextView);
+        // Utilizar Glide para cargar la imagen desde la URL proporcionada
+        Glide.with(this)
+                .load(firestoreDatabase.getImagen())
+                .into(imagenView);
 
-        nombreTextView.setOnClickListener(v -> {
+        // Añadir la card configurada al GridLayout
+        gridLayout.addView(cardView);
+
+        cardView.setOnClickListener(v -> {
             linear.setVisibility(View.GONE);
             gridLayout.setVisibility(View.GONE);
 
