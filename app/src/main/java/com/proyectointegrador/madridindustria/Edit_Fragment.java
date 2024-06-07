@@ -86,6 +86,7 @@ public class Edit_Fragment extends Fragment {
     }
 
     private void realizarBusqueda() {
+        gridLayout.removeAllViews();
         // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
         int childCount = gridLayout.getChildCount();
         if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
