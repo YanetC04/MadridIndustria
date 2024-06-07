@@ -28,6 +28,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.Normalizer;
 import java.util.*;
+import android.view.inputmethod.EditorInfo;
+import android.view.KeyEvent;
+
 
 public class Edit_Fragment extends Fragment {
 
@@ -35,7 +38,7 @@ public class Edit_Fragment extends Fragment {
     private LinearLayout linear;
     private final String[] distritos = {"arganzuela", "centro", "moncloa", "chamberi", "chamartin", "sanblas", "villaverde", "retiro", "tetuan", "fuencarral", "vallecas", "barajas", "hortaleza", "latina", "salamanca"};
     private Drawable redBorderDrawable, defaultBorderDrawable;
-    private EditText nombre, nombreEditText, inaguracionEditText, patrimonioEditText,coordenadas_latEditText, coordenadas_lonEditText,  metroEditText, direccionEditText, descripcionEditText, imagenEditText;
+    private EditText nombre, nombreEditText, inaguracionEditText, patrimonioEditText, coordenadas_latEditText, coordenadas_lonEditText, metroEditText, direccionEditText, descripcionEditText, imagenEditText;
     private TextInputLayout nombreInputLayout, imagenInputLayout, descripcionInputLayout;
     private Spinner distritoT;
     private String dis = null;
@@ -65,39 +68,55 @@ public class Edit_Fragment extends Fragment {
         redBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.red_border);
         defaultBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.default_border);
 
-        imagen.setOnClickListener(v -> {
-            // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
-            int childCount = gridLayout.getChildCount();
-            if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
-                gridLayout.removeViews(2, childCount - 2);
-            }
+        imagen.setOnClickListener(v -> realizarBusqueda());
 
-            for (String dist : distritos) {
-                getCount(dist, count -> {
-                    for (int i = 1; i <= count; i++) {
-                        new FirestoreDatabase(dist, Integer.toString(i), firestoreDatabase -> {
-                            String nombreF = firestoreDatabase.getNombre();
-                            String parteDelNombreABuscar = nombre.getText().toString();
-
-                            if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
-                                agregarFila(firestoreDatabase);
-                            } else
-                                marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
-                        });
-                    }
-                });
+        // Agregar el listener al EditText para capturar la acción del Enter
+        nombre.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                realizarBusqueda();
+                return true;
             }
+            return false;
         });
 
         return root;
     }
 
-    private void marcarError(String text, TextInputLayout input, int valor, EditText edit){
+    private void realizarBusqueda() {
+        // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
+        int childCount = gridLayout.getChildCount();
+        if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
+            gridLayout.removeViews(2, childCount - 2);
+        }
+
+        String parteDelNombreABuscar = normalizarTexto(nombre.getText().toString());
+
+        for (String dist : distritos) {
+            getCount(dist, count -> {
+                for (int i = 1; i <= count; i++) {
+                    new FirestoreDatabase(dist, Integer.toString(i), firestoreDatabase -> {
+                        String nombreF = firestoreDatabase.getNombre();
+                        String nombreFNormalizado = normalizarTexto(nombreF);
+
+                        if (nombreFNormalizado.contains(parteDelNombreABuscar)) {
+                            agregarFila(firestoreDatabase);
+                        } else {
+                            marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void marcarError(String text, TextInputLayout input, int valor, EditText edit) {
         if (text.isEmpty()) {
             input.setHint(valor);
             edit.setBackground(redBorderDrawable);
             edit.setOnFocusChangeListener((v19, hasFocus) -> {
-                if(!hasFocus){
+                if (!hasFocus) {
                     edit.setBackground(defaultBorderDrawable);
                     input.setHint(valor);
                 }
@@ -294,8 +313,7 @@ public class Edit_Fragment extends Fragment {
                 .replaceAll("\\p{M}", "");
     }
 
-    private void editEditable(){
-
+    private void editEditable() {
         // NO
         nombreEditText.setEnabled(false);
         inaguracionEditText.setEnabled(false);
@@ -354,7 +372,7 @@ public class Edit_Fragment extends Fragment {
     }
 
     private String obtenerDistrito(String distritoText) {
-        if (!requireContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)){
+        if (!requireContext().getSharedPreferences("ModoApp", Context.MODE_PRIVATE).getBoolean("esEspanol", true)) {
             String distritoNombre = distritoText.split("\\s+")[1];
             distritoNombre = quitarAcentos(distritoNombre);
 
@@ -366,5 +384,12 @@ public class Edit_Fragment extends Fragment {
         }
 
         return distritoText;
+    }
+
+    public static String normalizarTexto(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .replaceAll("\\s+", "")  // Elimina todos los espacios en blanco
+                .toLowerCase();
     }
 }
