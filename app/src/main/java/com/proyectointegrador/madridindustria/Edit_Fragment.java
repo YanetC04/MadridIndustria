@@ -15,6 +15,7 @@ import androidx.fragment.app.*;
 import android.provider.MediaStore;
 import android.text.*;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.*;
@@ -65,31 +66,43 @@ public class Edit_Fragment extends Fragment {
         redBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.red_border);
         defaultBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.default_border);
 
-        imagen.setOnClickListener(v -> {
-            // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
-            int childCount = gridLayout.getChildCount();
-            if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
-                gridLayout.removeViews(2, childCount - 2);
-            }
+        imagen.setOnClickListener(v -> realizarBusqueda());
 
-            for (String dist : distritos) {
-                getCount(dist, count -> {
-                    for (int i = 1; i <= count; i++) {
-                        new FirestoreDatabase(dist, Integer.toString(i), firestoreDatabase -> {
-                            String nombreF = firestoreDatabase.getNombre();
-                            String parteDelNombreABuscar = nombre.getText().toString();
-
-                            if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
-                                agregarFila(firestoreDatabase);
-                            } else
-                                marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
-                        });
-                    }
-                });
+        nombre.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                realizarBusqueda();
+                return true;
             }
+            return false;
         });
 
         return root;
+    }
+
+    private void realizarBusqueda() {
+        // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
+        int childCount = gridLayout.getChildCount();
+        if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
+            gridLayout.removeViews(2, childCount - 2);
+        }
+
+        for (String dist : distritos) {
+            getCount(dist, count -> {
+                for (int i = 1; i <= count; i++) {
+                    new FirestoreDatabase(dist, Integer.toString(i), firestoreDatabase -> {
+                        String nombreF = firestoreDatabase.getNombre();
+                        String parteDelNombreABuscar = nombre.getText().toString();
+
+                        if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
+                            agregarFila(firestoreDatabase);
+                        } else
+                            marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
+                    });
+                }
+            });
+        }
     }
 
     private void marcarError(String text, TextInputLayout input, int valor, EditText edit){
@@ -119,10 +132,10 @@ public class Edit_Fragment extends Fragment {
     private void agregarFila(FirestoreDatabase firestoreDatabase) {
         TextView nombreTextView = new TextView(getContext());
         nombreTextView.setText(firestoreDatabase.getNombre());
-        nombreTextView.setTextSize(16);
+        nombreTextView.setTextSize(18);
         TextView distritoTextView = new TextView(getContext());
         distritoTextView.setText(firestoreDatabase.getDistrito());
-        distritoTextView.setTextSize(16);
+        distritoTextView.setTextSize(18);
 
         gridLayout.addView(nombreTextView);
         gridLayout.addView(distritoTextView);

@@ -42,22 +42,11 @@ public class Patrimonio extends AppCompatActivity {
     private ImageView imagen;
     private FloatingActionButton boton;
     private boolean heart = true;
-    private TextView direccion, inaguracion, metro, descripcion, patrimonio;
     private Drawable heartDrawable, heartFillDrawable;
     private final localDB localDB = new localDB(this);
     private RatingBar ratingBar;
-    private TextView rating_value;
-    private TextView total_reviews;
-    private ProgressBar progressBar5;
-    private ProgressBar progressBar4;
-    private ProgressBar progressBar3;
-    private ProgressBar progressBar2;
-    private ProgressBar progressBar1;
-    private TextView percentage5;
-    private TextView percentage4;
-    private TextView percentage3;
-    private TextView percentage2;
-    private TextView percentage1;
+    private ProgressBar progressBar5, progressBar4, progressBar3, progressBar2, progressBar1;
+    private TextView percentage5, percentage4, percentage3, percentage2, percentage1, rating_value, total_reviews, direccion, inaguracion, metro, descripcion, patrimonio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +142,9 @@ public class Patrimonio extends AppCompatActivity {
             Glide.with(Patrimonio.this)
                     .load(imagenText)
                     .into(imagen);
+
+            // Cargar calificaciones de Firestore
+            cargarCalificacionesDeFirestore(nombreText);
         });
 
         // ESTABLECEMOS CUANDO APARECE O DESAPARECE EL BOTON
@@ -203,8 +195,6 @@ public class Patrimonio extends AppCompatActivity {
                 guardarCalificacionEnFirestore(nombreText, rating);
             }
         });
-
-        cargarCalificacionesDeFirestore(nombreText);
     }
 
     private void traducirTexto(TextView view, String texto){

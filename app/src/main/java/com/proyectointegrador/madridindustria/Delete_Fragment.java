@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 
 import androidx.core.content.ContextCompat;
@@ -39,46 +40,58 @@ public class Delete_Fragment extends Fragment {
         redBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.red_border);
         defaultBorderDrawable = ContextCompat.getDrawable(requireActivity(), R.drawable.default_border);
 
-        imagen.setOnClickListener(v -> {
-            // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
-            int childCount = gridLayout.getChildCount();
-            if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
-                gridLayout.removeViews(2, childCount - 2);
-            }
+        imagen.setOnClickListener(v -> {realizarBusqueda();});
 
-            for (String dist : distritos) {
-                FirebaseFirestore.getInstance().collection(dist)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot querySnapshot = task.getResult();
-                                if (querySnapshot != null) {
-                                    for (QueryDocumentSnapshot document : querySnapshot) {
-                                        String nombreF = document.getString("nombre");
-                                        String parteDelNombreABuscar = nombre.getText().toString();
-
-                                        if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
-                                            agregarFila(document);
-                                        } else {
-                                            marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
-                                        }
-                                    }
-                                }
-                            }
-                        });
+        nombre.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                realizarBusqueda();
+                return true;
             }
+            return false;
         });
 
         return root;
     }
 
+    private void realizarBusqueda() {
+        // Eliminar las filas adicionales (a partir del índice 1) del GridLayout
+        int childCount = gridLayout.getChildCount();
+        if (childCount > 2) { // Verificar que haya más de una fila (excluyendo la primera fila)
+            gridLayout.removeViews(2, childCount - 2);
+        }
+
+        for (String dist : distritos) {
+            FirebaseFirestore.getInstance().collection(dist)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null) {
+                                for (QueryDocumentSnapshot document : querySnapshot) {
+                                    String nombreF = document.getString("nombre");
+                                    String parteDelNombreABuscar = nombre.getText().toString();
+
+                                    if (nombreF.toLowerCase().contains(parteDelNombreABuscar.toLowerCase())) {
+                                        agregarFila(document);
+                                    } else {
+                                        marcarError(nombreF, nombreInputLayout, R.string.nom, nombre);
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
     private void agregarFila(QueryDocumentSnapshot document) {
         TextView nombreTextView = new TextView(getContext());
         nombreTextView.setText(document.getString("nombre"));
-        nombreTextView.setTextSize(16);
+        nombreTextView.setTextSize(18);
         TextView distritoTextView = new TextView(getContext());
         distritoTextView.setText(document.getString("distrito"));
-        distritoTextView.setTextSize(16);
+        distritoTextView.setTextSize(18);
 
         gridLayout.addView(nombreTextView);
         gridLayout.addView(distritoTextView);
