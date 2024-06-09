@@ -116,7 +116,7 @@ public class Register extends AppCompatActivity {
     }
 
     private boolean valida(String mail) {
-        return mail.endsWith("@gmail.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@outlook.com") || mail.endsWith("@icloud.com");
+        return mail.endsWith("@gmail.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@outlook.com") || mail.endsWith("@icloud.com") || mail.endsWith("@educa.madrid.org");
     }
 
     private void showErrorDialog(String message) {
